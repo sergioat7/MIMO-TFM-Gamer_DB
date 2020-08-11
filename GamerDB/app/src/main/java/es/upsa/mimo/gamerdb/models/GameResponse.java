@@ -51,6 +51,7 @@ public class GameResponse {
     private List<TagResponse> tags;
     private List<PublisherResponse> publishers;
     private EsrbResponse esrb_rating;
+    private List<ScreenshotResponse> short_screenshots;
 
     public GameResponse(int id,
                         String slug,
@@ -98,7 +99,8 @@ public class GameResponse {
                         List<GenreResponse> genres,
                         List<TagResponse> tags,
                         List<PublisherResponse> publishers,
-                        EsrbResponse esrb_rating) {
+                        EsrbResponse esrb_rating,
+                        List<ScreenshotResponse> short_screenshots) {
         this.id = id;
         this.slug = slug;
         this.name = name;
@@ -146,6 +148,7 @@ public class GameResponse {
         this.tags = tags;
         this.publishers = publishers;
         this.esrb_rating = esrb_rating;
+        this.short_screenshots = short_screenshots;
     }
 
     public int getId() {
@@ -522,5 +525,13 @@ public class GameResponse {
 
     public void setEsrb_rating(EsrbResponse esrb_rating) {
         this.esrb_rating = esrb_rating;
+    }
+
+    public List<ScreenshotResponse> getShort_screenshots() {
+        return short_screenshots;
+    }
+
+    public void setShort_screenshots(List<ScreenshotResponse> short_screenshots) {
+        this.short_screenshots = short_screenshots;
     }
 }
