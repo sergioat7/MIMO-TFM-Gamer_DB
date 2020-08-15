@@ -9,15 +9,16 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.viewpager.widget.PagerAdapter;
+import com.squareup.picasso.Picasso;
 import java.util.List;
 import es.upsa.mimo.gamerdb.R;
 
 public class ImageSliderAdapter extends PagerAdapter {
 
-    private List<Integer> images;//TODO change to String for URLs
+    private List<String> images;
     private LayoutInflater inflater;
 
-    public ImageSliderAdapter(List<Integer> images, Context context) {
+    public ImageSliderAdapter(List<String> images, Context context) {
 
         this.images = images;
         this.inflater = LayoutInflater.from(context);
@@ -41,7 +42,7 @@ public class ImageSliderAdapter extends PagerAdapter {
         assert imageLayout != null;
         final ImageView imageView = (ImageView) imageLayout.findViewById(R.id.image_view);
 
-        imageView.setImageResource(images.get(position));//TODO change to Picasso load
+        Picasso.get().load(images.get(position)).into(imageView);
         container.addView(imageLayout, 0);
         return imageLayout;
     }

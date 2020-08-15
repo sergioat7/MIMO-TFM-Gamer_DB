@@ -12,6 +12,7 @@ import java.util.List;
 import es.upsa.mimo.gamerdb.R;
 import es.upsa.mimo.gamerdb.adapters.ImageSliderAdapter;
 import es.upsa.mimo.gamerdb.models.GameResponse;
+import es.upsa.mimo.gamerdb.models.ScreenshotResponse;
 
 public class GamesViewHolder extends RecyclerView.ViewHolder {
 
@@ -30,14 +31,19 @@ public class GamesViewHolder extends RecyclerView.ViewHolder {
         TextView tvRating = itemView.findViewById(R.id.text_view_rating);
         LinePageIndicator indicator = itemView.findViewById(R.id.view_pager_indicator);
 
-        List<Integer> images = new ArrayList<>();
-        images.add(R.drawable.gta);
-        images.add(R.drawable.portal2);
+        List<ScreenshotResponse> screenshots = game.getShort_screenshots();
+        List<String> images = new ArrayList<>();
+        for (int i=0; i< screenshots.size(); i++) {
 
-        vpImages.setAdapter(new ImageSliderAdapter(images, context));//TODO change to game images
+            ScreenshotResponse screenshot = screenshots.get(i);
+            images.add(screenshot.getImage());
+        }
+
+        vpImages.setAdapter(new ImageSliderAdapter(images, context));
         tvName.setText(game.getName());
         tvRating.setText(String.valueOf(game.getRating()));
         indicator.setViewPager(vpImages);
+        indicator.setCurrentItem(0);
         indicator.setVisibility(
                 images.size() > 1 ? View.VISIBLE : View.GONE
         );

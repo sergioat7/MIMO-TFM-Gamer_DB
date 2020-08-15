@@ -16,8 +16,15 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import es.upsa.mimo.gamerdb.R;
 import es.upsa.mimo.gamerdb.adapters.GamesAdapter;
+import es.upsa.mimo.gamerdb.models.ErrorResponse;
+import es.upsa.mimo.gamerdb.models.GameListResponse;
+import es.upsa.mimo.gamerdb.network.apiclient.CompletionHandler;
+import es.upsa.mimo.gamerdb.network.apiclient.GameAPIClient;
+import es.upsa.mimo.gamerdb.utils.Constants;
 
 public class MainActivity extends AppCompatActivity {
+
+    //MARK: - Public properties
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -27,6 +34,11 @@ public class MainActivity extends AppCompatActivity {
 
     @BindView(R.id.recycler_view_games)
     RecyclerView rvGames;
+
+    //MARK: - Private properties
+
+    private GameAPIClient gameAPIClient;
+    private int page = 1;
 
     //MARK: - Lifecycle methods
 
@@ -68,6 +80,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void initializeUI() {
 
+        gameAPIClient = new GameAPIClient();
+
         srlGames.setColorSchemeResources(R.color.colorPrimary);
         srlGames.setProgressBackgroundColorSchemeResource(android.R.color.white);
         srlGames.setOnRefreshListener(this::loadGames);
@@ -79,9 +93,25 @@ public class MainActivity extends AppCompatActivity {
 
     private void loadGames() {
 
-        rvGames.setAdapter(new GamesAdapter(new ArrayList<>()));//TODO fill with data
+        //TODO show loading
+        gameAPIClient.getGames(page, Constants.pageSize, new CompletionHandler<GameListResponse>() {
+            @Override
+            public void success(GameListResponse gameListResponse) {
 
-        srlGames.setRefreshing(false);
+                rvGames.setAdapter(new GamesAdapter(gameListResponse.getResults()));
+                srlGames.setRefreshing(false);
+                page++;
+                //TODO hide loading
+            }
+
+            @Override
+            public void failure(ErrorResponse error) {
+
+                rvGames.setAdapter(new GamesAdapter(new ArrayList<>()));
+                srlGames.setRefreshing(false);
+                //TODO hide loading
+            }
+        });
     }
 
     private void handleIntent(Intent intent) {

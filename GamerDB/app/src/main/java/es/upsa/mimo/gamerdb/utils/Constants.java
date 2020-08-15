@@ -9,6 +9,7 @@ public class Constants {
     // MARK: - Retrofit constants
 
     public static String baseEndpoint = "https://api.rawg.io/api/";
+    public static int pageSize = 20;
 
     // MARK: Date format
 
