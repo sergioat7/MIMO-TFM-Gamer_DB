@@ -1,5 +1,6 @@
 package es.upsa.mimo.gamerdb.activities;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -87,6 +88,17 @@ public class MainActivity extends AppCompatActivity {
         srlGames.setOnRefreshListener(this::loadGames);
 
         rvGames.setLayoutManager(new LinearLayoutManager(this));
+        rvGames.setAdapter(new GamesAdapter(new ArrayList<>()));
+        rvGames.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+
+                if (!recyclerView.canScrollVertically(1) && newState==RecyclerView.SCROLL_STATE_IDLE) {
+                    loadGames();
+                }
+            }
+        });
 
         loadGames();
     }
@@ -98,7 +110,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void success(GameListResponse gameListResponse) {
 
-                rvGames.setAdapter(new GamesAdapter(gameListResponse.getResults()));
+                GamesAdapter adapter = (GamesAdapter) rvGames.getAdapter();
+                if (adapter != null) {
+                    adapter.addGames(gameListResponse.getResults());
+                }
                 srlGames.setRefreshing(false);
                 page++;
                 //TODO hide loading
@@ -107,7 +122,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void failure(ErrorResponse error) {
 
-                rvGames.setAdapter(new GamesAdapter(new ArrayList<>()));
                 srlGames.setRefreshing(false);
                 //TODO hide loading
             }

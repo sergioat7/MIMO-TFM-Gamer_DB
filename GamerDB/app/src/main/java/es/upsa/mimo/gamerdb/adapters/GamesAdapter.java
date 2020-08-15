@@ -20,6 +20,13 @@ public class GamesAdapter extends RecyclerView.Adapter<GamesViewHolder> {
         this.games = games;
     }
 
+    public void addGames(List<GameResponse> games) {
+
+        int position = this.games.size();
+        this.games.addAll(games);
+        notifyItemInserted(position);
+    }
+
     @NonNull
     @Override
     public GamesViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
