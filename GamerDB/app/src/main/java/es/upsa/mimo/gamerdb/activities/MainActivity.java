@@ -11,6 +11,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.SearchView;
 import java.util.ArrayList;
 import butterknife.BindView;
@@ -35,6 +37,9 @@ public class MainActivity extends AppCompatActivity {
 
     @BindView(R.id.recycler_view_games)
     RecyclerView rvGames;
+
+    @BindView(R.id.progress_bar_pagination)
+    ProgressBar pbPagination;
 
     //MARK: - Private properties
 
@@ -105,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void loadGames() {
 
-        //TODO show loading
+        pbPagination.setVisibility(View.VISIBLE);
         gameAPIClient.getGames(page, Constants.pageSize, new CompletionHandler<GameListResponse>() {
             @Override
             public void success(GameListResponse gameListResponse) {
@@ -116,14 +121,14 @@ public class MainActivity extends AppCompatActivity {
                 }
                 srlGames.setRefreshing(false);
                 page++;
-                //TODO hide loading
+                pbPagination.setVisibility(View.GONE);
             }
 
             @Override
             public void failure(ErrorResponse error) {
 
                 srlGames.setRefreshing(false);
-                //TODO hide loading
+                pbPagination.setVisibility(View.GONE);
             }
         });
     }
