@@ -6,9 +6,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.viewpager.widget.PagerAdapter;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 import java.util.List;
 import es.upsa.mimo.gamerdb.R;
@@ -40,9 +42,21 @@ public class ImageSliderAdapter extends PagerAdapter {
 
         View imageLayout = inflater.inflate(R.layout.image_slider, container, false);
         assert imageLayout != null;
-        final ImageView imageView = (ImageView) imageLayout.findViewById(R.id.image_view);
+        ImageView imageView = (ImageView) imageLayout.findViewById(R.id.image_view);
+        ProgressBar loading = imageLayout.findViewById(R.id.progress_bar_loading);
 
-        Picasso.get().load(images.get(position)).into(imageView);
+        loading.setVisibility(View.VISIBLE);
+        Picasso.get().load(images.get(position)).into(imageView, new Callback() {
+            @Override
+            public void onSuccess() {
+                loading.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onError(Exception e) {
+                loading.setVisibility(View.GONE);
+            }
+        });
         container.addView(imageLayout, 0);
         return imageLayout;
     }
