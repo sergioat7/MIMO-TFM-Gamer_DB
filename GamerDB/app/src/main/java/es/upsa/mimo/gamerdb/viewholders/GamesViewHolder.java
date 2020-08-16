@@ -2,6 +2,7 @@ package es.upsa.mimo.gamerdb.viewholders;
 
 import android.content.Context;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -24,7 +25,7 @@ public class GamesViewHolder extends RecyclerView.ViewHolder {
         this.itemView = itemView;
     }
 
-    public void fillData(GameResponse game, Context context) {
+    public void fillData(GameResponse game, int position, Context context) {
 
         ViewPager vpImages = itemView.findViewById(R.id.view_pager_images);
         TextView tvName = itemView.findViewById(R.id.text_view_name);
@@ -38,6 +39,9 @@ public class GamesViewHolder extends RecyclerView.ViewHolder {
             ScreenshotResponse screenshot = screenshots.get(i);
             images.add(screenshot.getImage());
         }
+
+        ViewGroup.MarginLayoutParams lp = (ViewGroup.MarginLayoutParams) vpImages.getLayoutParams();
+        lp.topMargin += position == 0 ? 100 : 0;
 
         vpImages.setAdapter(new ImageSliderAdapter(images, context));
         tvName.setText(game.getName());

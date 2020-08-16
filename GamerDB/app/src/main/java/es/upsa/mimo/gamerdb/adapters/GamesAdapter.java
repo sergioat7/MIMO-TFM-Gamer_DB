@@ -40,7 +40,7 @@ public class GamesAdapter extends RecyclerView.Adapter<GamesViewHolder> {
     public void onBindViewHolder(@NonNull GamesViewHolder holder, int position) {
 
         GameResponse game = games.get(position);
-        holder.fillData(game, context);
+        holder.fillData(game, position, context);
     }
 
     @Override
