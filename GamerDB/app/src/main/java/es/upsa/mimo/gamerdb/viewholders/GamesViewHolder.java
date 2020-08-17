@@ -41,7 +41,7 @@ public class GamesViewHolder extends RecyclerView.ViewHolder {
         }
 
         ViewGroup.MarginLayoutParams lp = (ViewGroup.MarginLayoutParams) vpImages.getLayoutParams();
-        lp.topMargin += position == 0 ? 100 : 0;
+        lp.topMargin = position == 0 ? 150 : 0;
 
         vpImages.setAdapter(new ImageSliderAdapter(images, context));
         tvName.setText(game.getName());

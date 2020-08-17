@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import java.util.ArrayList;
 import java.util.List;
 import es.upsa.mimo.gamerdb.R;
 import es.upsa.mimo.gamerdb.models.GameResponse;
@@ -25,6 +26,12 @@ public class GamesAdapter extends RecyclerView.Adapter<GamesViewHolder> {
         int position = this.games.size();
         this.games.addAll(games);
         notifyItemInserted(position);
+    }
+
+    public void resetList() {
+
+        this.games = new ArrayList<>();
+        notifyDataSetChanged();
     }
 
     @NonNull

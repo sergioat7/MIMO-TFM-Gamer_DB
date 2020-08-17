@@ -90,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
 
         srlGames.setColorSchemeResources(R.color.colorPrimary);
         srlGames.setProgressBackgroundColorSchemeResource(android.R.color.white);
-        srlGames.setOnRefreshListener(this::loadGames);
+        srlGames.setOnRefreshListener(this::reloadGames);
 
         rvGames.setLayoutManager(new LinearLayoutManager(this));
         rvGames.setAdapter(new GamesAdapter(new ArrayList<>()));
@@ -99,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
 
-                if (!recyclerView.canScrollVertically(1) && newState==RecyclerView.SCROLL_STATE_IDLE) {
+                if (!recyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
                     loadGames();
                 }
             }
@@ -110,7 +110,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void loadGames() {
 
-        pbPagination.setVisibility(View.VISIBLE);
+        if (page > 1) {
+            pbPagination.setVisibility(View.VISIBLE);
+        }
         gameAPIClient.getGames(page, Constants.pageSize, new CompletionHandler<GameListResponse>() {
             @Override
             public void success(GameListResponse gameListResponse) {
@@ -131,6 +133,16 @@ public class MainActivity extends AppCompatActivity {
                 pbPagination.setVisibility(View.GONE);
             }
         });
+    }
+
+    private void reloadGames() {
+
+        page = 1;
+        GamesAdapter adapter = (GamesAdapter) rvGames.getAdapter();
+        if (adapter != null) {
+            adapter.resetList();
+        }
+        loadGames();
     }
 
     private void handleIntent(Intent intent) {
