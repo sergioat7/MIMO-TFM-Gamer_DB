@@ -11,6 +11,7 @@ import com.viewpagerindicator.LinePageIndicator;
 import java.util.ArrayList;
 import java.util.List;
 import es.upsa.mimo.gamerdb.R;
+import es.upsa.mimo.gamerdb.adapters.GamesAdapter;
 import es.upsa.mimo.gamerdb.adapters.ImageSliderAdapter;
 import es.upsa.mimo.gamerdb.models.GameResponse;
 import es.upsa.mimo.gamerdb.models.ScreenshotResponse;
@@ -25,7 +26,7 @@ public class GamesViewHolder extends RecyclerView.ViewHolder {
         this.itemView = itemView;
     }
 
-    public void fillData(GameResponse game, int position, Context context) {
+    public void fillData(GameResponse game, int position, Context context, GamesAdapter.OnItemClickListener onItemClickListener) {
 
         ViewPager vpImages = itemView.findViewById(R.id.view_pager_images);
         TextView tvName = itemView.findViewById(R.id.text_view_name);
@@ -43,7 +44,7 @@ public class GamesViewHolder extends RecyclerView.ViewHolder {
         ViewGroup.MarginLayoutParams lp = (ViewGroup.MarginLayoutParams) vpImages.getLayoutParams();
         lp.topMargin = position == 0 ? 150 : 0;
 
-        vpImages.setAdapter(new ImageSliderAdapter(images, context));
+        vpImages.setAdapter(new ImageSliderAdapter(game.getId(), images, context, onItemClickListener));
         tvName.setText(game.getName());
         tvRating.setText(String.valueOf(game.getRating()));
         indicator.setViewPager(vpImages);

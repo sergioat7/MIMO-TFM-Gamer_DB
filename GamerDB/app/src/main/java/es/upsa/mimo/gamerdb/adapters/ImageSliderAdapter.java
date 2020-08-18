@@ -17,12 +17,16 @@ import es.upsa.mimo.gamerdb.R;
 
 public class ImageSliderAdapter extends PagerAdapter {
 
+    private int gameId;
     private List<String> images;
+    private GamesAdapter.OnItemClickListener onItemClickListener;
     private LayoutInflater inflater;
 
-    public ImageSliderAdapter(List<String> images, Context context) {
+    public ImageSliderAdapter(int gameId, List<String> images, Context context, GamesAdapter.OnItemClickListener onItemClickListener) {
 
+        this.gameId = gameId;
         this.images = images;
+        this.onItemClickListener = onItemClickListener;
         this.inflater = LayoutInflater.from(context);
     }
 
@@ -58,6 +62,11 @@ public class ImageSliderAdapter extends PagerAdapter {
             }
         });
         container.addView(imageLayout, 0);
+
+        imageView.setOnClickListener(v -> {
+            onItemClickListener.onItemClick(gameId);
+        });
+
         return imageLayout;
     }
 

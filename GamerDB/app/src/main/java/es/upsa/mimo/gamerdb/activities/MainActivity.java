@@ -29,7 +29,7 @@ import es.upsa.mimo.gamerdb.network.apiclient.CompletionHandler;
 import es.upsa.mimo.gamerdb.network.apiclient.GameAPIClient;
 import es.upsa.mimo.gamerdb.utils.Constants;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements GamesAdapter.OnItemClickListener {
 
     //MARK: - Public properties
 
@@ -71,6 +71,8 @@ public class MainActivity extends AppCompatActivity {
         handleIntent(intent);
     }
 
+    //MARK: - Public methods
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
@@ -95,6 +97,11 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onItemClick(int gameId) {
+        //TODO go to game detail
+    }
+
     //MARK: - Private functions
 
     private void initializeUI() {
@@ -106,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
         srlGames.setOnRefreshListener(this::reloadGames);
 
         rvGames.setLayoutManager(new LinearLayoutManager(this));
-        rvGames.setAdapter(new GamesAdapter(new ArrayList<>()));
+        rvGames.setAdapter(new GamesAdapter(new ArrayList<>(), this));
         rvGames.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {

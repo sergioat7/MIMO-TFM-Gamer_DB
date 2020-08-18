@@ -15,10 +15,13 @@ import es.upsa.mimo.gamerdb.viewholders.GamesViewHolder;
 public class GamesAdapter extends RecyclerView.Adapter<GamesViewHolder> {
 
     private List<GameResponse> games;
+    private OnItemClickListener onItemClickListener;
     private Context context;
 
-    public GamesAdapter(List<GameResponse> games) {
+    public GamesAdapter(List<GameResponse> games, OnItemClickListener onItemClickListener) {
+
         this.games = games;
+        this.onItemClickListener = onItemClickListener;
     }
 
     public void addGames(List<GameResponse> games) {
@@ -47,11 +50,15 @@ public class GamesAdapter extends RecyclerView.Adapter<GamesViewHolder> {
     public void onBindViewHolder(@NonNull GamesViewHolder holder, int position) {
 
         GameResponse game = games.get(position);
-        holder.fillData(game, position, context);
+        holder.fillData(game, position, context, onItemClickListener);
     }
 
     @Override
     public int getItemCount() {
         return games.size();
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(int gameId);
     }
 }
