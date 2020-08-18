@@ -3,4 +3,5 @@
 
     //Errors
     <string name="error_server">There was an error on getting data. Please, try again</string>
+    <string name="toolbar_search_title">Search</string>
 </resources>

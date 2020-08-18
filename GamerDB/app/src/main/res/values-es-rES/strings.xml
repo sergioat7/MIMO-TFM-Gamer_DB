@@ -2,4 +2,5 @@
 <resources>
     //Errors
     <string name="error_server">Hubo un error al recuperar los datos. Por favor, inténtalo otra vez</string>
+    <string name="toolbar_search_title">Buscar</string>
 </resources>

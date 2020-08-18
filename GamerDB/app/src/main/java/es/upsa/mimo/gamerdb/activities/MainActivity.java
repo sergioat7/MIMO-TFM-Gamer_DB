@@ -9,12 +9,14 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.SearchView;
+import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Objects;
 import butterknife.BindView;
@@ -76,12 +78,7 @@ public class MainActivity extends AppCompatActivity {
 
             menu.clear();
             getMenuInflater().inflate(R.menu.menu_main, menu);
-
-            SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-            SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
-            if (searchManager != null) {
-                searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-            }
+            setupSearchView(menu);
         }
         return true;
     }
@@ -122,6 +119,29 @@ public class MainActivity extends AppCompatActivity {
         });
 
         loadGames();
+    }
+
+    private void setupSearchView(Menu menu) {
+
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
+        if (searchManager != null) {
+            searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+            searchView.setIconified(false);
+            searchView.setIconifiedByDefault(false);
+            searchView.setQueryHint(getResources().getString(R.string.toolbar_search_title));
+        }
+
+        int searchPlateId = searchView.getContext().getResources().getIdentifier("android:id/search_plate", null, null);
+        View searchPlate = searchView.findViewById(searchPlateId);
+        if (searchPlate != null) {
+            int searchTextId = searchPlate.getContext().getResources().getIdentifier("android:id/search_src_text", null, null);
+            TextView searchText = searchPlate.findViewById(searchTextId);
+            if (searchText != null) {
+                searchText.setTextColor(Color.WHITE);
+                searchText.setHintTextColor(Color.WHITE);
+            }
+        }
     }
 
     private void loadGames() {
