@@ -1,6 +1,8 @@
 package es.upsa.mimo.gamerdb.network.apiclient;
 
-public interface CompletionHandler<T, U> {
+import es.upsa.mimo.gamerdb.models.ErrorResponse;
+
+public interface CompletionHandler<T> {
     void success(T t);
-    void failure(U u);
+    void failure(ErrorResponse error);
 }
