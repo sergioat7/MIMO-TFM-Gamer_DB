@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import es.upsa.mimo.gamerdb.models.ErrorResponse;
 import es.upsa.mimo.gamerdb.models.GameListResponse;
+import es.upsa.mimo.gamerdb.models.GameResponse;
 import es.upsa.mimo.gamerdb.network.apiservice.GameAPIService;
 import retrofit2.Call;
 
@@ -16,8 +17,14 @@ public class GameAPIClient {
         Map<String, Integer> params = new HashMap<>();
         params.put("page", page);
         params.put("page_size", pageSize);
-        Call<GameListResponse> request = api.getGames(params);
 
+        Call<GameListResponse> request = api.getGames(params);
         APIClient.sendServer(request,completion);
+    }
+
+    public void getGame(int gameId, CompletionHandler<GameResponse> completion) {
+
+        Call<GameResponse> request = api.getGame(gameId);
+        APIClient.sendServer(request, completion);
     }
 }

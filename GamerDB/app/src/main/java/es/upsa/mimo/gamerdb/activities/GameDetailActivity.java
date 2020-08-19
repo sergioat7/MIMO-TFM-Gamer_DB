@@ -7,6 +7,9 @@ import java.util.Objects;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import es.upsa.mimo.gamerdb.R;
+import es.upsa.mimo.gamerdb.models.ErrorResponse;
+import es.upsa.mimo.gamerdb.models.GameResponse;
+import es.upsa.mimo.gamerdb.network.apiclient.CompletionHandler;
 import es.upsa.mimo.gamerdb.network.apiclient.GameAPIClient;
 import es.upsa.mimo.gamerdb.utils.Constants;
 
@@ -49,5 +52,22 @@ public class GameDetailActivity extends AppCompatActivity {
         gameAPIClient = new GameAPIClient();
 
         //TODO initialize elements
+
+        loadGame();
+    }
+
+    private void loadGame() {
+
+        gameAPIClient.getGame(gameId, new CompletionHandler<GameResponse>() {
+            @Override
+            public void success(GameResponse gameResponse) {
+                //TODO show data
+            }
+
+            @Override
+            public void failure(ErrorResponse error) {
+                //TODO show error and go back
+            }
+        });
     }
 }
