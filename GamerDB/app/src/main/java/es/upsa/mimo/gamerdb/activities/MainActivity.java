@@ -99,7 +99,10 @@ public class MainActivity extends AppCompatActivity implements GamesAdapter.OnIt
 
     @Override
     public void onItemClick(int gameId) {
-        //TODO go to game detail
+
+        Intent intent = new Intent(this, GameDetailActivity.class);
+        intent.putExtra(Constants.gameId, gameId);
+        startActivity(intent);
     }
 
     //MARK: - Private functions

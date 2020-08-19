@@ -34,4 +34,8 @@ public class Constants {
             return null;
         }
     }
+
+    //MARK: - Intent extras
+
+    public static String gameId = "gameId";
 }
