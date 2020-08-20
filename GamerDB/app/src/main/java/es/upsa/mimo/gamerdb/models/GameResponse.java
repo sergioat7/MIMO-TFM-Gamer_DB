@@ -1,5 +1,7 @@
 package es.upsa.mimo.gamerdb.models;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.List;
 
 public class GameResponse {
@@ -7,148 +9,178 @@ public class GameResponse {
     private int id;
     private String slug;
     private String name;
-    private String name_original;
+    @SerializedName("name_original")
+    private String nameOriginal;
+    @SerializedName("description_raw")
     private String description;
     private int metacritic;
     private String released;
     private boolean tba;
     private String updated;
-    private String background_image;
-    private String background_image_additional;
+    @SerializedName("background_image")
+    private String backgroundImage;
+    @SerializedName("background_image_additional")
+    private String backgroundImageAdditional;
     private String website;
     private double rating;
-    private double rating_top;
+    @SerializedName("rating_top")
+    private double ratingTop;
     private List<RatingResponse> ratings;
     private int added;
     private int playtime;
-    private int screenshots_count;
-    private int movies_count;
-    private int creators_count;
-    private int achievements_count;
-    private int parent_achievements_count;
-    private String reddit_url;
-    private String reddit_name;
-    private String reddit_description;
-    private String reddit_logo;
-    private int reddit_count;
-    private int twitch_count;
-    private int youtube_count;
-    private int reviews_text_count;
-    private int ratings_count;
-    private int suggestions_count;
-    private List<String> alternative_names;
-    private String metacritic_url;
-    private int parents_count;
-    private int additions_count;
-    private int game_series_count;
-    private int reviews_count;
-    private String saturated_color;
-    private String dominant_color;
+    @SerializedName("screenshots_count")
+    private int screenshotsCount;
+    @SerializedName("movies_count")
+    private int moviesCount;
+    @SerializedName("creators_count")
+    private int creatorsCount;
+    @SerializedName("achievements_count")
+    private int achievementsCount;
+    @SerializedName("parent_achievements_count")
+    private int parentAchievementsCount;
+    @SerializedName("redditUrl")
+    private String redditUrl;
+    @SerializedName("reddit_name")
+    private String redditName;
+    @SerializedName("reddit_description")
+    private String redditDescription;
+    @SerializedName("reddit_logo")
+    private String redditLogo;
+    @SerializedName("reddit_count")
+    private int redditCount;
+    @SerializedName("twitch_count")
+    private int twitchCount;
+    @SerializedName("youtube_count")
+    private int youtubeCount;
+    @SerializedName("reviews_text_count")
+    private int reviewsTextCount;
+    @SerializedName("ratings_count")
+    private int ratingsCount;
+    @SerializedName("suggestions_count")
+    private int suggestionsCount;
+    @SerializedName("alternative_names")
+    private List<String> alternativeNames;
+    @SerializedName("metacritic_url")
+    private String metacriticUrl;
+    @SerializedName("parents_count")
+    private int parentsCount;
+    @SerializedName("additions_count")
+    private int additionsCount;
+    @SerializedName("game_series_count")
+    private int gameSeriesCount;
+    @SerializedName("reviews_count")
+    private int reviewsCount;
+    @SerializedName("saturated_color")
+    private String saturatedColor;
+    @SerializedName("dominant_color")
+    private String dominantColor;
     private List<PlatformResponse> platforms;
     private List<StoreResponse> stores;
     private List<DeveloperResponse> developers;
     private List<GenreResponse> genres;
     private List<TagResponse> tags;
     private List<PublisherResponse> publishers;
-    private EsrbResponse esrb_rating;
-    private List<ScreenshotResponse> short_screenshots;
+    @SerializedName("esrb_rating")
+    private EsrbResponse esrbRating;
+    @SerializedName("short_screenshots")
+    private List<ScreenshotResponse> shortScreenshots;
 
     public GameResponse(int id,
                         String slug,
                         String name,
-                        String name_original,
+                        String nameOriginal,
                         String description,
                         int metacritic,
                         String released,
                         boolean tba,
                         String updated,
-                        String background_image,
-                        String background_image_additional,
+                        String backgroundImage,
+                        String backgroundImageAdditional,
                         String website,
                         double rating,
-                        double rating_top,
+                        double ratingTop,
                         List<RatingResponse> ratings,
                         int added,
                         int playtime,
-                        int screenshots_count,
-                        int movies_count,
-                        int creators_count,
-                        int achievements_count,
-                        int parent_achievements_count,
-                        String reddit_url,
-                        String reddit_name,
-                        String reddit_description,
-                        String reddit_logo,
-                        int reddit_count,
-                        int twitch_count,
-                        int youtube_count,
-                        int reviews_text_count,
-                        int ratings_count,
-                        int suggestions_count,
-                        List<String> alternative_names,
-                        String metacritic_url,
-                        int parents_count,
-                        int additions_count,
-                        int game_series_count,
-                        int reviews_count,
-                        String saturated_color,
-                        String dominant_color,
+                        int screenshotsCount,
+                        int moviesCount,
+                        int creatorsCount,
+                        int achievementsCount,
+                        int parentAchievementsCount,
+                        String redditUrl,
+                        String redditName,
+                        String redditDescription,
+                        String redditLogo,
+                        int redditCount,
+                        int twitchCount,
+                        int youtubeCount,
+                        int reviewsTextCount,
+                        int ratingsCount,
+                        int suggestionsCount,
+                        List<String> alternativeNames,
+                        String metacriticUrl,
+                        int parentsCount,
+                        int additionsCount,
+                        int gameSeriesCount,
+                        int reviewsCount,
+                        String saturatedColor,
+                        String dominantColor,
                         List<PlatformResponse> platforms,
                         List<StoreResponse> stores,
                         List<DeveloperResponse> developers,
                         List<GenreResponse> genres,
                         List<TagResponse> tags,
                         List<PublisherResponse> publishers,
-                        EsrbResponse esrb_rating,
-                        List<ScreenshotResponse> short_screenshots) {
+                        EsrbResponse esrbRating,
+                        List<ScreenshotResponse> shortScreenshots) {
         this.id = id;
         this.slug = slug;
         this.name = name;
-        this.name_original = name_original;
+        this.nameOriginal = nameOriginal;
         this.description = description;
         this.metacritic = metacritic;
         this.released = released;
         this.tba = tba;
         this.updated = updated;
-        this.background_image = background_image;
-        this.background_image_additional = background_image_additional;
+        this.backgroundImage = backgroundImage;
+        this.backgroundImageAdditional = backgroundImageAdditional;
         this.website = website;
         this.rating = rating;
-        this.rating_top = rating_top;
+        this.ratingTop = ratingTop;
         this.ratings = ratings;
         this.added = added;
         this.playtime = playtime;
-        this.screenshots_count = screenshots_count;
-        this.movies_count = movies_count;
-        this.creators_count = creators_count;
-        this.achievements_count = achievements_count;
-        this.parent_achievements_count = parent_achievements_count;
-        this.reddit_url = reddit_url;
-        this.reddit_name = reddit_name;
-        this.reddit_description = reddit_description;
-        this.reddit_logo = reddit_logo;
-        this.reddit_count = reddit_count;
-        this.twitch_count = twitch_count;
-        this.youtube_count = youtube_count;
-        this.reviews_text_count = reviews_text_count;
-        this.ratings_count = ratings_count;
-        this.suggestions_count = suggestions_count;
-        this.alternative_names = alternative_names;
-        this.metacritic_url = metacritic_url;
-        this.parents_count = parents_count;
-        this.additions_count = additions_count;
-        this.game_series_count = game_series_count;
-        this.reviews_count = reviews_count;
-        this.saturated_color = saturated_color;
-        this.dominant_color = dominant_color;
+        this.screenshotsCount = screenshotsCount;
+        this.moviesCount = moviesCount;
+        this.creatorsCount = creatorsCount;
+        this.achievementsCount = achievementsCount;
+        this.parentAchievementsCount = parentAchievementsCount;
+        this.redditUrl = redditUrl;
+        this.redditName = redditName;
+        this.redditDescription = redditDescription;
+        this.redditLogo = redditLogo;
+        this.redditCount = redditCount;
+        this.twitchCount = twitchCount;
+        this.youtubeCount = youtubeCount;
+        this.reviewsTextCount = reviewsTextCount;
+        this.ratingsCount = ratingsCount;
+        this.suggestionsCount = suggestionsCount;
+        this.alternativeNames = alternativeNames;
+        this.metacriticUrl = metacriticUrl;
+        this.parentsCount = parentsCount;
+        this.additionsCount = additionsCount;
+        this.gameSeriesCount = gameSeriesCount;
+        this.reviewsCount = reviewsCount;
+        this.saturatedColor = saturatedColor;
+        this.dominantColor = dominantColor;
         this.platforms = platforms;
         this.stores = stores;
         this.developers = developers;
         this.genres = genres;
         this.tags = tags;
         this.publishers = publishers;
-        this.esrb_rating = esrb_rating;
-        this.short_screenshots = short_screenshots;
+        this.esrbRating = esrbRating;
+        this.shortScreenshots = shortScreenshots;
     }
 
     public int getId() {
@@ -175,12 +207,12 @@ public class GameResponse {
         this.name = name;
     }
 
-    public String getName_original() {
-        return name_original;
+    public String getNameOriginal() {
+        return nameOriginal;
     }
 
-    public void setName_original(String name_original) {
-        this.name_original = name_original;
+    public void setNameOriginal(String nameOriginal) {
+        this.nameOriginal = nameOriginal;
     }
 
     public String getDescription() {
@@ -223,20 +255,20 @@ public class GameResponse {
         this.updated = updated;
     }
 
-    public String getBackground_image() {
-        return background_image;
+    public String getBackgroundImage() {
+        return backgroundImage;
     }
 
-    public void setBackground_image(String background_image) {
-        this.background_image = background_image;
+    public void setBackgroundImage(String backgroundImage) {
+        this.backgroundImage = backgroundImage;
     }
 
-    public String getBackground_image_additional() {
-        return background_image_additional;
+    public String getBackgroundImageAdditional() {
+        return backgroundImageAdditional;
     }
 
-    public void setBackground_image_additional(String background_image_additional) {
-        this.background_image_additional = background_image_additional;
+    public void setBackgroundImageAdditional(String backgroundImageAdditional) {
+        this.backgroundImageAdditional = backgroundImageAdditional;
     }
 
     public String getWebsite() {
@@ -255,12 +287,12 @@ public class GameResponse {
         this.rating = rating;
     }
 
-    public double getRating_top() {
-        return rating_top;
+    public double getRatingTop() {
+        return ratingTop;
     }
 
-    public void setRating_top(double rating_top) {
-        this.rating_top = rating_top;
+    public void setRatingTop(double ratingTop) {
+        this.ratingTop = ratingTop;
     }
 
     public List<RatingResponse> getRatings() {
@@ -287,188 +319,188 @@ public class GameResponse {
         this.playtime = playtime;
     }
 
-    public int getScreenshots_count() {
-        return screenshots_count;
+    public int getScreenshotsCount() {
+        return screenshotsCount;
     }
 
-    public void setScreenshots_count(int screenshots_count) {
-        this.screenshots_count = screenshots_count;
+    public void setScreenshotsCount(int screenshotsCount) {
+        this.screenshotsCount = screenshotsCount;
     }
 
-    public int getMovies_count() {
-        return movies_count;
+    public int getMoviesCount() {
+        return moviesCount;
     }
 
-    public void setMovies_count(int movies_count) {
-        this.movies_count = movies_count;
+    public void setMoviesCount(int moviesCount) {
+        this.moviesCount = moviesCount;
     }
 
-    public int getCreators_count() {
-        return creators_count;
+    public int getCreatorsCount() {
+        return creatorsCount;
     }
 
-    public void setCreators_count(int creators_count) {
-        this.creators_count = creators_count;
+    public void setCreatorsCount(int creatorsCount) {
+        this.creatorsCount = creatorsCount;
     }
 
-    public int getAchievements_count() {
-        return achievements_count;
+    public int getAchievementsCount() {
+        return achievementsCount;
     }
 
-    public void setAchievements_count(int achievements_count) {
-        this.achievements_count = achievements_count;
+    public void setAchievementsCount(int achievementsCount) {
+        this.achievementsCount = achievementsCount;
     }
 
-    public int getParent_achievements_count() {
-        return parent_achievements_count;
+    public int getParentAchievementsCount() {
+        return parentAchievementsCount;
     }
 
-    public void setParent_achievements_count(int parent_achievements_count) {
-        this.parent_achievements_count = parent_achievements_count;
+    public void setParentAchievementsCount(int parentAchievementsCount) {
+        this.parentAchievementsCount = parentAchievementsCount;
     }
 
-    public String getReddit_url() {
-        return reddit_url;
+    public String getRedditUrl() {
+        return redditUrl;
     }
 
-    public void setReddit_url(String reddit_url) {
-        this.reddit_url = reddit_url;
+    public void setRedditUrl(String redditUrl) {
+        this.redditUrl = redditUrl;
     }
 
-    public String getReddit_name() {
-        return reddit_name;
+    public String getRedditName() {
+        return redditName;
     }
 
-    public void setReddit_name(String reddit_name) {
-        this.reddit_name = reddit_name;
+    public void setRedditName(String redditName) {
+        this.redditName = redditName;
     }
 
-    public String getReddit_description() {
-        return reddit_description;
+    public String getRedditDescription() {
+        return redditDescription;
     }
 
-    public void setReddit_description(String reddit_description) {
-        this.reddit_description = reddit_description;
+    public void setRedditDescription(String redditDescription) {
+        this.redditDescription = redditDescription;
     }
 
-    public String getReddit_logo() {
-        return reddit_logo;
+    public String getRedditLogo() {
+        return redditLogo;
     }
 
-    public void setReddit_logo(String reddit_logo) {
-        this.reddit_logo = reddit_logo;
+    public void setRedditLogo(String redditLogo) {
+        this.redditLogo = redditLogo;
     }
 
-    public int getReddit_count() {
-        return reddit_count;
+    public int getRedditCount() {
+        return redditCount;
     }
 
-    public void setReddit_count(int reddit_count) {
-        this.reddit_count = reddit_count;
+    public void setRedditCount(int redditCount) {
+        this.redditCount = redditCount;
     }
 
-    public int getTwitch_count() {
-        return twitch_count;
+    public int getTwitchCount() {
+        return twitchCount;
     }
 
-    public void setTwitch_count(int twitch_count) {
-        this.twitch_count = twitch_count;
+    public void setTwitchCount(int twitchCount) {
+        this.twitchCount = twitchCount;
     }
 
-    public int getYoutube_count() {
-        return youtube_count;
+    public int getYoutubeCount() {
+        return youtubeCount;
     }
 
-    public void setYoutube_count(int youtube_count) {
-        this.youtube_count = youtube_count;
+    public void setYoutubeCount(int youtubeCount) {
+        this.youtubeCount = youtubeCount;
     }
 
-    public int getReviews_text_count() {
-        return reviews_text_count;
+    public int getReviewsTextCount() {
+        return reviewsTextCount;
     }
 
-    public void setReviews_text_count(int reviews_text_count) {
-        this.reviews_text_count = reviews_text_count;
+    public void setReviewsTextCount(int reviewsTextCount) {
+        this.reviewsTextCount = reviewsTextCount;
     }
 
-    public int getRatings_count() {
-        return ratings_count;
+    public int getRatingsCount() {
+        return ratingsCount;
     }
 
-    public void setRatings_count(int ratings_count) {
-        this.ratings_count = ratings_count;
+    public void setRatingsCount(int ratingsCount) {
+        this.ratingsCount = ratingsCount;
     }
 
-    public int getSuggestions_count() {
-        return suggestions_count;
+    public int getSuggestionsCount() {
+        return suggestionsCount;
     }
 
-    public void setSuggestions_count(int suggestions_count) {
-        this.suggestions_count = suggestions_count;
+    public void setSuggestionsCount(int suggestionsCount) {
+        this.suggestionsCount = suggestionsCount;
     }
 
-    public List<String> getAlternative_names() {
-        return alternative_names;
+    public List<String> getAlternativeNames() {
+        return alternativeNames;
     }
 
-    public void setAlternative_names(List<String> alternative_names) {
-        this.alternative_names = alternative_names;
+    public void setAlternativeNames(List<String> alternativeNames) {
+        this.alternativeNames = alternativeNames;
     }
 
-    public String getMetacritic_url() {
-        return metacritic_url;
+    public String getMetacriticUrl() {
+        return metacriticUrl;
     }
 
-    public void setMetacritic_url(String metacritic_url) {
-        this.metacritic_url = metacritic_url;
+    public void setMetacriticUrl(String metacriticUrl) {
+        this.metacriticUrl = metacriticUrl;
     }
 
-    public int getParents_count() {
-        return parents_count;
+    public int getParentsCount() {
+        return parentsCount;
     }
 
-    public void setParents_count(int parents_count) {
-        this.parents_count = parents_count;
+    public void setParentsCount(int parentsCount) {
+        this.parentsCount = parentsCount;
     }
 
-    public int getAdditions_count() {
-        return additions_count;
+    public int getAdditionsCount() {
+        return additionsCount;
     }
 
-    public void setAdditions_count(int additions_count) {
-        this.additions_count = additions_count;
+    public void setAdditionsCount(int additionsCount) {
+        this.additionsCount = additionsCount;
     }
 
-    public int getGame_series_count() {
-        return game_series_count;
+    public int getGameSeriesCount() {
+        return gameSeriesCount;
     }
 
-    public void setGame_series_count(int game_series_count) {
-        this.game_series_count = game_series_count;
+    public void setGameSeriesCount(int gameSeriesCount) {
+        this.gameSeriesCount = gameSeriesCount;
     }
 
-    public int getReviews_count() {
-        return reviews_count;
+    public int getReviewsCount() {
+        return reviewsCount;
     }
 
-    public void setReviews_count(int reviews_count) {
-        this.reviews_count = reviews_count;
+    public void setReviewsCount(int reviewsCount) {
+        this.reviewsCount = reviewsCount;
     }
 
-    public String getSaturated_color() {
-        return saturated_color;
+    public String getSaturatedColor() {
+        return saturatedColor;
     }
 
-    public void setSaturated_color(String saturated_color) {
-        this.saturated_color = saturated_color;
+    public void setSaturatedColor(String saturatedColor) {
+        this.saturatedColor = saturatedColor;
     }
 
-    public String getDominant_color() {
-        return dominant_color;
+    public String getDominantColor() {
+        return dominantColor;
     }
 
-    public void setDominant_color(String dominant_color) {
-        this.dominant_color = dominant_color;
+    public void setDominantColor(String dominantColor) {
+        this.dominantColor = dominantColor;
     }
 
     public List<PlatformResponse> getPlatforms() {
@@ -519,19 +551,19 @@ public class GameResponse {
         this.publishers = publishers;
     }
 
-    public EsrbResponse getEsrb_rating() {
-        return esrb_rating;
+    public EsrbResponse getEsrbRating() {
+        return esrbRating;
     }
 
-    public void setEsrb_rating(EsrbResponse esrb_rating) {
-        this.esrb_rating = esrb_rating;
+    public void setEsrbRating(EsrbResponse esrbRating) {
+        this.esrbRating = esrbRating;
     }
 
-    public List<ScreenshotResponse> getShort_screenshots() {
-        return short_screenshots;
+    public List<ScreenshotResponse> getShortScreenshots() {
+        return shortScreenshots;
     }
 
-    public void setShort_screenshots(List<ScreenshotResponse> short_screenshots) {
-        this.short_screenshots = short_screenshots;
+    public void setShortScreenshots(List<ScreenshotResponse> shortScreenshots) {
+        this.shortScreenshots = shortScreenshots;
     }
 }

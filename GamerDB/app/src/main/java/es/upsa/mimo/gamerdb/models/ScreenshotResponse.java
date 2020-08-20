@@ -5,7 +5,8 @@ public class ScreenshotResponse {
     private int id;
     private String image;
 
-    public ScreenshotResponse(int id, String image) {
+    public ScreenshotResponse(int id,
+                              String image) {
         this.id = id;
         this.image = image;
     }

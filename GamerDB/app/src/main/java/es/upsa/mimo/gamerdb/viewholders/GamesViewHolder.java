@@ -33,7 +33,7 @@ public class GamesViewHolder extends RecyclerView.ViewHolder {
         TextView tvRating = itemView.findViewById(R.id.text_view_rating);
         LinePageIndicator indicator = itemView.findViewById(R.id.view_pager_indicator);
 
-        List<ScreenshotResponse> screenshots = game.getShort_screenshots();
+        List<ScreenshotResponse> screenshots = game.getShortScreenshots();
         List<String> images = new ArrayList<>();
         for (int i=0; i< screenshots.size(); i++) {
 

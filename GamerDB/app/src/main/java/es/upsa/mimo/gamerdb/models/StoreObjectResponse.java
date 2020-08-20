@@ -1,26 +1,30 @@
 package es.upsa.mimo.gamerdb.models;
 
+import com.google.gson.annotations.SerializedName;
+
 public class StoreObjectResponse {
 
     private int id;
     private String name;
     private String slug;
     private String domain;
-    private int games_count;
-    private String image_background;
+    @SerializedName("games_count")
+    private int gamesCount;
+    @SerializedName("image_background")
+    private String imageBackground;
 
     public StoreObjectResponse(int id,
                                String name,
                                String slug,
                                String domain,
-                               int games_count,
-                               String image_background) {
+                               int gamesCount,
+                               String imageBackground) {
         this.id = id;
         this.name = name;
         this.slug = slug;
         this.domain = domain;
-        this.games_count = games_count;
-        this.image_background = image_background;
+        this.gamesCount = gamesCount;
+        this.imageBackground = imageBackground;
     }
 
     public int getId() {
@@ -55,19 +59,19 @@ public class StoreObjectResponse {
         this.domain = domain;
     }
 
-    public int getGames_count() {
-        return games_count;
+    public int getGamesCount() {
+        return gamesCount;
     }
 
-    public void setGames_count(int games_count) {
-        this.games_count = games_count;
+    public void setGamesCount(int gamesCount) {
+        this.gamesCount = gamesCount;
     }
 
-    public String getImage_background() {
-        return image_background;
+    public String getImageBackground() {
+        return imageBackground;
     }
 
-    public void setImage_background(String image_background) {
-        this.image_background = image_background;
+    public void setImageBackground(String imageBackground) {
+        this.imageBackground = imageBackground;
     }
 }

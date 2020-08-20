@@ -1,16 +1,19 @@
 package es.upsa.mimo.gamerdb.models;
 
+import com.google.gson.annotations.SerializedName;
+
 public class PlatformResponse {
 
     private PlatformObjectResponse platform;
-    private String released_at;
+    @SerializedName("released_at")
+    private String releasedAt;
     private RequirementResponse requirements;
 
     public PlatformResponse(PlatformObjectResponse platform,
-                            String released_at,
+                            String releasedAt,
                             RequirementResponse requirements) {
         this.platform = platform;
-        this.released_at = released_at;
+        this.releasedAt = releasedAt;
         this.requirements = requirements;
     }
 
@@ -22,12 +25,12 @@ public class PlatformResponse {
         this.platform = platform;
     }
 
-    public String getReleased_at() {
-        return released_at;
+    public String getReleasedAt() {
+        return releasedAt;
     }
 
-    public void setReleased_at(String released_at) {
-        this.released_at = released_at;
+    public void setReleasedAt(String releasedAt) {
+        this.releasedAt = releasedAt;
     }
 
     public RequirementResponse getRequirements() {
