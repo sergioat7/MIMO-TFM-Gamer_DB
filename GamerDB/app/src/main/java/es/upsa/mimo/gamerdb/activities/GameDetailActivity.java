@@ -17,7 +17,7 @@ public class GameDetailActivity extends AppCompatActivity {
 
     //MARK: - Public properties
 
-    @BindView(R.id.toolbar)
+    @BindView(R.id.toolbar_game_detail)
     Toolbar toolbar;
 
     //MARK: - Private properties

@@ -7,10 +7,10 @@
     tools:context="es.upsa.mimo.gamerdb.activities.GameDetailActivity">
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
+        android:id="@+id/toolbar_game_detail"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.Toolbar"
+        android:theme="@style/AppTheme.Toolbar.Detail"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
