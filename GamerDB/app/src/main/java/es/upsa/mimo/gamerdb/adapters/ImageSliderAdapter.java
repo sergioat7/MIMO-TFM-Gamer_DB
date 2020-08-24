@@ -46,7 +46,7 @@ public class ImageSliderAdapter extends PagerAdapter {
 
         View imageLayout = inflater.inflate(R.layout.image_slider, container, false);
         assert imageLayout != null;
-        ImageView imageView = (ImageView) imageLayout.findViewById(R.id.image_view);
+        ImageView imageView = imageLayout.findViewById(R.id.image_view);
         ProgressBar loading = imageLayout.findViewById(R.id.progress_bar_loading);
 
         loading.setVisibility(View.VISIBLE);

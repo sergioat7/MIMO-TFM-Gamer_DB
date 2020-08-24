@@ -9,6 +9,12 @@ public class Constants {
     // MARK: - Retrofit constants
 
     public static String baseEndpoint = "https://api.rawg.io/api/";
+    public static int connectTimeout = 60;
+    public static int readTimeout = 30;
+    public static int writeTimeout = 15;
+    public static String pageParam = "page";
+    public static String pageSizeParam = "page_size";
+    public static int firstPage = 1;
     public static int pageSize = 20;
 
     // MARK: Date format
@@ -38,6 +44,11 @@ public class Constants {
     //MARK: - Intent extras
 
     public static String gameId = "gameId";
+
+    //MARK: - Game list
+
+    public static int marginList = 150;
+    public static int noMarginList = 0;
 
     //MARK: - Game detail
 

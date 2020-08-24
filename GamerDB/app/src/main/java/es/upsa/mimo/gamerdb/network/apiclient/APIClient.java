@@ -27,9 +27,9 @@ public class APIClient {
 
     private static OkHttpClient getOkHttpClient() {
         return new OkHttpClient.Builder()
-                .connectTimeout(1, TimeUnit.MINUTES)
-                .readTimeout(30, TimeUnit.SECONDS)
-                .writeTimeout(15, TimeUnit.SECONDS)
+                .connectTimeout(Constants.connectTimeout, TimeUnit.SECONDS)
+                .readTimeout(Constants.readTimeout, TimeUnit.SECONDS)
+                .writeTimeout(Constants.writeTimeout, TimeUnit.SECONDS)
                 .build();
     }
 

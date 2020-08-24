@@ -175,7 +175,7 @@ public class GameDetailActivity extends AppCompatActivity {
                 String tagsText = "";
                 if (tags != null) {
                     for (int i = 0; i < tags.size(); i++) {
-                        
+
                         tagsText += tags.get(i).getName();
                         tagsText += ", ";
                     }

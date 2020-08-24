@@ -88,7 +88,7 @@
                     android:layout_weight="1"
                     style="@style/GameDetailButtons.Left"
                     android:drawableStart="@drawable/ic_play_circle_outline_white_24dp"
-                    android:text="Watch video" />
+                    android:text="@string/watch_video_title" />
 
                 <Button
                     android:id="@+id/button_view_images"
@@ -97,7 +97,7 @@
                     android:layout_weight="1"
                     style="@style/GameDetailButtons.Right"
                     android:drawableStart="@drawable/ic_image_white_24dp"
-                    android:text="View images" />
+                    android:text="@string/view_images_button" />
             </LinearLayout>
 
             <TextView
@@ -116,7 +116,7 @@
                 android:layout_height="wrap_content"
                 style="@style/GameDetailDescriptionButton"
                 android:drawableEnd="@drawable/ic_keyboard_arrow_right_white_24dp"
-                android:text="Read more"
+                android:text="@string/read_more_button"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
@@ -137,14 +137,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     style="@style/GameDetailInfo.Title.Left"
-                    android:text="Platforms" />
+                    android:text="@string/platforms_title" />
 
                 <TextView
                     android:id="@+id/text_view_released_date_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     style="@style/GameDetailInfo.Title.Right"
-                    android:text="Released date" />
+                    android:text="@string/released_date_title" />
 
             </LinearLayout>
 
@@ -184,14 +184,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     style="@style/GameDetailInfo.Title.Left"
-                    android:text="Genres" />
+                    android:text="@string/genres_title" />
 
                 <TextView
                     android:id="@+id/text_view_age_rating_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     style="@style/GameDetailInfo.Title.Right"
-                    android:text="Age rating" />
+                    android:text="@string/age_rating_title" />
             </LinearLayout>
 
             <LinearLayout
@@ -230,14 +230,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     style="@style/GameDetailInfo.Title.Left"
-                    android:text="Developer" />
+                    android:text="@string/developer_title" />
 
                 <TextView
                     android:id="@+id/text_view_publisher_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     style="@style/GameDetailInfo.Title.Right"
-                    android:text="Publisher" />
+                    android:text="@string/publisher_title" />
             </LinearLayout>
 
             <LinearLayout
@@ -267,7 +267,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 style="@style/GameDetailInfo.Title"
-                android:text="Website"
+                android:text="@string/website_title"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
@@ -289,7 +289,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 style="@style/GameDetailInfo.Title"
-                android:text="Where to buy"
+                android:text="@string/where_to_buy_title"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
@@ -300,7 +300,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 style="@style/GameDetailInfo.Title"
-                android:text="Tags"
+                android:text="@string/tags_title"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"

@@ -3,6 +3,7 @@ package es.upsa.mimo.gamerdb.activities;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -48,7 +49,7 @@ public class MainActivity extends AppCompatActivity implements GamesAdapter.OnIt
     //MARK: - Private properties
 
     private GameAPIClient gameAPIClient;
-    private int page = 1;
+    private int page = Constants.firstPage;
 
     //MARK: - Lifecycle methods
 
@@ -82,6 +83,7 @@ public class MainActivity extends AppCompatActivity implements GamesAdapter.OnIt
             getMenuInflater().inflate(R.menu.menu_main, menu);
             setupSearchView(menu);
         }
+
         return true;
     }
 
@@ -109,8 +111,6 @@ public class MainActivity extends AppCompatActivity implements GamesAdapter.OnIt
 
     private void initializeUI() {
 
-        gameAPIClient = new GameAPIClient();
-
         srlGames.setColorSchemeResources(R.color.colorPrimary);
         srlGames.setProgressBackgroundColorSchemeResource(android.R.color.white);
         srlGames.setOnRefreshListener(this::reloadGames);
@@ -128,6 +128,7 @@ public class MainActivity extends AppCompatActivity implements GamesAdapter.OnIt
             }
         });
 
+        gameAPIClient = new GameAPIClient();
         loadGames();
     }
 
@@ -145,11 +146,13 @@ public class MainActivity extends AppCompatActivity implements GamesAdapter.OnIt
         int searchPlateId = searchView.getContext().getResources().getIdentifier("android:id/search_plate", null, null);
         View searchPlate = searchView.findViewById(searchPlateId);
         if (searchPlate != null) {
+
             int searchTextId = searchPlate.getContext().getResources().getIdentifier("android:id/search_src_text", null, null);
             TextView searchText = searchPlate.findViewById(searchTextId);
             if (searchText != null) {
-                searchText.setTextColor(Color.WHITE);
-                searchText.setHintTextColor(Color.WHITE);
+
+                searchText.setTextColor(ContextCompat.getColor(this, R.color.colorSecondary));
+                searchText.setHintTextColor(ContextCompat.getColor(this, R.color.colorSecondary));
             }
         }
     }
@@ -159,6 +162,7 @@ public class MainActivity extends AppCompatActivity implements GamesAdapter.OnIt
         if (page > 1) {
             pbPagination.setVisibility(View.VISIBLE);
         }
+
         gameAPIClient.getGames(page, Constants.pageSize, new CompletionHandler<GameListResponse>() {
             @Override
             public void success(GameListResponse gameListResponse) {
@@ -183,7 +187,7 @@ public class MainActivity extends AppCompatActivity implements GamesAdapter.OnIt
 
     private void reloadGames() {
 
-        page = 1;
+        page = Constants.firstPage;
         GamesAdapter adapter = (GamesAdapter) rvGames.getAdapter();
         if (adapter != null) {
             adapter.resetList();

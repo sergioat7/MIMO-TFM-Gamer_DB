@@ -4,4 +4,16 @@
     //Errors
     <string name="error_server">There was an error on getting data. Please, try again</string>
     <string name="toolbar_search_title">Search</string>
+    <string name="watch_video_title">Watch video</string>
+    <string name="view_images_button">View images</string>
+    <string name="read_more_button">Read more</string>
+    <string name="platforms_title">Platforms</string>
+    <string name="released_date_title">Released date</string>
+    <string name="genres_title">Genres</string>
+    <string name="age_rating_title">Age rating</string>
+    <string name="developer_title">Developer</string>
+    <string name="publisher_title">Publisher</string>
+    <string name="website_title">Website</string>
+    <string name="where_to_buy_title">Where to buy</string>
+    <string name="tags_title">Tags</string>
 </resources>

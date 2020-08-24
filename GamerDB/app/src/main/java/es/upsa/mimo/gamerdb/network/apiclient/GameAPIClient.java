@@ -6,6 +6,7 @@ import es.upsa.mimo.gamerdb.models.ErrorResponse;
 import es.upsa.mimo.gamerdb.models.GameListResponse;
 import es.upsa.mimo.gamerdb.models.GameResponse;
 import es.upsa.mimo.gamerdb.network.apiservice.GameAPIService;
+import es.upsa.mimo.gamerdb.utils.Constants;
 import retrofit2.Call;
 
 public class GameAPIClient {
@@ -15,8 +16,8 @@ public class GameAPIClient {
     public void getGames(int page, int pageSize, CompletionHandler<GameListResponse> completion) {
 
         Map<String, Integer> params = new HashMap<>();
-        params.put("page", page);
-        params.put("page_size", pageSize);
+        params.put(Constants.pageParam, page);
+        params.put(Constants.pageSizeParam, pageSize);
 
         Call<GameListResponse> request = api.getGames(params);
         APIClient.sendServer(request,completion);

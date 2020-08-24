@@ -15,6 +15,7 @@ import es.upsa.mimo.gamerdb.adapters.GamesAdapter;
 import es.upsa.mimo.gamerdb.adapters.ImageSliderAdapter;
 import es.upsa.mimo.gamerdb.models.GameResponse;
 import es.upsa.mimo.gamerdb.models.ScreenshotResponse;
+import es.upsa.mimo.gamerdb.utils.Constants;
 
 public class GamesViewHolder extends RecyclerView.ViewHolder {
 
@@ -42,9 +43,16 @@ public class GamesViewHolder extends RecyclerView.ViewHolder {
         }
 
         ViewGroup.MarginLayoutParams lp = (ViewGroup.MarginLayoutParams) vpImages.getLayoutParams();
-        lp.topMargin = position == 0 ? 150 : 0;
+        lp.topMargin = position == 0 ? Constants.marginList : Constants.noMarginList;
 
-        vpImages.setAdapter(new ImageSliderAdapter(game.getId(), images, context, onItemClickListener));
+        vpImages.setAdapter(
+                new ImageSliderAdapter(
+                        game.getId(),
+                        images,
+                        context,
+                        onItemClickListener
+                )
+        );
         tvName.setText(game.getName());
         tvRating.setText(String.valueOf(game.getRating()));
         indicator.setViewPager(vpImages);
