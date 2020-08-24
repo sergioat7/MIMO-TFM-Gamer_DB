@@ -38,4 +38,9 @@ public class Constants {
     //MARK: - Intent extras
 
     public static String gameId = "gameId";
+
+    //MARK: - Game detail
+
+    public static int maxLines = Integer.MAX_VALUE;
+    public static int minLines = 7;
 }

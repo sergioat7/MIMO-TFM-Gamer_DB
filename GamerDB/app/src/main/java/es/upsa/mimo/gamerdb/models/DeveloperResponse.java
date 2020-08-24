@@ -2,7 +2,7 @@ package es.upsa.mimo.gamerdb.models;
 
 import com.google.gson.annotations.SerializedName;
 
-class DeveloperResponse {
+public class DeveloperResponse {
 
     private int id;
     private String name;

@@ -1,10 +1,324 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="es.upsa.mimo.gamerdb.activities.GameDetailActivity">
+
+    <ImageView
+        android:id="@+id/image_view_game"
+        android:layout_width="0dp"
+        android:layout_height="250dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/colorPrimarySemiTransparent"
+        app:layout_constraintBottom_toBottomOf="@id/image_view_game"
+        app:layout_constraintEnd_toEndOf="@id/image_view_game"
+        app:layout_constraintStart_toStartOf="@id/image_view_game"
+        app:layout_constraintTop_toTopOf="@id/image_view_game" />
+
+    <ScrollView
+        android:id="@+id/scroll_view_games"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="230dp"
+        android:background="@drawable/bordered_scroll_view"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="15dp" >
+
+            <TextView
+                android:id="@+id/text_view_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/GameDetailName"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/image_view_rating"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                app:layout_constraintBottom_toBottomOf="@+id/text_view_rating"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/text_view_rating"
+                app:srcCompat="@drawable/ic_star_white_24dp" />
+
+            <TextView
+                android:id="@+id/text_view_rating"
+                style="@style/GameDetailRating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/image_view_rating"
+                app:layout_constraintTop_toBottomOf="@id/text_view_name" />
+
+            <LinearLayout
+                android:id="@+id/linear_layout_buttons"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/text_view_rating">
+
+                <Button
+                    android:id="@+id/button_watch_video"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    style="@style/GameDetailButtons.Left"
+                    android:drawableStart="@drawable/ic_play_circle_outline_white_24dp"
+                    android:text="Watch video" />
+
+                <Button
+                    android:id="@+id/button_view_images"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    style="@style/GameDetailButtons.Right"
+                    android:drawableStart="@drawable/ic_image_white_24dp"
+                    android:text="View images" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/text_view_description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/GameDetailDescription"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/linear_layout_buttons" />
+
+            <Button
+                android:id="@+id/button_show_more_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/GameDetailDescriptionButton"
+                android:drawableEnd="@drawable/ic_keyboard_arrow_right_white_24dp"
+                android:text="Read more"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/text_view_description" />
+
+            <LinearLayout
+                android:id="@+id/linear_layout_titles_1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/button_show_more_text">
+
+                <TextView
+                    android:id="@+id/text_view_platforms_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/GameDetailInfo.Title.Left"
+                    android:text="Platforms" />
+
+                <TextView
+                    android:id="@+id/text_view_released_date_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/GameDetailInfo.Title.Right"
+                    android:text="Released date" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linear_layout_values_1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/linear_layout_titles_1">
+
+                <TextView
+                    android:id="@+id/text_view_platforms"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/GameDetailInfo.Value.Left" />
+
+                <TextView
+                    android:id="@+id/text_view_released_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/GameDetailInfo.Value.Right" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linear_layout_titles_2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/linear_layout_values_1">
+
+                <TextView
+                    android:id="@+id/text_view_genres_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/GameDetailInfo.Title.Left"
+                    android:text="Genres" />
+
+                <TextView
+                    android:id="@+id/text_view_age_rating_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/GameDetailInfo.Title.Right"
+                    android:text="Age rating" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linear_layout_values_2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/linear_layout_titles_2">
+
+                <TextView
+                    android:id="@+id/text_view_genres"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/GameDetailInfo.Value.Left" />
+
+                <TextView
+                    android:id="@+id/text_view_age_rating"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/GameDetailInfo.Value.Right" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linear_layout_titles_3"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/linear_layout_values_2">
+
+                <TextView
+                    android:id="@+id/text_view_developer_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/GameDetailInfo.Title.Left"
+                    android:text="Developer" />
+
+                <TextView
+                    android:id="@+id/text_view_publisher_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/GameDetailInfo.Title.Right"
+                    android:text="Publisher" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linear_layout_values_3"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/linear_layout_titles_3">
+
+                <TextView
+                    android:id="@+id/text_view_developer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/GameDetailInfo.Value.Left" />
+
+                <TextView
+                    android:id="@+id/text_view_publisher"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/GameDetailInfo.Value.Right" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/text_view_website_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/GameDetailInfo.Title"
+                android:text="Website"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/linear_layout_values_3" />
+
+            <TextView
+                android:id="@+id/text_view_website"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/GameDetailInfo.Value"
+                android:autoLink="web"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/text_view_website_title" />
+
+            <TextView
+                android:id="@+id/text_view_stores_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/GameDetailInfo.Title"
+                android:text="Where to buy"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/text_view_website" />
+
+            <TextView
+                android:id="@+id/text_view_tags_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/GameDetailInfo.Title"
+                android:text="Tags"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/text_view_stores_title" />
+
+            <TextView
+                android:id="@+id/text_view_tags"
+                style="@style/GameDetailInfo.Value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/text_view_tags_title"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar_game_detail"

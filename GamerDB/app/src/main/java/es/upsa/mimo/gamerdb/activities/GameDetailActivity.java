@@ -3,12 +3,24 @@ package es.upsa.mimo.gamerdb.activities;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.ScrollView;
+import android.widget.TextView;
+import com.squareup.picasso.Picasso;
+import java.util.List;
 import java.util.Objects;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import es.upsa.mimo.gamerdb.R;
+import es.upsa.mimo.gamerdb.models.DeveloperResponse;
 import es.upsa.mimo.gamerdb.models.ErrorResponse;
 import es.upsa.mimo.gamerdb.models.GameResponse;
+import es.upsa.mimo.gamerdb.models.GenreResponse;
+import es.upsa.mimo.gamerdb.models.PlatformResponse;
+import es.upsa.mimo.gamerdb.models.PublisherResponse;
+import es.upsa.mimo.gamerdb.models.TagResponse;
 import es.upsa.mimo.gamerdb.network.apiclient.CompletionHandler;
 import es.upsa.mimo.gamerdb.network.apiclient.GameAPIClient;
 import es.upsa.mimo.gamerdb.utils.Constants;
@@ -19,6 +31,38 @@ public class GameDetailActivity extends AppCompatActivity {
 
     @BindView(R.id.toolbar_game_detail)
     Toolbar toolbar;
+    @BindView(R.id.image_view_game)
+    ImageView ivGame;
+    @BindView(R.id.scroll_view_games)
+    ScrollView svGames;
+    @BindView(R.id.text_view_name)
+    TextView tvName;
+    @BindView(R.id.text_view_rating)
+    TextView tvRating;
+    @BindView(R.id.button_watch_video)
+    Button btWatchVideo;
+    @BindView(R.id.button_view_images)
+    Button btViewImages;
+    @BindView(R.id.text_view_description)
+    TextView tvDescription;
+    @BindView(R.id.button_show_more_text)
+    Button btShowMoreText;
+    @BindView(R.id.text_view_platforms)
+    TextView tvPlatforms;
+    @BindView(R.id.text_view_released_date)
+    TextView tvReleaseDate;
+    @BindView(R.id.text_view_genres)
+    TextView tvGenres;
+    @BindView(R.id.text_view_age_rating)
+    TextView tvAgeRating;
+    @BindView(R.id.text_view_developer)
+    TextView tvDeveloper;
+    @BindView(R.id.text_view_publisher)
+    TextView tvPublisher;
+    @BindView(R.id.text_view_website)
+    TextView tvWebsite;
+    @BindView(R.id.text_view_tags)
+    TextView tvTags;
 
     //MARK: - Private properties
 
@@ -49,10 +93,21 @@ public class GameDetailActivity extends AppCompatActivity {
 
     private void initializeUI() {
 
+        btWatchVideo.setOnClickListener(v -> {
+            //TODO set action
+        });
+
+        btViewImages.setOnClickListener(v -> {
+            //TODO set action
+        });
+
+        btShowMoreText.setOnClickListener(v -> {
+
+            tvDescription.setMaxLines(Constants.maxLines);
+            btShowMoreText.setVisibility(View.GONE);
+        });
+
         gameAPIClient = new GameAPIClient();
-
-        //TODO initialize elements
-
         loadGame();
     }
 
@@ -61,7 +116,72 @@ public class GameDetailActivity extends AppCompatActivity {
         gameAPIClient.getGame(gameId, new CompletionHandler<GameResponse>() {
             @Override
             public void success(GameResponse gameResponse) {
-                //TODO show data
+
+                Picasso.get().load(gameResponse.getBackgroundImage()).into(ivGame);
+                tvName.setText(gameResponse.getName());
+                tvRating.setText(String.valueOf(gameResponse.getRating()));
+                tvDescription.setText(gameResponse.getDescription());
+                List<PlatformResponse> platforms = gameResponse.getPlatforms();
+                String platformsText = "";
+                if (platforms != null) {
+                    for (int i = 0; i < platforms.size(); i++) {
+
+                        platformsText += platforms.get(i).getPlatform().getName();
+                        platformsText += ", ";
+                    }
+                    platformsText = platformsText.isEmpty() ? "" : platformsText.substring(0, platformsText.length() - 2);
+                }
+                tvPlatforms.setText(platformsText);
+                tvReleaseDate.setText(gameResponse.getReleased());
+                List<GenreResponse> genres = gameResponse.getGenres();
+                String genresText = "";
+                if (genres != null) {
+                    for (int i = 0; i < genres.size(); i++) {
+
+                        genresText += genres.get(i).getName();
+                        genresText += ", ";
+                    }
+                    genresText = genresText.isEmpty() ? "" : genresText.substring(0, genresText.length() - 2);
+                }
+                tvGenres.setText(genresText);
+                if (gameResponse.getEsrbRating() != null) {
+                    tvAgeRating.setText(gameResponse.getEsrbRating().getName());
+                }
+                List<DeveloperResponse> developers = gameResponse.getDevelopers();
+                String developersText = "";
+                if (developers != null) {
+                    for (int i = 0; i < developers.size(); i++) {
+
+                        developersText += developers.get(i).getName();
+                        developersText += ", ";
+                    }
+                    developersText = developersText.isEmpty() ? "" : developersText.substring(0, developersText.length() - 2);
+                }
+                tvDeveloper.setText(developersText);
+                List<PublisherResponse> publishers = gameResponse.getPublishers();
+                String publishersText = "";
+                if (publishers != null) {
+                    for (int i = 0; i < publishers.size(); i++) {
+
+                        publishersText += publishers.get(i).getName();
+                        publishersText += ", ";
+                    }
+                    publishersText = publishersText.isEmpty() ? "" : publishersText.substring(0, publishersText.length() - 2);
+                }
+                tvPublisher.setText(publishersText);
+                tvWebsite.setText(gameResponse.getWebsite());
+                //TODO show stores
+                List<TagResponse> tags = gameResponse.getTags();
+                String tagsText = "";
+                if (tags != null) {
+                    for (int i = 0; i < tags.size(); i++) {
+                        
+                        tagsText += tags.get(i).getName();
+                        tagsText += ", ";
+                    }
+                    tagsText = tagsText.isEmpty() ? "" : tagsText.substring(0, tagsText.length() - 2);
+                }
+                tvTags.setText(tagsText);
             }
 
             @Override
