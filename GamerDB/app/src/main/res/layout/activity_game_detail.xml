@@ -10,7 +10,7 @@
     <ImageView
         android:id="@+id/image_view_game"
         android:layout_width="0dp"
-        android:layout_height="250dp"
+        android:layout_height="@dimen/view_pager_height"
         android:scaleType="centerCrop"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -29,7 +29,7 @@
         android:id="@+id/scroll_view_games"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="230dp"
+        android:layout_marginTop="@dimen/game_detail_scroll_view_margin_top"
         android:background="@drawable/bordered_scroll_view"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -39,7 +39,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="15dp" >
+            android:padding="@dimen/game_detail_padding" >
 
             <TextView
                 android:id="@+id/text_view_name"
@@ -54,7 +54,7 @@
             <ImageView
                 android:id="@+id/image_view_rating"
                 android:layout_width="wrap_content"
-                android:layout_height="30dp"
+                android:layout_height="@dimen/rating_image_size"
                 app:layout_constraintBottom_toBottomOf="@+id/text_view_rating"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/text_view_rating"
@@ -65,7 +65,7 @@
                 style="@style/GameDetailRating"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
+                android:layout_marginStart="@dimen/rating_image_margin"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toEndOf="@+id/image_view_rating"
@@ -75,7 +75,7 @@
                 android:id="@+id/linear_layout_buttons"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="@dimen/app_margin"
                 android:orientation="horizontal"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -126,7 +126,7 @@
                 android:id="@+id/linear_layout_titles_1"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="@dimen/app_margin"
                 android:orientation="horizontal"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

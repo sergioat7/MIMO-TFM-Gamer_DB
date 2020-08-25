@@ -8,7 +8,7 @@
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/view_pager_images"
         android:layout_width="0dp"
-        android:layout_height="250dp"
+        android:layout_height="@dimen/view_pager_height"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -16,8 +16,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
+        android:layout_marginStart="@dimen/app_margin"
+        android:layout_marginEnd="@dimen/app_margin"
         app:layout_constraintBottom_toBottomOf="@+id/view_pager_images"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -27,13 +27,7 @@
             android:id="@+id/text_view_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginBottom="20dp"
-            android:fontFamily="@font/roboto_bold"
-            android:textAllCaps="true"
-            android:textColor="@color/textPrimary"
-            android:textSize="18sp"
+            style="@style/GameCellName"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/image_view_rating"
             app:layout_constraintStart_toStartOf="parent" />
@@ -41,8 +35,8 @@
         <ImageView
             android:id="@+id/image_view_rating"
             android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            android:layout_marginEnd="5dp"
+            android:layout_height="@dimen/rating_image_size"
+            android:layout_marginEnd="@dimen/rating_image_margin"
             app:layout_constraintBottom_toBottomOf="@+id/text_view_name"
             app:layout_constraintEnd_toStartOf="@+id/text_view_rating"
             app:layout_constraintStart_toEndOf="@+id/text_view_name"
@@ -53,10 +47,7 @@
             android:id="@+id/text_view_rating"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="10dp"
-            android:fontFamily="@font/roboto_bold"
-            android:textColor="@color/textPrimary"
-            android:textSize="18sp"
+            style="@style/GameCellRating"
             app:layout_constraintBottom_toBottomOf="@+id/text_view_name"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/text_view_name" />
@@ -64,7 +55,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="0dp"
-        android:layout_height="30dp"
+        android:layout_height="@dimen/game_images_indicator_height"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -74,13 +65,10 @@
             android:id="@+id/view_pager_indicator"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            style="@style/LinePageIndicator"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:lineWidth="10dp"
-            app:strokeWidth="5dp"
-            app:selectedColor="@color/buttonPrimary"
-            app:unselectedColor="@color/buttonSecondary" />
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

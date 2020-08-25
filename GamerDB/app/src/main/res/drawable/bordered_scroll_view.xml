@@ -3,7 +3,7 @@
     android:shape="rectangle">
 
     <corners
-        android:topLeftRadius="20dp"
-        android:topRightRadius="20dp"/>
+        android:topLeftRadius="@dimen/bordered_scroll_view"
+        android:topRightRadius="@dimen/bordered_scroll_view"/>
     <solid android:color="@color/colorPrimary"/>
 </shape>

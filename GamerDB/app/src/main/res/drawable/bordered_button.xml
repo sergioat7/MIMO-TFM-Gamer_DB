@@ -3,9 +3,9 @@
     android:shape="rectangle">
 
     <corners
-        android:topLeftRadius="5dp"
-        android:topRightRadius="5dp"
-        android:bottomLeftRadius="5dp"
-        android:bottomRightRadius="5dp"/>
+        android:topLeftRadius="@dimen/bordered_button_corners"
+        android:topRightRadius="@dimen/bordered_button_corners"
+        android:bottomLeftRadius="@dimen/bordered_button_corners"
+        android:bottomRightRadius="@dimen/bordered_button_corners"/>
     <solid android:color="@color/buttonPrimary"/>
 </shape>
