@@ -8,12 +8,14 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 import java.util.List;
 import java.util.Objects;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import es.upsa.mimo.gamerdb.R;
+import es.upsa.mimo.gamerdb.customviews.ImageLoading;
 import es.upsa.mimo.gamerdb.models.DeveloperResponse;
 import es.upsa.mimo.gamerdb.models.ErrorResponse;
 import es.upsa.mimo.gamerdb.models.GameResponse;
@@ -33,6 +35,8 @@ public class GameDetailActivity extends AppCompatActivity {
     Toolbar toolbar;
     @BindView(R.id.image_view_game)
     ImageView ivGame;
+    @BindView(R.id.image_loading)
+    ImageLoading imageLoading;
     @BindView(R.id.scroll_view_games)
     ScrollView svGames;
     @BindView(R.id.text_view_name)
@@ -113,11 +117,22 @@ public class GameDetailActivity extends AppCompatActivity {
 
     private void loadGame() {
 
+        imageLoading.setVisibility(View.VISIBLE);
         gameAPIClient.getGame(gameId, new CompletionHandler<GameResponse>() {
             @Override
             public void success(GameResponse gameResponse) {
 
-                Picasso.get().load(gameResponse.getBackgroundImage()).into(ivGame);
+                Picasso.get().load(gameResponse.getBackgroundImage()).into(ivGame, new Callback() {
+                    @Override
+                    public void onSuccess() {
+                        imageLoading.setVisibility(View.GONE);
+                    }
+
+                    @Override
+                    public void onError(Exception e) {
+                        imageLoading.setVisibility(View.GONE);
+                    }
+                });
                 tvName.setText(gameResponse.getName());
                 tvRating.setText(String.valueOf(gameResponse.getRating()));
                 tvDescription.setText(gameResponse.getDescription());

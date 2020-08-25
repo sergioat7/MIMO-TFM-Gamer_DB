@@ -16,6 +16,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <es.upsa.mimo.gamerdb.customviews.ImageLoading
+        android:id="@+id/image_loading"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:loading_color="@color/buttonPrimary"
+        app:text_color="@color/textTertiary"
+        app:layout_constraintTop_toTopOf="@+id/image_view_game"
+        app:layout_constraintBottom_toBottomOf="@+id/image_view_game"
+        app:layout_constraintStart_toStartOf="@+id/image_view_game"
+        app:layout_constraintEnd_toEndOf="@+id/image_view_game" />
+
     <View
         android:layout_width="0dp"
         android:layout_height="0dp"

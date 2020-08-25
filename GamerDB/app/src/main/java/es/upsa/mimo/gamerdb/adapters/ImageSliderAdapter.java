@@ -14,6 +14,7 @@ import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 import java.util.List;
 import es.upsa.mimo.gamerdb.R;
+import es.upsa.mimo.gamerdb.customviews.ImageLoading;
 
 public class ImageSliderAdapter extends PagerAdapter {
 
@@ -47,7 +48,7 @@ public class ImageSliderAdapter extends PagerAdapter {
         View imageLayout = inflater.inflate(R.layout.image_slider, container, false);
         assert imageLayout != null;
         ImageView imageView = imageLayout.findViewById(R.id.image_view);
-        ProgressBar loading = imageLayout.findViewById(R.id.progress_bar_loading);
+        ImageLoading loading = imageLayout.findViewById(R.id.image_loading);
 
         loading.setVisibility(View.VISIBLE);
         Picasso.get().load(images.get(position)).into(imageView, new Callback() {

@@ -6,6 +6,7 @@
     <dimen name="bordered_scroll_view">20dp</dimen>
     <dimen name="image_slider_margin">10dp</dimen>
     <dimen name="image_progress_bar">30dp</dimen>
+    <dimen name="image_progress_bar_text_margin_top">10dp</dimen>
     <dimen name="view_pager_height">250dp</dimen>
     <dimen name="app_margin">20dp</dimen>
     <dimen name="game_cell_name_margin">10dp</dimen>

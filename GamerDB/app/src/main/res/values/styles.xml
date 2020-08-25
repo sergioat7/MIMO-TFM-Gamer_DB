@@ -43,10 +43,9 @@
         <item name="android:scaleType">centerCrop</item>
     </style>
 
-    <style name="ImageProgressBar">
-        <item name="android:layout_gravity">center</item>
-        <item name="android:indeterminate">true</item>
-        <item name="android:indeterminateTint">@color/buttonPrimary</item>
+    <style name="ImageLoadingText">
+        <item name="android:layout_marginTop">@dimen/image_progress_bar_text_margin_top</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
     </style>
 
     <style name="GameCellName">
