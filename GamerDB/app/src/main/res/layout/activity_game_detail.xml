@@ -20,7 +20,7 @@
         android:id="@+id/image_loading"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:loading_color="@color/buttonPrimary"
+        app:loading_color="@color/colorSecondary"
         app:text_color="@color/textTertiary"
         app:layout_constraintTop_toTopOf="@+id/image_view_game"
         app:layout_constraintBottom_toBottomOf="@+id/image_view_game"
