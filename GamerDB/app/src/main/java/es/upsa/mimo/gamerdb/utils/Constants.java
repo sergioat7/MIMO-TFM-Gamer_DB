@@ -16,6 +16,7 @@ public class Constants {
     public static String pageSizeParam = "page_size";
     public static int firstPage = 1;
     public static int pageSize = 20;
+    public static String baseYoutubeUrl = "https://www.youtube.com/embed/";
 
     // MARK: Date format
 

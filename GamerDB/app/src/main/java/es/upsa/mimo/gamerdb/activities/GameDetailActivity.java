@@ -2,6 +2,10 @@ package es.upsa.mimo.gamerdb.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -16,6 +20,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import es.upsa.mimo.gamerdb.R;
 import es.upsa.mimo.gamerdb.customviews.ImageLoading;
+import es.upsa.mimo.gamerdb.fragments.popups.PopupVideoFragment;
 import es.upsa.mimo.gamerdb.models.DeveloperResponse;
 import es.upsa.mimo.gamerdb.models.ErrorResponse;
 import es.upsa.mimo.gamerdb.models.GameResponse;
@@ -72,6 +77,7 @@ public class GameDetailActivity extends AppCompatActivity {
 
     private int gameId;
     private GameAPIClient gameAPIClient;
+    private GameResponse game;
 
     //MARK: - Lifecycle methods
 
@@ -98,11 +104,11 @@ public class GameDetailActivity extends AppCompatActivity {
     private void initializeUI() {
 
         btWatchVideo.setOnClickListener(v -> {
-            //TODO set action
+            watchVideo();
         });
 
         btViewImages.setOnClickListener(v -> {
-            //TODO set action
+            viewImages();
         });
 
         btShowMoreText.setOnClickListener(v -> {
@@ -122,6 +128,7 @@ public class GameDetailActivity extends AppCompatActivity {
             @Override
             public void success(GameResponse gameResponse) {
 
+                game = gameResponse;
                 Picasso.get().load(gameResponse.getBackgroundImage()).into(ivGame, new Callback() {
                     @Override
                     public void onSuccess() {
@@ -204,5 +211,32 @@ public class GameDetailActivity extends AppCompatActivity {
                 //TODO show error and go back
             }
         });
+    }
+
+    private void watchVideo() {
+
+        String videoUrl = "";
+        if (game != null && game.getClip() != null) {
+            videoUrl = game.getClip().getVideo();
+        }
+
+        //TODO choose option
+        //OPCION 1
+//        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(bvideoUrl)));
+
+        //OPCION 2
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        Fragment prev = getSupportFragmentManager().findFragmentByTag("videoPopup");//TODO move to Constants
+        if (prev != null) {
+            transaction.remove(prev);
+        }
+        transaction.addToBackStack(null);
+        PopupVideoFragment dialogFragment = new PopupVideoFragment(videoUrl);
+        dialogFragment.setCancelable(true);
+        dialogFragment.show(transaction, "videoPopup");//TODO move to Constants
+    }
+
+    private void viewImages() {
+        //TODO view images
     }
 }

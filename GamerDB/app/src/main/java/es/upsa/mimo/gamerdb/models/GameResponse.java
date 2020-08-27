@@ -1,7 +1,6 @@
 package es.upsa.mimo.gamerdb.models;
 
 import com.google.gson.annotations.SerializedName;
-
 import java.util.List;
 
 public class GameResponse {
@@ -32,6 +31,7 @@ public class GameResponse {
     private EsrbResponse esrbRating;
     @SerializedName("short_screenshots")
     private List<ScreenshotResponse> shortScreenshots;
+    private ClipResponse clip;
 
     public GameResponse(int id,
                         String name,
@@ -51,7 +51,8 @@ public class GameResponse {
                         List<TagResponse> tags,
                         List<PublisherResponse> publishers,
                         EsrbResponse esrbRating,
-                        List<ScreenshotResponse> shortScreenshots) {
+                        List<ScreenshotResponse> shortScreenshots,
+                        ClipResponse clip) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -71,6 +72,7 @@ public class GameResponse {
         this.publishers = publishers;
         this.esrbRating = esrbRating;
         this.shortScreenshots = shortScreenshots;
+        this.clip = clip;
     }
 
     public int getId() {
@@ -223,5 +225,13 @@ public class GameResponse {
 
     public void setShortScreenshots(List<ScreenshotResponse> shortScreenshots) {
         this.shortScreenshots = shortScreenshots;
+    }
+
+    public ClipResponse getClip() {
+        return clip;
+    }
+
+    public void setClip(ClipResponse clip) {
+        this.clip = clip;
     }
 }
