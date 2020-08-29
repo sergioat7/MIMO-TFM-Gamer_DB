@@ -3,6 +3,7 @@ package es.upsa.mimo.gamerdb.utils;
 import android.annotation.SuppressLint;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 public class Constants {
 
@@ -21,22 +22,23 @@ public class Constants {
     // MARK: Date format
 
     public static String dateFormat = "yyyy-MM-dd";
+    public static String dateFormatToShow = "MMMM d, yyyy";
 
     @SuppressLint("SimpleDateFormat")
-    public static String dateToString(Date date) {
+    public static String dateToString(Date date, String dateFormat) {
 
         try {
-            return new SimpleDateFormat(dateFormat).format(date);
+            return new SimpleDateFormat(dateFormat, Locale.ENGLISH).format(date);
         } catch (Exception e) {
             return null;
         }
     }
 
     @SuppressLint("SimpleDateFormat")
-    public static Date stringToDate(String dateString) {
+    public static Date stringToDate(String dateString, String dateFormat) {
 
         try {
-            return new SimpleDateFormat(dateFormat).parse(dateString);
+            return new SimpleDateFormat(dateFormat, Locale.ENGLISH).parse(dateString);
         } catch (Exception e) {
             return null;
         }

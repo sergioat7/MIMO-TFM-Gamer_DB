@@ -14,6 +14,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import butterknife.BindView;
@@ -154,7 +155,16 @@ public class GameDetailActivity extends AppCompatActivity {
                     platformsText = platformsText.isEmpty() ? "" : platformsText.substring(0, platformsText.length() - 2);
                 }
                 tvPlatforms.setText(platformsText);
-                tvReleaseDate.setText(gameResponse.getReleased());
+                String releasedDate;
+                try {
+                    Date date = Constants.stringToDate(gameResponse.getReleased(), Constants.dateFormat);
+                    releasedDate = Constants.dateToString(date, Constants.dateFormatToShow);
+                    assert releasedDate != null;
+                    releasedDate = releasedDate.substring(0,1).toUpperCase() + releasedDate.substring(1);
+                } catch (Exception ignored) {
+                    releasedDate = "-";
+                }
+                tvReleaseDate.setText(releasedDate);
                 List<GenreResponse> genres = gameResponse.getGenres();
                 String genresText = "";
                 if (genres != null) {

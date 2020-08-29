@@ -19,7 +19,10 @@ public class APIClient {
 
     private static Gson getGson() {
         return new GsonBuilder()
-                .registerTypeAdapter(Date.class, (JsonDeserializer<Date>) (json, typeOfT, context) -> Constants.stringToDate(json.toString()))
+                .registerTypeAdapter(
+                        Date.class,
+                        (JsonDeserializer<Date>) (json, typeOfT, context) -> Constants.stringToDate(json.toString(), Constants.dateFormat)
+                )
                 .setDateFormat(Constants.dateFormat)
                 .serializeNulls()
                 .create();
