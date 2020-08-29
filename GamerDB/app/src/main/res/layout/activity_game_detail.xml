@@ -10,7 +10,9 @@
     <ImageView
         android:id="@+id/image_view_game"
         android:layout_width="0dp"
-        android:layout_height="@dimen/view_pager_height"
+        android:layout_height="0dp"
+        app:layout_constraintHeight_max="@dimen/view_pager_height"
+        app:layout_constraintHeight_percent="0.5"
         android:scaleType="centerCrop"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -36,16 +38,23 @@
         app:layout_constraintStart_toStartOf="@id/image_view_game"
         app:layout_constraintTop_toTopOf="@id/image_view_game" />
 
+    <View
+        android:id="@+id/view_aux"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/game_detail_scroll_view_margin_top"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/image_view_game"/>
+
     <ScrollView
         android:id="@+id/scroll_view_games"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="@dimen/game_detail_scroll_view_margin_top"
         android:background="@drawable/bordered_scroll_view"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="@id/view_aux">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"

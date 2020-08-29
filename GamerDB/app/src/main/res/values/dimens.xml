@@ -16,7 +16,7 @@
     <dimen name="game_images_indicator_height">30dp</dimen>
     <dimen name="game_images_indicator_width">10dp</dimen>
     <dimen name="game_images_indicator_stroke_width">5dp</dimen>
-    <dimen name="game_detail_scroll_view_margin_top">230dp</dimen>
+    <dimen name="game_detail_scroll_view_margin_top">20dp</dimen>
     <dimen name="game_detail_padding">15dp</dimen>
     <dimen name="game_detail_name_text_size">24sp</dimen>
     <dimen name="game_detail_rating_margin">10dp</dimen>
