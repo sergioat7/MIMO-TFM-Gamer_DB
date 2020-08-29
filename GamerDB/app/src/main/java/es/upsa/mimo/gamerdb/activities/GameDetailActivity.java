@@ -247,6 +247,9 @@ public class GameDetailActivity extends AppCompatActivity {
     }
 
     private void viewImages() {
-        //TODO view images
+
+        Intent intent = new Intent(this, GridImagesActivity.class);
+        intent.putExtra(Constants.gameId, gameId);
+        startActivity(intent);
     }
 }

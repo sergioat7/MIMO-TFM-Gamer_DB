@@ -38,13 +38,13 @@
         app:layout_constraintStart_toStartOf="@id/image_view_game"
         app:layout_constraintTop_toTopOf="@id/image_view_game" />
 
-    <View
-        android:id="@+id/view_aux"
+    <Space
+        android:id="@+id/space"
         android:layout_width="0dp"
         android:layout_height="@dimen/game_detail_scroll_view_margin_top"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="@id/image_view_game"/>
+        app:layout_constraintBottom_toBottomOf="@id/image_view_game" />
 
     <ScrollView
         android:id="@+id/scroll_view_games"
@@ -54,7 +54,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/view_aux">
+        app:layout_constraintTop_toTopOf="@id/space">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
