@@ -162,4 +162,11 @@
         <item name="android:layout_marginStart">@dimen/game_detail_info_value_margin_horizontal</item>
     </style>
 
+    <style name="GridImages">
+        <item name="android:numColumns">2</item>
+        <item name="android:horizontalSpacing">@dimen/grid_images_spacing</item>
+        <item name="android:verticalSpacing">@dimen/grid_images_spacing</item>
+        <item name="android:gravity">center</item>
+    </style>
+
 </resources>

@@ -41,7 +41,6 @@ public class ImagesAdapter extends BaseAdapter {
         ImageView imageView = new ImageView(context);
         Picasso.get().load(imageUrls.get(position)).into(imageView);
         imageView.setScaleType(ImageView.ScaleType.CENTER);
-        imageView.setLayoutParams(new GridView.LayoutParams(70, 70));
         return imageView;
     }
 }

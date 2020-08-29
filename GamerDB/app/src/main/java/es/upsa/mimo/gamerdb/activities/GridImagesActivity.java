@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import android.content.Context;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.GridView;
 
 import java.util.ArrayList;
@@ -59,6 +61,10 @@ public class GridImagesActivity extends AppCompatActivity {
     //MARK: - Private functions
 
     private void initializeUI() {
+
+        gvImages.setOnItemClickListener((parent, view, position, id) -> {
+            //TODO go to image detail
+        });
 
         gameAPIClient = new GameAPIClient();
         loadImages();
