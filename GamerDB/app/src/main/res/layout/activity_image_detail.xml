@@ -1,24 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="es.upsa.mimo.gamerdb.activities.GridImagesActivity">
+    tools:context="es.upsa.mimo.gamerdb.activities.ImageDetailActivity">
 
-    <GridView
-        android:id="@+id/grid_view_images"
+    <ImageView
+        android:id="@+id/image_view_game"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        style="@style/GridImages"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <es.upsa.mimo.gamerdb.customviews.ImageLoading
+        android:id="@+id/image_loading"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:loading_color="@color/colorSecondary"
+        app:text_color="@color/textTertiary"
+        app:layout_constraintBottom_toBottomOf="@id/image_view_game"
+        app:layout_constraintEnd_toEndOf="@id/image_view_game"
+        app:layout_constraintStart_toStartOf="@id/image_view_game"
+        app:layout_constraintTop_toTopOf="@id/image_view_game" />
+
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar_grid_images"
+        android:id="@+id/toolbar_image_detail"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:theme="@style/AppTheme.Toolbar.Detail"

@@ -47,6 +47,7 @@ public class Constants {
     //MARK: - Intent extras
 
     public static String gameId = "gameId";
+    public static String imageUrl = "imageUrl";
 
     //MARK: - Game list
 

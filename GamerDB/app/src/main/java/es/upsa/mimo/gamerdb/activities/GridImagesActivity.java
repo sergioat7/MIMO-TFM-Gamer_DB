@@ -3,6 +3,7 @@ package es.upsa.mimo.gamerdb.activities;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -29,7 +30,6 @@ public class GridImagesActivity extends AppCompatActivity {
 
     @BindView(R.id.toolbar_grid_images)
     Toolbar toolbar;
-
     @BindView(R.id.grid_view_images)
     GridView gvImages;
 
@@ -37,6 +37,7 @@ public class GridImagesActivity extends AppCompatActivity {
 
     private int gameId;
     private GameAPIClient gameAPIClient;
+    private List<String> imagesUrl;
 
     //MARK: - Lifecycle methods
 
@@ -63,7 +64,10 @@ public class GridImagesActivity extends AppCompatActivity {
     private void initializeUI() {
 
         gvImages.setOnItemClickListener((parent, view, position, id) -> {
-            //TODO go to image detail
+
+            Intent intent = new Intent(this, ImageDetailActivity.class);
+            intent.putExtra(Constants.imageUrl, imagesUrl.get(position));
+            startActivity(intent);
         });
 
         gameAPIClient = new GameAPIClient();
@@ -72,17 +76,16 @@ public class GridImagesActivity extends AppCompatActivity {
 
     private void loadImages() {
 
-        Context context = this;
         gameAPIClient.getScreenshots(gameId, new CompletionHandler<ScreenshotListResponse>() {
             @Override
             public void success(ScreenshotListResponse screenshotListResponse) {
 
                 List<ScreenshotResponse> screenshots = screenshotListResponse.getResults();
-                List<String> imagesUrl = new ArrayList<>();
+                imagesUrl = new ArrayList<>();
                 for (int i = 0; i < screenshots.size(); i++) {
                     imagesUrl.add(screenshots.get(i).getImage());
                 }
-                gvImages.setAdapter(new ImagesAdapter(context, imagesUrl));
+                gvImages.setAdapter(new ImagesAdapter(GridImagesActivity.this, imagesUrl));
             }
 
             @Override
