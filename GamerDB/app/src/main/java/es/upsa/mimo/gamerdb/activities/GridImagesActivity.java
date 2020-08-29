@@ -2,6 +2,7 @@ package es.upsa.mimo.gamerdb.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import android.content.Context;
 import android.os.Bundle;
 import android.widget.GridView;
 
@@ -13,6 +14,10 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import es.upsa.mimo.gamerdb.R;
 import es.upsa.mimo.gamerdb.adapters.ImagesAdapter;
+import es.upsa.mimo.gamerdb.models.ErrorResponse;
+import es.upsa.mimo.gamerdb.models.ScreenshotListResponse;
+import es.upsa.mimo.gamerdb.models.ScreenshotResponse;
+import es.upsa.mimo.gamerdb.network.apiclient.CompletionHandler;
 import es.upsa.mimo.gamerdb.network.apiclient.GameAPIClient;
 import es.upsa.mimo.gamerdb.utils.Constants;
 
@@ -61,7 +66,23 @@ public class GridImagesActivity extends AppCompatActivity {
 
     private void loadImages() {
 
-        List<String> imagesUrl = new ArrayList<>();
-        gvImages.setAdapter(new ImagesAdapter(this, imagesUrl));
+        Context context = this;
+        gameAPIClient.getScreenshots(gameId, new CompletionHandler<ScreenshotListResponse>() {
+            @Override
+            public void success(ScreenshotListResponse screenshotListResponse) {
+
+                List<ScreenshotResponse> screenshots = screenshotListResponse.getResults();
+                List<String> imagesUrl = new ArrayList<>();
+                for (int i = 0; i < screenshots.size(); i++) {
+                    imagesUrl.add(screenshots.get(i).getImage());
+                }
+                gvImages.setAdapter(new ImagesAdapter(context, imagesUrl));
+            }
+
+            @Override
+            public void failure(ErrorResponse error) {
+                //TODO show error and go back
+            }
+        });
     }
 }
