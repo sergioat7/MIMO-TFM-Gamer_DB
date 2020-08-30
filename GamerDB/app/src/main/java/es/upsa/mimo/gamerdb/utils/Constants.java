@@ -58,4 +58,9 @@ public class Constants {
 
     public static int maxLines = Integer.MAX_VALUE;
     public static int minLines = 7;
+
+    //MARK: - Image detail
+
+    public static float initialZoom = 1.0f;
+    public static float maxZoom = 10.0f;
 }
