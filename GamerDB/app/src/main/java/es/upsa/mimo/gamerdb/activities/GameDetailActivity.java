@@ -5,11 +5,12 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import com.squareup.picasso.Callback;
@@ -28,6 +29,7 @@ import es.upsa.mimo.gamerdb.models.GameResponse;
 import es.upsa.mimo.gamerdb.models.GenreResponse;
 import es.upsa.mimo.gamerdb.models.PlatformResponse;
 import es.upsa.mimo.gamerdb.models.PublisherResponse;
+import es.upsa.mimo.gamerdb.models.StoreResponse;
 import es.upsa.mimo.gamerdb.models.TagResponse;
 import es.upsa.mimo.gamerdb.network.apiclient.CompletionHandler;
 import es.upsa.mimo.gamerdb.network.apiclient.GameAPIClient;
@@ -71,6 +73,8 @@ public class GameDetailActivity extends AppCompatActivity {
     TextView tvPublisher;
     @BindView(R.id.text_view_website)
     TextView tvWebsite;
+    @BindView(R.id.linear_layout_stores)
+    LinearLayout llStores;
     @BindView(R.id.text_view_tags)
     TextView tvTags;
 
@@ -104,13 +108,9 @@ public class GameDetailActivity extends AppCompatActivity {
 
     private void initializeUI() {
 
-        btWatchVideo.setOnClickListener(v -> {
-            watchVideo();
-        });
+        btWatchVideo.setOnClickListener(v -> watchVideo());
 
-        btViewImages.setOnClickListener(v -> {
-            viewImages();
-        });
+        btViewImages.setOnClickListener(v -> viewImages());
 
         btShowMoreText.setOnClickListener(v -> {
 
@@ -145,16 +145,16 @@ public class GameDetailActivity extends AppCompatActivity {
                 tvRating.setText(String.valueOf(gameResponse.getRating()));
                 tvDescription.setText(gameResponse.getDescription());
                 List<PlatformResponse> platforms = gameResponse.getPlatforms();
-                String platformsText = "";
+                StringBuilder platformsText = new StringBuilder();
                 if (platforms != null) {
                     for (int i = 0; i < platforms.size(); i++) {
 
-                        platformsText += platforms.get(i).getPlatform().getName();
-                        platformsText += ", ";
+                        platformsText.append(platforms.get(i).getPlatform().getName());
+                        platformsText.append(", ");
                     }
-                    platformsText = platformsText.isEmpty() ? "" : platformsText.substring(0, platformsText.length() - 2);
+                    platformsText = new StringBuilder((platformsText.length() == 0) ? "" : platformsText.substring(0, platformsText.length() - 2));
                 }
-                tvPlatforms.setText(platformsText);
+                tvPlatforms.setText(platformsText.toString());
                 String releasedDate;
                 try {
                     Date date = Constants.stringToDate(gameResponse.getReleased(), Constants.dateFormat);
@@ -166,54 +166,120 @@ public class GameDetailActivity extends AppCompatActivity {
                 }
                 tvReleaseDate.setText(releasedDate);
                 List<GenreResponse> genres = gameResponse.getGenres();
-                String genresText = "";
+                StringBuilder genresText = new StringBuilder();
                 if (genres != null) {
                     for (int i = 0; i < genres.size(); i++) {
 
-                        genresText += genres.get(i).getName();
-                        genresText += ", ";
+                        genresText.append(genres.get(i).getName());
+                        genresText.append(", ");
                     }
-                    genresText = genresText.isEmpty() ? "" : genresText.substring(0, genresText.length() - 2);
+                    genresText = new StringBuilder((genresText.length() == 0) ? "" : genresText.substring(0, genresText.length() - 2));
                 }
-                tvGenres.setText(genresText);
+                tvGenres.setText(genresText.toString());
                 if (gameResponse.getEsrbRating() != null) {
                     tvAgeRating.setText(gameResponse.getEsrbRating().getName());
                 }
                 List<DeveloperResponse> developers = gameResponse.getDevelopers();
-                String developersText = "";
+                StringBuilder developersText = new StringBuilder();
                 if (developers != null) {
                     for (int i = 0; i < developers.size(); i++) {
 
-                        developersText += developers.get(i).getName();
-                        developersText += ", ";
+                        developersText.append(developers.get(i).getName());
+                        developersText.append(", ");
                     }
-                    developersText = developersText.isEmpty() ? "" : developersText.substring(0, developersText.length() - 2);
+                    developersText = new StringBuilder((developersText.length() == 0) ? "" : developersText.substring(0, developersText.length() - 2));
                 }
-                tvDeveloper.setText(developersText);
+                tvDeveloper.setText(developersText.toString());
                 List<PublisherResponse> publishers = gameResponse.getPublishers();
-                String publishersText = "";
+                StringBuilder publishersText = new StringBuilder();
                 if (publishers != null) {
                     for (int i = 0; i < publishers.size(); i++) {
 
-                        publishersText += publishers.get(i).getName();
-                        publishersText += ", ";
+                        publishersText.append(publishers.get(i).getName());
+                        publishersText.append(", ");
                     }
-                    publishersText = publishersText.isEmpty() ? "" : publishersText.substring(0, publishersText.length() - 2);
+                    publishersText = new StringBuilder((publishersText.length() == 0) ? "" : publishersText.substring(0, publishersText.length() - 2));
                 }
-                tvPublisher.setText(publishersText);
+                tvPublisher.setText(publishersText.toString());
                 tvWebsite.setText(gameResponse.getWebsite());
-                //TODO show stores
+
+                llStores.removeAllViews();
+                List<StoreResponse> stores = gameResponse.getStores();
+                if (stores != null) {
+                    for (int i = 0; i < stores.size(); i++) {
+                        String storeName;
+                        String storeUrl;
+                        String storeSlug;
+                        StoreResponse store = stores.get(i);
+                        if (store != null) {
+                            storeUrl = store.getUrl();
+                            if (store.getStore() != null) {
+                                storeName = store.getStore().getName();
+                                storeSlug = store.getStore().getSlug();
+
+                                Button button = getStoreButton(storeName, storeUrl);
+                                int imageId;
+                                switch (storeSlug) {
+                                    case "steam":
+                                        imageId = R.drawable.steam;
+                                        break;
+                                    case "playstation-store":
+                                        imageId = R.drawable.playstation_store;
+                                        break;
+                                    case "xbox-store": case "xbox360":
+                                        imageId = R.drawable.xbox_store;
+                                        break;
+                                    case "apple-appstore":
+                                        imageId = R.drawable.apple_store;
+                                        break;
+                                    case "gog":
+                                        imageId = R.drawable.gog;
+                                        break;
+                                    case "nintendo":
+                                        imageId = R.drawable.nintendo_eshop;
+                                        break;
+                                    case "google-play":
+                                        imageId = R.drawable.google_play;
+                                        break;
+                                    case "itch":
+                                        imageId = R.drawable.itchio;
+                                        break;
+                                    case "epic-games":
+                                        imageId = R.drawable.epic_games;
+                                        break;
+                                    default:
+                                        imageId = 0;
+                                        break;
+                                }
+                                button.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, imageId, 0);
+
+                                View separator = new View(GameDetailActivity.this);
+                                separator.setLayoutParams(new ViewGroup.LayoutParams(
+                                        Constants.storeButtonSeparatorWidth,
+                                        ViewGroup.LayoutParams.MATCH_PARENT
+                                ));
+
+                                llStores.addView(button);
+                                llStores.addView(separator);
+                            }
+                        }
+                    }
+                }
+                if (llStores.getChildCount() > 0) {
+                    llStores.removeViewAt(llStores.getChildCount() - 1);
+                }
+
                 List<TagResponse> tags = gameResponse.getTags();
-                String tagsText = "";
+                StringBuilder tagsText = new StringBuilder();
                 if (tags != null) {
                     for (int i = 0; i < tags.size(); i++) {
 
-                        tagsText += tags.get(i).getName();
-                        tagsText += ", ";
+                        tagsText.append(tags.get(i).getName());
+                        tagsText.append(", ");
                     }
-                    tagsText = tagsText.isEmpty() ? "" : tagsText.substring(0, tagsText.length() - 2);
+                    tagsText = new StringBuilder((tagsText.length() == 0) ? "" : tagsText.substring(0, tagsText.length() - 2));
                 }
-                tvTags.setText(tagsText);
+                tvTags.setText(tagsText.toString());
             }
 
             @Override
@@ -232,7 +298,7 @@ public class GameDetailActivity extends AppCompatActivity {
 
         //TODO choose option
         //OPCION 1
-//        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(bvideoUrl)));
+//        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(videoUrl)));
 
         //OPCION 2
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -251,5 +317,23 @@ public class GameDetailActivity extends AppCompatActivity {
         Intent intent = new Intent(this, GridImagesActivity.class);
         intent.putExtra(Constants.gameId, gameId);
         startActivity(intent);
+    }
+
+    private Button getStoreButton(String text, String url) {
+
+        Button button = new Button(this, null, 0, R.style.GameDetailStoreButton);
+        int height = (int) (Constants.storeButtonHeight * getResources().getDisplayMetrics().density);
+        button.setLayoutParams(new ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                height
+        ));
+        button.setTag(url);
+        button.setText(text);
+        button.setOnClickListener(v -> openStoreUrl(v.getTag().toString()));
+        return button;
+    }
+
+    private void openStoreUrl(String url) {
+        //TODO open url
     }
 }

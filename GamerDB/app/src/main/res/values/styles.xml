@@ -162,6 +162,19 @@
         <item name="android:layout_marginStart">@dimen/game_detail_info_value_margin_horizontal</item>
     </style>
 
+    <style name="GameDetailStoreButton">
+        <item name="android:gravity">center</item>
+        <item name="android:paddingStart">@dimen/game_detail_store_button_padding</item>
+        <item name="android:paddingEnd">@dimen/game_detail_store_button_padding</item>
+        <item name="android:drawablePadding">@dimen/game_detail_store_button_drawable_padding</item>
+        <item name="android:background">@drawable/bordered_button_secondary</item>
+        <item name="android:textColor">@color/colorSecondary</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textSize">@dimen/game_detail_store_button_text_size</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
+        <item name="android:maxLines">1</item>
+    </style>
+
     <style name="GridImages">
         <item name="android:numColumns">2</item>
         <item name="android:horizontalSpacing">@dimen/grid_images_spacing</item>

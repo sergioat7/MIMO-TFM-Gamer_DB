@@ -57,7 +57,8 @@ public class Constants {
     //MARK: - Game detail
 
     public static int maxLines = Integer.MAX_VALUE;
-    public static int minLines = 7;
+    public static int storeButtonSeparatorWidth = 40;
+    public static int storeButtonHeight = 50;
 
     //MARK: - Image detail
 

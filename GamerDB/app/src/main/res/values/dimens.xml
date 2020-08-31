@@ -36,5 +36,8 @@
     <dimen name="game_detail_info_value_margin_horizontal">5dp</dimen>
     <dimen name="game_detail_info_value_text_size">16sp</dimen>
     <dimen name="game_detail_values_line_spacing">5dp</dimen>
+    <dimen name="game_detail_store_button_padding">30dp</dimen>
+    <dimen name="game_detail_store_button_drawable_padding">10dp</dimen>
+    <dimen name="game_detail_store_button_text_size">16dp</dimen>
     <dimen name="grid_images_spacing">10dp</dimen>
 </resources>

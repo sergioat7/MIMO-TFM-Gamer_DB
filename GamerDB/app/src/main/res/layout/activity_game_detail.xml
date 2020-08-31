@@ -315,6 +315,23 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/text_view_website" />
 
+            <HorizontalScrollView
+                android:id="@+id/horizontal_scroll_view_stores"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/game_detail_info_value_margin_top"
+                android:scrollbars="none"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/text_view_stores_title">
+
+                <LinearLayout
+                    android:id="@+id/linear_layout_stores"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal" />
+            </HorizontalScrollView>
+
             <TextView
                 android:id="@+id/text_view_tags_title"
                 android:layout_width="wrap_content"
@@ -324,7 +341,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/text_view_stores_title" />
+                app:layout_constraintTop_toBottomOf="@id/horizontal_scroll_view_stores" />
 
             <TextView
                 android:id="@+id/text_view_tags"
