@@ -5,7 +5,7 @@
 
 package es.upsa.mimo.gamerdb.utils;
 
-import android.annotation.SuppressLint;
+import android.util.Log;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -30,22 +30,26 @@ public class Constants {
     public static String DATE_FORMAT = "yyyy-MM-dd";
     public static String DATE_FORMAT_TO_SHOW = "MMMM d, yyyy";
 
-    @SuppressLint("SimpleDateFormat")
     public static String dateToString(Date date, String dateFormat) {
 
         try {
             return new SimpleDateFormat(dateFormat, Locale.ENGLISH).format(date);
         } catch (Exception e) {
+            if (e.getMessage() != null) {
+                Log.e("Constants", e.getMessage());
+            }
             return null;
         }
     }
 
-    @SuppressLint("SimpleDateFormat")
     public static Date stringToDate(String dateString, String dateFormat) {
 
         try {
             return new SimpleDateFormat(dateFormat, Locale.ENGLISH).parse(dateString);
         } catch (Exception e) {
+            if (e.getMessage() != null) {
+                Log.e("Constants", e.getMessage());
+            }
             return null;
         }
     }
