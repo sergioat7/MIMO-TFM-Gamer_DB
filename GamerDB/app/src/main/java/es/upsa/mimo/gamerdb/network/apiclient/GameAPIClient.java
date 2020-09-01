@@ -16,8 +16,8 @@ public class GameAPIClient {
     public void getGames(int page, int pageSize, CompletionHandler<GameListResponse> completion) {
 
         Map<String, Integer> params = new HashMap<>();
-        params.put(Constants.pageParam, page);
-        params.put(Constants.pageSizeParam, pageSize);
+        params.put(Constants.PAGE_PARAM, page);
+        params.put(Constants.PAGE_SIZE_PARAM, pageSize);
 
         Call<GameListResponse> request = api.getGames(params);
         APIClient.sendServer(request,completion);

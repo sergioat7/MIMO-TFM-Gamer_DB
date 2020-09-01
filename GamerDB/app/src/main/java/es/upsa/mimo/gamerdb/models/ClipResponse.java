@@ -22,7 +22,7 @@ public class ClipResponse {
     }
 
     public String getVideo() {
-        return Constants.baseYoutubeUrl + video;
+        return Constants.BASE_YOUTUBE_URL + video;
     }
 
     public void setVideo(String video) {

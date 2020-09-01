@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity implements GamesAdapter.OnIt
     //MARK: - Private properties
 
     private GameAPIClient gameAPIClient;
-    private int page = Constants.firstPage;
+    private int page = Constants.FIRST_PAGE;
 
     //MARK: - Lifecycle methods
 
@@ -103,11 +103,11 @@ public class MainActivity extends AppCompatActivity implements GamesAdapter.OnIt
     public void onItemClick(int gameId) {
 
         Intent intent = new Intent(this, GameDetailActivity.class);
-        intent.putExtra(Constants.gameId, gameId);
+        intent.putExtra(Constants.GAME_ID, gameId);
         startActivity(intent);
     }
 
-    //MARK: - Private functions
+    //MARK: - Private methods
 
     private void initializeUI() {
 
@@ -163,7 +163,7 @@ public class MainActivity extends AppCompatActivity implements GamesAdapter.OnIt
             pbPagination.setVisibility(View.VISIBLE);
         }
 
-        gameAPIClient.getGames(page, Constants.pageSize, new CompletionHandler<GameListResponse>() {
+        gameAPIClient.getGames(page, Constants.PAGE_SIZE, new CompletionHandler<GameListResponse>() {
             @Override
             public void success(GameListResponse gameListResponse) {
 
@@ -179,6 +179,7 @@ public class MainActivity extends AppCompatActivity implements GamesAdapter.OnIt
             @Override
             public void failure(ErrorResponse error) {
 
+                //TODO show error
                 srlGames.setRefreshing(false);
                 pbPagination.setVisibility(View.GONE);
             }
@@ -187,7 +188,7 @@ public class MainActivity extends AppCompatActivity implements GamesAdapter.OnIt
 
     private void reloadGames() {
 
-        page = Constants.firstPage;
+        page = Constants.FIRST_PAGE;
         GamesAdapter adapter = (GamesAdapter) rvGames.getAdapter();
         if (adapter != null) {
             adapter.resetList();

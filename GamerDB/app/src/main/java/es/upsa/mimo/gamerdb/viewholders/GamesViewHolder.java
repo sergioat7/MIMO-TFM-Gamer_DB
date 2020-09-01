@@ -43,7 +43,7 @@ public class GamesViewHolder extends RecyclerView.ViewHolder {
         }
 
         ViewGroup.MarginLayoutParams lp = (ViewGroup.MarginLayoutParams) vpImages.getLayoutParams();
-        lp.topMargin = position == 0 ? Constants.marginList : Constants.noMarginList;
+        lp.topMargin = position == 0 ? Constants.MARGIN_LIST : Constants.NO_MARGIN_LIST;
 
         vpImages.setAdapter(
                 new ImageSliderAdapter(
