@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<shape xmlns:android="http://schemas.android.com/apk/res/android"
-    android:shape="rectangle">
+<shape
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle"
+    >
 
     <corners
-        android:topLeftRadius="@dimen/bordered_button_corners"
-        android:topRightRadius="@dimen/bordered_button_corners"
-        android:bottomLeftRadius="@dimen/bordered_button_corners"
-        android:bottomRightRadius="@dimen/bordered_button_corners"/>
-    <solid android:color="@color/buttonPrimary"/>
+        android:topLeftRadius="@dimen/size_tiny"
+        android:topRightRadius="@dimen/size_tiny"
+        android:bottomLeftRadius="@dimen/size_tiny"
+        android:bottomRightRadius="@dimen/size_tiny"/>
+    <solid
+        android:color="@color/buttonPrimary"
+        />
 </shape>

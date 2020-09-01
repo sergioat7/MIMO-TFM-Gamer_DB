@@ -9,7 +9,7 @@
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/view_pager_images"
         android:layout_width="0dp"
-        android:layout_height="@dimen/view_pager_height"
+        android:layout_height="@dimen/size_huge"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -18,8 +18,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="@dimen/app_margin"
-        android:layout_marginEnd="@dimen/app_margin"
+        android:layout_marginStart="@dimen/spacing_large"
+        android:layout_marginEnd="@dimen/spacing_large"
         app:layout_constraintBottom_toBottomOf="@+id/view_pager_images"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -39,8 +39,8 @@
         <ImageView
             android:id="@+id/image_view_rating"
             android:layout_width="wrap_content"
-            android:layout_height="@dimen/rating_image_size"
-            android:layout_marginEnd="@dimen/rating_image_margin"
+            android:layout_height="@dimen/size_large"
+            android:layout_marginEnd="@dimen/spacing_tiny"
             android:contentDescription="@string/rating_image"
             app:layout_constraintBottom_toBottomOf="@+id/text_view_name"
             app:layout_constraintEnd_toStartOf="@+id/text_view_rating"
@@ -62,7 +62,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="0dp"
-        android:layout_height="@dimen/game_images_indicator_height"
+        android:layout_height="@dimen/size_large"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
