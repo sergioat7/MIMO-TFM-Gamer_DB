@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2020 Sergio Aragonés. All rights reserved.
+ * Created by Sergio Aragonés on 10/8/2020
+ */
+
 package es.upsa.mimo.gamerdb.network.apiclient;
 
 import java.util.HashMap;
@@ -16,8 +21,8 @@ public class GameAPIClient {
     public void getGames(int page, int pageSize, CompletionHandler<GameListResponse> completion) {
 
         Map<String, Integer> params = new HashMap<>();
-        params.put(Constants.pageParam, page);
-        params.put(Constants.pageSizeParam, pageSize);
+        params.put(Constants.PAGE_PARAM, page);
+        params.put(Constants.PAGE_SIZE_PARAM, pageSize);
 
         Call<GameListResponse> request = api.getGames(params);
         APIClient.sendServer(request,completion);

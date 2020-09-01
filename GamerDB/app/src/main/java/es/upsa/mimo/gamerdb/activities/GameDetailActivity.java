@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2020 Sergio Aragonés. All rights reserved.
+ * Created by Sergio Aragonés on 19/8/2020
+ */
+
 package es.upsa.mimo.gamerdb.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -97,7 +102,7 @@ public class GameDetailActivity extends AppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         setTitle("");
 
-        int gameId = getIntent().getIntExtra(Constants.gameId, 0);
+        int gameId = getIntent().getIntExtra(Constants.GAME_ID, 0);
         if (gameId > 0) {
             this.gameId = gameId;
         }
@@ -105,7 +110,7 @@ public class GameDetailActivity extends AppCompatActivity {
         this.initializeUI();
     }
 
-    //MARK: - Private functions
+    //MARK: - Private methods
 
     private void initializeUI() {
 
@@ -115,7 +120,7 @@ public class GameDetailActivity extends AppCompatActivity {
 
         btShowMoreText.setOnClickListener(v -> {
 
-            tvDescription.setMaxLines(Constants.maxLines);
+            tvDescription.setMaxLines(Constants.MAX_LINES);
             btShowMoreText.setVisibility(View.GONE);
         });
 
@@ -158,8 +163,8 @@ public class GameDetailActivity extends AppCompatActivity {
                 tvPlatforms.setText(platformsText.toString());
                 String releasedDate;
                 try {
-                    Date date = Constants.stringToDate(gameResponse.getReleased(), Constants.dateFormat);
-                    releasedDate = Constants.dateToString(date, Constants.dateFormatToShow);
+                    Date date = Constants.stringToDate(gameResponse.getReleased(), Constants.DATE_FORMAT);
+                    releasedDate = Constants.dateToString(date, Constants.DATE_FORMAT_TO_SHOW);
                     assert releasedDate != null;
                     releasedDate = releasedDate.substring(0,1).toUpperCase() + releasedDate.substring(1);
                 } catch (Exception ignored) {
@@ -219,44 +224,12 @@ public class GameDetailActivity extends AppCompatActivity {
                                 storeSlug = store.getStore().getSlug();
 
                                 Button button = getStoreButton(storeName, storeUrl);
-                                int imageId;
-                                switch (storeSlug) {
-                                    case "steam":
-                                        imageId = R.drawable.steam;
-                                        break;
-                                    case "playstation-store":
-                                        imageId = R.drawable.playstation_store;
-                                        break;
-                                    case "xbox-store": case "xbox360":
-                                        imageId = R.drawable.xbox_store;
-                                        break;
-                                    case "apple-appstore":
-                                        imageId = R.drawable.apple_store;
-                                        break;
-                                    case "gog":
-                                        imageId = R.drawable.gog;
-                                        break;
-                                    case "nintendo":
-                                        imageId = R.drawable.nintendo_eshop;
-                                        break;
-                                    case "google-play":
-                                        imageId = R.drawable.google_play;
-                                        break;
-                                    case "itch":
-                                        imageId = R.drawable.itchio;
-                                        break;
-                                    case "epic-games":
-                                        imageId = R.drawable.epic_games;
-                                        break;
-                                    default:
-                                        imageId = 0;
-                                        break;
-                                }
+                                int imageId = Constants.getStoreImageId(storeSlug);
                                 button.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, imageId, 0);
 
                                 View separator = new View(GameDetailActivity.this);
                                 separator.setLayoutParams(new ViewGroup.LayoutParams(
-                                        Constants.storeButtonSeparatorWidth,
+                                        Constants.STORE_BUTTON_SEPARATOR_WIDTH,
                                         ViewGroup.LayoutParams.MATCH_PARENT
                                 ));
 
@@ -316,14 +289,14 @@ public class GameDetailActivity extends AppCompatActivity {
     private void viewImages() {
 
         Intent intent = new Intent(this, GridImagesActivity.class);
-        intent.putExtra(Constants.gameId, gameId);
+        intent.putExtra(Constants.GAME_ID, gameId);
         startActivity(intent);
     }
 
     private Button getStoreButton(String text, String url) {
 
         Button button = new Button(this, null, 0, R.style.GameDetailStoreButton);
-        int height = (int) (Constants.storeButtonHeight * getResources().getDisplayMetrics().density);
+        int height = (int) (Constants.STORE_BUTTON_HEIGHT * getResources().getDisplayMetrics().density);
         button.setLayoutParams(new ViewGroup.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 height

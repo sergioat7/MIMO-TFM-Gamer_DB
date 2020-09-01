@@ -5,18 +5,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="es.upsa.mimo.gamerdb.activities.GameDetailActivity">
+    tools:context="es.upsa.mimo.gamerdb.activities.GameDetailActivity"
+    >
 
     <ImageView
         android:id="@+id/image_view_game"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintHeight_max="@dimen/view_pager_height"
-        app:layout_constraintHeight_percent="0.5"
         android:scaleType="centerCrop"
+        android:contentDescription="@string/game_image"
+        app:layout_constraintHeight_max="@dimen/size_huge"
+        app:layout_constraintHeight_percent="0.5"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        />
 
     <es.upsa.mimo.gamerdb.customviews.ImageLoading
         android:id="@+id/image_loading"
@@ -27,7 +30,8 @@
         app:layout_constraintTop_toTopOf="@+id/image_view_game"
         app:layout_constraintBottom_toBottomOf="@+id/image_view_game"
         app:layout_constraintStart_toStartOf="@+id/image_view_game"
-        app:layout_constraintEnd_toEndOf="@+id/image_view_game" />
+        app:layout_constraintEnd_toEndOf="@+id/image_view_game"
+        />
 
     <View
         android:layout_width="0dp"
@@ -36,15 +40,17 @@
         app:layout_constraintBottom_toBottomOf="@id/image_view_game"
         app:layout_constraintEnd_toEndOf="@id/image_view_game"
         app:layout_constraintStart_toStartOf="@id/image_view_game"
-        app:layout_constraintTop_toTopOf="@id/image_view_game" />
+        app:layout_constraintTop_toTopOf="@id/image_view_game"
+        />
 
     <Space
         android:id="@+id/space"
         android:layout_width="0dp"
-        android:layout_height="@dimen/game_detail_scroll_view_margin_top"
+        android:layout_height="@dimen/spacing_large"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="@id/image_view_game" />
+        app:layout_constraintBottom_toBottomOf="@id/image_view_game"
+        />
 
     <ScrollView
         android:id="@+id/scroll_view_games"
@@ -54,117 +60,131 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/space">
+        app:layout_constraintTop_toTopOf="@id/space"
+        >
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="@dimen/game_detail_padding" >
+            android:padding="@dimen/spacing_normal"
+            >
 
             <TextView
                 android:id="@+id/text_view_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/GameDetailName"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                style="@style/GameDetailName"
+                />
 
             <ImageView
                 android:id="@+id/image_view_rating"
                 android:layout_width="wrap_content"
-                android:layout_height="@dimen/rating_image_size"
+                android:layout_height="@dimen/size_large"
+                android:contentDescription="@string/rating_image"
                 app:layout_constraintBottom_toBottomOf="@+id/text_view_rating"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/text_view_rating"
-                app:srcCompat="@drawable/ic_star_white_24dp" />
+                app:srcCompat="@drawable/ic_star_white_24dp"
+                />
 
             <TextView
                 android:id="@+id/text_view_rating"
-                style="@style/GameDetailRating"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/rating_image_margin"
+                android:layout_marginStart="@dimen/spacing_tiny"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toEndOf="@+id/image_view_rating"
-                app:layout_constraintTop_toBottomOf="@id/text_view_name" />
+                app:layout_constraintTop_toBottomOf="@id/text_view_name"
+                style="@style/GameDetailRating"
+                />
 
             <LinearLayout
                 android:id="@+id/linear_layout_buttons"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/app_margin"
+                android:layout_marginTop="@dimen/spacing_large"
                 android:orientation="horizontal"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/text_view_rating">
+                app:layout_constraintTop_toBottomOf="@id/text_view_rating"
+                >
 
                 <Button
                     android:id="@+id/button_watch_video"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    style="@style/GameDetailButtons.Left"
                     android:drawableStart="@drawable/ic_play_circle_outline_white_24dp"
-                    android:text="@string/watch_video_title" />
+                    android:text="@string/watch_video_title"
+                    style="@style/GameDetailMainButton.Left"
+                    />
 
                 <Button
                     android:id="@+id/button_view_images"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    style="@style/GameDetailButtons.Right"
                     android:drawableStart="@drawable/ic_image_white_24dp"
-                    android:text="@string/view_images_button" />
+                    android:text="@string/view_images_button"
+                    style="@style/GameDetailMainButton.Right"
+                    />
             </LinearLayout>
 
             <TextView
                 android:id="@+id/text_view_description"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/GameDetailDescription"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/linear_layout_buttons" />
+                app:layout_constraintTop_toBottomOf="@id/linear_layout_buttons"
+                style="@style/GameDetailDescription"
+                />
 
             <Button
                 android:id="@+id/button_show_more_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/GameDetailDescriptionButton"
                 android:drawableEnd="@drawable/ic_keyboard_arrow_right_white_24dp"
                 android:text="@string/read_more_button"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/text_view_description" />
+                app:layout_constraintTop_toBottomOf="@id/text_view_description"
+                style="@style/GameDetailDescriptionButton"
+                />
 
             <LinearLayout
                 android:id="@+id/linear_layout_titles_1"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="@dimen/app_margin"
+                android:layout_marginTop="@dimen/spacing_large"
                 android:orientation="horizontal"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/button_show_more_text">
+                app:layout_constraintTop_toBottomOf="@id/button_show_more_text"
+                >
 
                 <TextView
                     android:id="@+id/text_view_platforms_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:text="@string/platforms_title"
                     style="@style/GameDetailInfo.Title.Left"
-                    android:text="@string/platforms_title" />
+                    />
 
                 <TextView
                     android:id="@+id/text_view_released_date_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:text="@string/released_date_title"
                     style="@style/GameDetailInfo.Title.Right"
-                    android:text="@string/released_date_title" />
+                    />
 
             </LinearLayout>
 
@@ -175,19 +195,22 @@
                 android:orientation="horizontal"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/linear_layout_titles_1">
+                app:layout_constraintTop_toBottomOf="@id/linear_layout_titles_1"
+                >
 
                 <TextView
                     android:id="@+id/text_view_platforms"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    style="@style/GameDetailInfo.Value.Left" />
+                    style="@style/GameDetailInfo.Value.Left"
+                    />
 
                 <TextView
                     android:id="@+id/text_view_released_date"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    style="@style/GameDetailInfo.Value.Right" />
+                    style="@style/GameDetailInfo.Value.Right"
+                    />
             </LinearLayout>
 
             <LinearLayout
@@ -197,21 +220,24 @@
                 android:orientation="horizontal"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/linear_layout_values_1">
+                app:layout_constraintTop_toBottomOf="@id/linear_layout_values_1"
+                >
 
                 <TextView
                     android:id="@+id/text_view_genres_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:text="@string/genres_title"
                     style="@style/GameDetailInfo.Title.Left"
-                    android:text="@string/genres_title" />
+                    />
 
                 <TextView
                     android:id="@+id/text_view_age_rating_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:text="@string/age_rating_title"
                     style="@style/GameDetailInfo.Title.Right"
-                    android:text="@string/age_rating_title" />
+                    />
             </LinearLayout>
 
             <LinearLayout
@@ -221,19 +247,22 @@
                 android:orientation="horizontal"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/linear_layout_titles_2">
+                app:layout_constraintTop_toBottomOf="@id/linear_layout_titles_2"
+                >
 
                 <TextView
                     android:id="@+id/text_view_genres"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    style="@style/GameDetailInfo.Value.Left" />
+                    style="@style/GameDetailInfo.Value.Left"
+                    />
 
                 <TextView
                     android:id="@+id/text_view_age_rating"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    style="@style/GameDetailInfo.Value.Right" />
+                    style="@style/GameDetailInfo.Value.Right"
+                    />
             </LinearLayout>
 
             <LinearLayout
@@ -243,21 +272,24 @@
                 android:orientation="horizontal"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/linear_layout_values_2">
+                app:layout_constraintTop_toBottomOf="@id/linear_layout_values_2"
+                >
 
                 <TextView
                     android:id="@+id/text_view_developer_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:text="@string/developer_title"
                     style="@style/GameDetailInfo.Title.Left"
-                    android:text="@string/developer_title" />
+                    />
 
                 <TextView
                     android:id="@+id/text_view_publisher_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:text="@string/publisher_title"
                     style="@style/GameDetailInfo.Title.Right"
-                    android:text="@string/publisher_title" />
+                    />
             </LinearLayout>
 
             <LinearLayout
@@ -267,92 +299,102 @@
                 android:orientation="horizontal"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/linear_layout_titles_3">
+                app:layout_constraintTop_toBottomOf="@id/linear_layout_titles_3"
+                >
 
                 <TextView
                     android:id="@+id/text_view_developer"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    style="@style/GameDetailInfo.Value.Left" />
+                    style="@style/GameDetailInfo.Value.Left"
+                    />
 
                 <TextView
                     android:id="@+id/text_view_publisher"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    style="@style/GameDetailInfo.Value.Right" />
+                    style="@style/GameDetailInfo.Value.Right"
+                    />
             </LinearLayout>
 
             <TextView
                 android:id="@+id/text_view_website_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/GameDetailInfo.Title"
                 android:text="@string/website_title"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/linear_layout_values_3" />
+                app:layout_constraintTop_toBottomOf="@id/linear_layout_values_3"
+                style="@style/GameDetailInfo.Title"
+                />
 
             <TextView
                 android:id="@+id/text_view_website"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/GameDetailInfo.Value"
                 android:autoLink="web"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/text_view_website_title" />
+                app:layout_constraintTop_toBottomOf="@id/text_view_website_title"
+                style="@style/GameDetailInfo.Value"
+                />
 
             <TextView
                 android:id="@+id/text_view_stores_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/GameDetailInfo.Title"
                 android:text="@string/where_to_buy_title"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/text_view_website" />
+                app:layout_constraintTop_toBottomOf="@id/text_view_website"
+                style="@style/GameDetailInfo.Title"
+                />
 
             <HorizontalScrollView
                 android:id="@+id/horizontal_scroll_view_stores"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/game_detail_info_value_margin_top"
+                android:layout_marginTop="@dimen/spacing_tiny"
                 android:scrollbars="none"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/text_view_stores_title">
+                app:layout_constraintTop_toBottomOf="@id/text_view_stores_title"
+                >
 
                 <LinearLayout
                     android:id="@+id/linear_layout_stores"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:orientation="horizontal" />
+                    android:orientation="horizontal"
+                    />
             </HorizontalScrollView>
 
             <TextView
                 android:id="@+id/text_view_tags_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/GameDetailInfo.Title"
                 android:text="@string/tags_title"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/horizontal_scroll_view_stores" />
+                app:layout_constraintTop_toBottomOf="@id/horizontal_scroll_view_stores"
+                style="@style/GameDetailInfo.Title"
+                />
 
             <TextView
                 android:id="@+id/text_view_tags"
-                style="@style/GameDetailInfo.Value"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/text_view_tags_title"
-                app:layout_constraintBottom_toBottomOf="parent"/>
+                app:layout_constraintBottom_toBottomOf="parent"
+                style="@style/GameDetailInfo.Value"
+                />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
@@ -364,5 +406,6 @@
         android:theme="@style/AppTheme.Toolbar.Detail"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2020 Sergio Aragonés. All rights reserved.
+ * Created by Sergio Aragonés on 30/8/2020
+ */
+
 package es.upsa.mimo.gamerdb.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -32,7 +37,7 @@ public class ImageDetailActivity extends AppCompatActivity {
 
     private String imageUrl;
     private ScaleGestureDetector sgdZoom;
-    private float scaleFactor = Constants.initialZoom;
+    private float scaleFactor = Constants.INITIAL_ZOOM;
     private float posX;
     private float posY;
     private float lastTouchX;
@@ -51,7 +56,7 @@ public class ImageDetailActivity extends AppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         setTitle("");
 
-        imageUrl = getIntent().getStringExtra(Constants.imageUrl);
+        imageUrl = getIntent().getStringExtra(Constants.IMAGE_URL);
 
         this.initializeUI();
     }
@@ -118,7 +123,7 @@ public class ImageDetailActivity extends AppCompatActivity {
         return true;
     }
 
-    //MARK: - Private functions
+    //MARK: - Private methods
 
     private void initializeUI() {
 
@@ -127,7 +132,7 @@ public class ImageDetailActivity extends AppCompatActivity {
             public boolean onScale(ScaleGestureDetector detector) {
 
                 scaleFactor *= sgdZoom.getScaleFactor();
-                scaleFactor = Math.max(1f, Math.min(scaleFactor, Constants.maxZoom));
+                scaleFactor = Math.max(1f, Math.min(scaleFactor, Constants.MAX_ZOOM));
                 ivGame.setScaleX(scaleFactor);
                 ivGame.setScaleY(scaleFactor);
                 return true;

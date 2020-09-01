@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2020 Sergio Aragonés. All rights reserved.
+ * Created by Sergio Aragonés on 29/8/2020
+ */
+
 package es.upsa.mimo.gamerdb.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -51,7 +56,7 @@ public class GridImagesActivity extends AppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         setTitle("");
 
-        int gameId = getIntent().getIntExtra(Constants.gameId, 0);
+        int gameId = getIntent().getIntExtra(Constants.GAME_ID, 0);
         if (gameId > 0) {
             this.gameId = gameId;
         }
@@ -59,14 +64,14 @@ public class GridImagesActivity extends AppCompatActivity {
         this.initializeUI();
     }
 
-    //MARK: - Private functions
+    //MARK: - Private methods
 
     private void initializeUI() {
 
         gvImages.setOnItemClickListener((parent, view, position, id) -> {
 
             Intent intent = new Intent(this, ImageDetailActivity.class);
-            intent.putExtra(Constants.imageUrl, imagesUrl.get(position));
+            intent.putExtra(Constants.IMAGE_URL, imagesUrl.get(position));
             startActivity(intent);
         });
 

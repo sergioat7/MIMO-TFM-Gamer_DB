@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2020 Sergio Aragonés. All rights reserved.
+ * Created by Sergio Aragonés on 6/8/2020
+ */
+
 package es.upsa.mimo.gamerdb.network.apiclient;
 
 import com.google.gson.*;
@@ -21,24 +26,24 @@ public class APIClient {
         return new GsonBuilder()
                 .registerTypeAdapter(
                         Date.class,
-                        (JsonDeserializer<Date>) (json, typeOfT, context) -> Constants.stringToDate(json.toString(), Constants.dateFormat)
+                        (JsonDeserializer<Date>) (json, typeOfT, context) -> Constants.stringToDate(json.toString(), Constants.DATE_FORMAT)
                 )
-                .setDateFormat(Constants.dateFormat)
+                .setDateFormat(Constants.DATE_FORMAT)
                 .serializeNulls()
                 .create();
     }
 
     private static OkHttpClient getOkHttpClient() {
         return new OkHttpClient.Builder()
-                .connectTimeout(Constants.connectTimeout, TimeUnit.SECONDS)
-                .readTimeout(Constants.readTimeout, TimeUnit.SECONDS)
-                .writeTimeout(Constants.writeTimeout, TimeUnit.SECONDS)
+                .connectTimeout(Constants.CONNECT_TIMEOUT, TimeUnit.SECONDS)
+                .readTimeout(Constants.READ_TIMEOUT, TimeUnit.SECONDS)
+                .writeTimeout(Constants.WRITE_TIMEOUT, TimeUnit.SECONDS)
                 .build();
     }
 
     public static Retrofit getRetrofit() {
         return new Retrofit.Builder()
-                .baseUrl(Constants.baseEndpoint)
+                .baseUrl(Constants.BASE_ENDPOINT)
                 .client(getOkHttpClient())
                 .addConverterFactory(GsonConverterFactory.create(getGson()))
                 .build();

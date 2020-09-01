@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2020 Sergio Aragonés. All rights reserved.
+ * Created by Sergio Aragonés on 27/8/2020
+ */
+
 package es.upsa.mimo.gamerdb.models;
 
 import es.upsa.mimo.gamerdb.utils.Constants;
@@ -22,7 +27,7 @@ public class ClipResponse {
     }
 
     public String getVideo() {
-        return Constants.baseYoutubeUrl + video;
+        return Constants.BASE_YOUTUBE_URL + video;
     }
 
     public void setVideo(String video) {

@@ -2,13 +2,16 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
 
     <ImageView
         android:id="@+id/image_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        style="@style/ImageSlider"/>
+        android:contentDescription="@string/game_image"
+        style="@style/ImageSlider"
+        />
 
     <es.upsa.mimo.gamerdb.customviews.ImageLoading
         android:id="@+id/image_loading"
@@ -16,12 +19,14 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         app:loading_color="@color/buttonPrimary"
-        app:text_color="@color/textTertiary" />
+        app:text_color="@color/textTertiary"
+        />
 
     <View
         android:id="@+id/view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center"
-        android:background="@drawable/bordered_image_view" />
+        android:background="@drawable/bordered_image_view"
+        />
 </FrameLayout>

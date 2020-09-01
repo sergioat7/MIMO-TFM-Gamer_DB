@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2020 Sergio Aragonés. All rights reserved.
+ * Created by Sergio Aragonés on 12/8/2020
+ */
+
 package es.upsa.mimo.gamerdb.adapters;
 
 import android.content.Context;

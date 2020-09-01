@@ -1,4 +1,5 @@
 <resources>
+
     <string name="app_name" translatable="false">Gamer DB</string>
     <string name="error_server">There was an error on getting data. Please, try again</string>
     <string name="toolbar_search_title">Search</string>
@@ -15,4 +16,7 @@
     <string name="where_to_buy_title">Where to buy</string>
     <string name="tags_title">Tags</string>
     <string name="loading_image">Loading image…</string>
+    <string name="game_image">Image of the game</string>
+    <string name="rating_image">Star image to represent rating</string>
+
 </resources>
