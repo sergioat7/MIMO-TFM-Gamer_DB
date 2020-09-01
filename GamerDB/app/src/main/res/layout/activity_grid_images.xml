@@ -5,17 +5,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="es.upsa.mimo.gamerdb.activities.GridImagesActivity">
+    tools:context="es.upsa.mimo.gamerdb.activities.GridImagesActivity"
+    >
 
     <GridView
         android:id="@+id/grid_view_images"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        style="@style/GridImages"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        style="@style/GridImages"
+        />
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar_grid_images"
@@ -24,5 +26,6 @@
         android:theme="@style/AppTheme.Toolbar.Detail"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        />
 </androidx.constraintlayout.widget.ConstraintLayout>

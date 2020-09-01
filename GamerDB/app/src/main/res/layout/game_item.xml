@@ -3,7 +3,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    >
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/view_pager_images"
@@ -11,7 +12,8 @@
         android:layout_height="@dimen/view_pager_height"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="0dp"
@@ -21,36 +23,41 @@
         app:layout_constraintBottom_toBottomOf="@+id/view_pager_images"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/view_pager_images">
+        app:layout_constraintTop_toTopOf="@+id/view_pager_images"
+        >
 
         <TextView
             android:id="@+id/text_view_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            style="@style/GameCellName"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/image_view_rating"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            style="@style/GameCellName"
+            />
 
         <ImageView
             android:id="@+id/image_view_rating"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/rating_image_size"
             android:layout_marginEnd="@dimen/rating_image_margin"
+            android:contentDescription="@string/rating_image"
             app:layout_constraintBottom_toBottomOf="@+id/text_view_name"
             app:layout_constraintEnd_toStartOf="@+id/text_view_rating"
             app:layout_constraintStart_toEndOf="@+id/text_view_name"
             app:layout_constraintTop_toTopOf="@+id/text_view_name"
-            app:srcCompat="@drawable/ic_star_white_24dp" />
+            app:srcCompat="@drawable/ic_star_white_24dp"
+            />
 
         <TextView
             android:id="@+id/text_view_rating"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            style="@style/GameCellRating"
             app:layout_constraintBottom_toBottomOf="@+id/text_view_name"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/text_view_name" />
+            app:layout_constraintTop_toTopOf="@+id/text_view_name"
+            style="@style/GameCellRating"
+            />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -59,16 +66,18 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/view_pager_images">
+        app:layout_constraintTop_toBottomOf="@+id/view_pager_images"
+        >
 
         <com.viewpagerindicator.LinePageIndicator
             android:id="@+id/view_pager_indicator"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            style="@style/LinePageIndicator"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            style="@style/LinePageIndicator"
+            />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
