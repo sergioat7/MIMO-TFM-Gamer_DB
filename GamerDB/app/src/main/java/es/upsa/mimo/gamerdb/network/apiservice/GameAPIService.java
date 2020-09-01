@@ -19,7 +19,7 @@ public interface GameAPIService {
 
     @Headers("User-Agent:GamerDB")
     @GET("games")
-    Call<GameListResponse> getGames(@QueryMap Map<String, Integer> queryParams);
+    Call<GameListResponse> getGames(@QueryMap Map<String, String> queryParams);
 
     @Headers("User-Agent:GamerDB")
     @GET("games/{gameId}")

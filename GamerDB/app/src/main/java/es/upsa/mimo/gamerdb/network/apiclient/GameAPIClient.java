@@ -18,11 +18,14 @@ public class GameAPIClient {
 
     private GameAPIService api = APIClient.getRetrofit().create(GameAPIService.class);
 
-    public void getGames(int page, int pageSize, CompletionHandler<GameListResponse> completion) {
+    public void getGames(int page, int pageSize, String query, CompletionHandler<GameListResponse> completion) {
 
-        Map<String, Integer> params = new HashMap<>();
-        params.put(Constants.PAGE_PARAM, page);
-        params.put(Constants.PAGE_SIZE_PARAM, pageSize);
+        Map<String, String> params = new HashMap<>();
+        params.put(Constants.PAGE_PARAM, String.valueOf(page));
+        params.put(Constants.PAGE_SIZE_PARAM, String.valueOf(pageSize));
+        if (query != null) {
+            params.put(Constants.SEARCH_PARAM, query);
+        }
 
         Call<GameListResponse> request = api.getGames(params);
         APIClient.sendServer(request,completion);

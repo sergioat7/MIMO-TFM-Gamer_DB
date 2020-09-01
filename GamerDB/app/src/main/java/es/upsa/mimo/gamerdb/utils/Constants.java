@@ -21,6 +21,7 @@ public class Constants {
     public static int WRITE_TIMEOUT = 15;
     public static String PAGE_PARAM = "page";
     public static String PAGE_SIZE_PARAM = "page_size";
+    public static String SEARCH_PARAM = "search";
     public static int FIRST_PAGE = 1;
     public static int PAGE_SIZE = 20;
     public static String BASE_YOUTUBE_URL = "https://www.youtube.com/embed/";

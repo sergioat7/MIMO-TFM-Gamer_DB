@@ -15,7 +15,6 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -55,6 +54,7 @@ public class MainActivity extends AppCompatActivity implements GamesAdapter.OnIt
 
     private GameAPIClient gameAPIClient;
     private int page = Constants.FIRST_PAGE;
+    private String query = null;
 
     //MARK: - Lifecycle methods
 
@@ -74,7 +74,10 @@ public class MainActivity extends AppCompatActivity implements GamesAdapter.OnIt
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        handleIntent(intent);
+
+        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+            searchGames(intent.getStringExtra(SearchManager.QUERY));
+        }
     }
 
     //MARK: - Public methods
@@ -168,7 +171,7 @@ public class MainActivity extends AppCompatActivity implements GamesAdapter.OnIt
             pbPagination.setVisibility(View.VISIBLE);
         }
 
-        gameAPIClient.getGames(page, Constants.PAGE_SIZE, new CompletionHandler<GameListResponse>() {
+        gameAPIClient.getGames(page, Constants.PAGE_SIZE, query, new CompletionHandler<GameListResponse>() {
             @Override
             public void success(GameListResponse gameListResponse) {
 
@@ -194,18 +197,26 @@ public class MainActivity extends AppCompatActivity implements GamesAdapter.OnIt
     private void reloadGames() {
 
         page = Constants.FIRST_PAGE;
-        GamesAdapter adapter = (GamesAdapter) rvGames.getAdapter();
-        if (adapter != null) {
-            adapter.resetList();
-        }
+        query = null;
+        resetList();
         loadGames();
     }
 
-    private void handleIntent(Intent intent) {
+    private void searchGames(String query) {
 
-        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
-            String query = intent.getStringExtra(SearchManager.QUERY);
-            //TODO load games with query
+        toolbar.collapseActionView();
+        srlGames.setRefreshing(true);
+        page = Constants.FIRST_PAGE;
+        this.query = query;
+        resetList();
+        loadGames();
+    }
+
+    private void resetList() {
+
+        GamesAdapter adapter = (GamesAdapter) rvGames.getAdapter();
+        if (adapter != null) {
+            adapter.resetList();
         }
     }
 }
