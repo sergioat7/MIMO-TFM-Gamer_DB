@@ -14,15 +14,20 @@ import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 import java.util.List;
 import es.upsa.mimo.gamerdb.R;
+import es.upsa.mimo.gamerdb.customviews.ImageLoading;
 
 public class ImageSliderAdapter extends PagerAdapter {
 
+    private int gameId;
     private List<String> images;
+    private GamesAdapter.OnItemClickListener onItemClickListener;
     private LayoutInflater inflater;
 
-    public ImageSliderAdapter(List<String> images, Context context) {
+    public ImageSliderAdapter(int gameId, List<String> images, Context context, GamesAdapter.OnItemClickListener onItemClickListener) {
 
+        this.gameId = gameId;
         this.images = images;
+        this.onItemClickListener = onItemClickListener;
         this.inflater = LayoutInflater.from(context);
     }
 
@@ -42,8 +47,8 @@ public class ImageSliderAdapter extends PagerAdapter {
 
         View imageLayout = inflater.inflate(R.layout.image_slider, container, false);
         assert imageLayout != null;
-        ImageView imageView = (ImageView) imageLayout.findViewById(R.id.image_view);
-        ProgressBar loading = imageLayout.findViewById(R.id.progress_bar_loading);
+        ImageView imageView = imageLayout.findViewById(R.id.image_view);
+        ImageLoading loading = imageLayout.findViewById(R.id.image_loading);
 
         loading.setVisibility(View.VISIBLE);
         Picasso.get().load(images.get(position)).into(imageView, new Callback() {
@@ -58,6 +63,11 @@ public class ImageSliderAdapter extends PagerAdapter {
             }
         });
         container.addView(imageLayout, 0);
+
+        imageView.setOnClickListener(v -> {
+            onItemClickListener.onItemClick(gameId);
+        });
+
         return imageLayout;
     }
 

@@ -11,9 +11,11 @@ import com.viewpagerindicator.LinePageIndicator;
 import java.util.ArrayList;
 import java.util.List;
 import es.upsa.mimo.gamerdb.R;
+import es.upsa.mimo.gamerdb.adapters.GamesAdapter;
 import es.upsa.mimo.gamerdb.adapters.ImageSliderAdapter;
 import es.upsa.mimo.gamerdb.models.GameResponse;
 import es.upsa.mimo.gamerdb.models.ScreenshotResponse;
+import es.upsa.mimo.gamerdb.utils.Constants;
 
 public class GamesViewHolder extends RecyclerView.ViewHolder {
 
@@ -25,14 +27,14 @@ public class GamesViewHolder extends RecyclerView.ViewHolder {
         this.itemView = itemView;
     }
 
-    public void fillData(GameResponse game, int position, Context context) {
+    public void fillData(GameResponse game, int position, Context context, GamesAdapter.OnItemClickListener onItemClickListener) {
 
         ViewPager vpImages = itemView.findViewById(R.id.view_pager_images);
         TextView tvName = itemView.findViewById(R.id.text_view_name);
         TextView tvRating = itemView.findViewById(R.id.text_view_rating);
         LinePageIndicator indicator = itemView.findViewById(R.id.view_pager_indicator);
 
-        List<ScreenshotResponse> screenshots = game.getShort_screenshots();
+        List<ScreenshotResponse> screenshots = game.getShortScreenshots();
         List<String> images = new ArrayList<>();
         for (int i=0; i< screenshots.size(); i++) {
 
@@ -41,9 +43,16 @@ public class GamesViewHolder extends RecyclerView.ViewHolder {
         }
 
         ViewGroup.MarginLayoutParams lp = (ViewGroup.MarginLayoutParams) vpImages.getLayoutParams();
-        lp.topMargin = position == 0 ? 150 : 0;
+        lp.topMargin = position == 0 ? Constants.marginList : Constants.noMarginList;
 
-        vpImages.setAdapter(new ImageSliderAdapter(images, context));
+        vpImages.setAdapter(
+                new ImageSliderAdapter(
+                        game.getId(),
+                        images,
+                        context,
+                        onItemClickListener
+                )
+        );
         tvName.setText(game.getName());
         tvRating.setText(String.valueOf(game.getRating()));
         indicator.setViewPager(vpImages);

@@ -3,6 +3,7 @@ package es.upsa.mimo.gamerdb.activities;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -29,7 +30,7 @@ import es.upsa.mimo.gamerdb.network.apiclient.CompletionHandler;
 import es.upsa.mimo.gamerdb.network.apiclient.GameAPIClient;
 import es.upsa.mimo.gamerdb.utils.Constants;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements GamesAdapter.OnItemClickListener {
 
     //MARK: - Public properties
 
@@ -48,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
     //MARK: - Private properties
 
     private GameAPIClient gameAPIClient;
-    private int page = 1;
+    private int page = Constants.firstPage;
 
     //MARK: - Lifecycle methods
 
@@ -71,6 +72,8 @@ public class MainActivity extends AppCompatActivity {
         handleIntent(intent);
     }
 
+    //MARK: - Public methods
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
@@ -80,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
             getMenuInflater().inflate(R.menu.menu_main, menu);
             setupSearchView(menu);
         }
+
         return true;
     }
 
@@ -95,18 +99,24 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onItemClick(int gameId) {
+
+        Intent intent = new Intent(this, GameDetailActivity.class);
+        intent.putExtra(Constants.gameId, gameId);
+        startActivity(intent);
+    }
+
     //MARK: - Private functions
 
     private void initializeUI() {
-
-        gameAPIClient = new GameAPIClient();
 
         srlGames.setColorSchemeResources(R.color.colorPrimary);
         srlGames.setProgressBackgroundColorSchemeResource(android.R.color.white);
         srlGames.setOnRefreshListener(this::reloadGames);
 
         rvGames.setLayoutManager(new LinearLayoutManager(this));
-        rvGames.setAdapter(new GamesAdapter(new ArrayList<>()));
+        rvGames.setAdapter(new GamesAdapter(new ArrayList<>(), this));
         rvGames.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
@@ -118,6 +128,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        gameAPIClient = new GameAPIClient();
         loadGames();
     }
 
@@ -135,11 +146,13 @@ public class MainActivity extends AppCompatActivity {
         int searchPlateId = searchView.getContext().getResources().getIdentifier("android:id/search_plate", null, null);
         View searchPlate = searchView.findViewById(searchPlateId);
         if (searchPlate != null) {
+
             int searchTextId = searchPlate.getContext().getResources().getIdentifier("android:id/search_src_text", null, null);
             TextView searchText = searchPlate.findViewById(searchTextId);
             if (searchText != null) {
-                searchText.setTextColor(Color.WHITE);
-                searchText.setHintTextColor(Color.WHITE);
+
+                searchText.setTextColor(ContextCompat.getColor(this, R.color.colorSecondary));
+                searchText.setHintTextColor(ContextCompat.getColor(this, R.color.colorSecondary));
             }
         }
     }
@@ -149,6 +162,7 @@ public class MainActivity extends AppCompatActivity {
         if (page > 1) {
             pbPagination.setVisibility(View.VISIBLE);
         }
+
         gameAPIClient.getGames(page, Constants.pageSize, new CompletionHandler<GameListResponse>() {
             @Override
             public void success(GameListResponse gameListResponse) {
@@ -173,7 +187,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void reloadGames() {
 
-        page = 1;
+        page = Constants.firstPage;
         GamesAdapter adapter = (GamesAdapter) rvGames.getAdapter();
         if (adapter != null) {
             adapter.resetList();

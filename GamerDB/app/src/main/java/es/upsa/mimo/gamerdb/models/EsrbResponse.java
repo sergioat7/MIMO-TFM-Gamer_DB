@@ -1,6 +1,6 @@
 package es.upsa.mimo.gamerdb.models;
 
-class EsrbResponse {
+public class EsrbResponse {
 
     private int id;
     private String name;

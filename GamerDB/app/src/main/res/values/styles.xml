@@ -13,13 +13,173 @@
 
     <style name="AppTheme.Toolbar" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:minHeight">?attr/actionBarSize</item>
+        <item name="android:textColorPrimary">@color/colorSecondary</item>
+        <item name="android:textColorSecondary">@color/colorSecondary</item>
+    </style>
+
+    <style name="AppTheme.Toolbar.List" parent="AppTheme.Toolbar">
         <item name="android:background">@color/colorPrimarySemiTransparent</item>
-        <item name="android:textColorPrimary">@android:color/white</item>
-        <item name="android:textColorSecondary">@android:color/white</item>
+    </style>
+
+    <style name="AppTheme.Toolbar.Detail" parent="AppTheme.Toolbar">
+        <item name="android:background">@android:color/transparent</item>
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="ProgressBar">
+        <item name="android:layout_marginBottom">@dimen/swipe_refresh_layout_margin_bottom</item>
+        <item name="android:visibility">gone</item>
+        <item name="android:indeterminate">true</item>
+        <item name="android:indeterminateTint">@color/colorSecondary</item>
+    </style>
+
+    <style name="ImageSlider">
+        <item name="android:layout_gravity">center</item>
+        <item name="android:layout_margin">@dimen/image_slider_margin</item>
+        <item name="android:adjustViewBounds">true</item>
+        <item name="android:scaleType">centerCrop</item>
+    </style>
+
+    <style name="ImageLoadingText">
+        <item name="android:layout_marginTop">@dimen/image_progress_bar_text_margin_top</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
+    </style>
+
+    <style name="GameCellName">
+        <item name="android:layout_marginStart">@dimen/game_cell_name_margin</item>
+        <item name="android:layout_marginEnd">@dimen/game_cell_name_margin</item>
+        <item name="android:layout_marginBottom">@dimen/app_margin</item>
+        <item name="android:textColor">@color/textPrimary</item>
+        <item name="android:textSize">@dimen/game_cell_name_text_size</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:fontFamily">@font/roboto_bold</item>
+    </style>
+
+    <style name="GameCellRating">
+        <item name="android:layout_marginEnd">@dimen/game_cell_name_margin</item>
+        <item name="android:textColor">@color/textPrimary</item>
+        <item name="android:textSize">@dimen/game_cell_name_text_size</item>
+        <item name="android:fontFamily">@font/roboto_bold</item>
+    </style>
+
+    <style name="LinePageIndicator">
+        <item name="lineWidth">@dimen/game_images_indicator_width</item>
+        <item name="strokeWidth">@dimen/game_images_indicator_stroke_width</item>
+        <item name="selectedColor">@color/buttonPrimary</item>
+        <item name="unselectedColor">@color/buttonSecondary</item>
+    </style>
+
+    <style name="GameDetailName">
+        <item name="android:textColor">@color/textSecondary</item>
+        <item name="android:textSize">@dimen/game_detail_name_text_size</item>
+        <item name="android:fontFamily">@font/roboto_bold</item>
+    </style>
+
+    <style name="GameDetailRating">
+        <item name="android:layout_marginTop">@dimen/game_detail_rating_margin</item>
+        <item name="android:textColor">@color/textPrimary</item>
+        <item name="android:textSize">@dimen/game_detail_rating_text_size</item>
+        <item name="android:fontFamily">@font/roboto_bold</item>
+    </style>
+
+    <style name="GameDetailButtons">
+        <item name="android:gravity">center</item>
+        <item name="android:paddingStart">@dimen/game_detail_buttons_padding</item>
+        <item name="android:paddingEnd">@dimen/game_detail_buttons_padding</item>
+        <item name="android:drawablePadding">@dimen/game_detail_buttons_padding</item>
+        <item name="android:background">@drawable/bordered_button_primary</item>
+        <item name="android:textColor">@color/colorSecondary</item>
+    </style>
+
+    <style name="GameDetailButtons.Left" parent="GameDetailButtons">
+        <item name="android:layout_marginEnd">@dimen/game_detail_buttons_margin</item>
+    </style>
+
+    <style name="GameDetailButtons.Right" parent="GameDetailButtons">
+        <item name="android:layout_marginStart">@dimen/game_detail_buttons_margin</item>
+    </style>
+
+    <style name="GameDetailDescription">
+        <item name="android:layout_marginTop">@dimen/game_detail_description_margin</item>
+        <item name="android:textColor">@color/textTertiary</item>
+        <item name="android:textSize">@dimen/game_detail_description_text_size</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
+        <item name="android:maxLines">7</item>
+        <item name="android:lineSpacingExtra">@dimen/game_detail_description_line_spacing</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
+    <style name="GameDetailDescriptionButton">
+        <item name="android:layout_marginTop">@dimen/game_detail_description_button_margin</item>
+        <item name="android:gravity">end|center_vertical</item>
+        <item name="android:paddingStart">@dimen/app_margin</item>
+        <item name="android:paddingEnd">@dimen/game_detail_description_button_padding</item>
+        <item name="android:drawablePadding">@dimen/game_detail_description_button_padding</item>
+        <item name="android:background">@drawable/bordered_button_secondary</item>
+        <item name="android:textColor">@color/colorSecondary</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textSize">@dimen/game_detail_description_button_text_size</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
+    </style>
+
+    <style name="GameDetailInfo">
+        <item name="android:fontFamily">@font/roboto_regular</item>
+    </style>
+
+    <style name="GameDetailInfo.Title" parent="GameDetailInfo">
+        <item name="android:layout_marginTop">@dimen/game_detail_info_title_margin_top</item>
+        <item name="android:textColor">@color/textPrimary</item>
+        <item name="android:textSize">@dimen/game_detail_info_title_text_size</item>
+    </style>
+
+    <style name="GameDetailInfo.Title.Left" parent="GameDetailInfo.Title">
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_marginEnd">@dimen/game_detail_info_title_margin_horizontal</item>
+    </style>
+
+    <style name="GameDetailInfo.Title.Right" parent="GameDetailInfo.Title">
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_marginStart">@dimen/game_detail_info_title_margin_horizontal</item>
+    </style>
+
+    <style name="GameDetailInfo.Value" parent="GameDetailInfo">
+        <item name="android:layout_marginTop">@dimen/game_detail_info_value_margin_top</item>
+        <item name="android:textColor">@color/textTertiary</item>
+        <item name="android:textSize">@dimen/game_detail_info_value_text_size</item>
+        <item name="android:lineSpacingExtra">@dimen/game_detail_values_line_spacing</item>
+    </style>
+
+    <style name="GameDetailInfo.Value.Left" parent="GameDetailInfo.Value">
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_marginEnd">@dimen/game_detail_info_value_margin_horizontal</item>
+    </style>
+
+    <style name="GameDetailInfo.Value.Right" parent="GameDetailInfo.Value">
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_marginStart">@dimen/game_detail_info_value_margin_horizontal</item>
+    </style>
+
+    <style name="GameDetailStoreButton">
+        <item name="android:gravity">center</item>
+        <item name="android:paddingStart">@dimen/game_detail_store_button_padding</item>
+        <item name="android:paddingEnd">@dimen/game_detail_store_button_padding</item>
+        <item name="android:drawablePadding">@dimen/game_detail_store_button_drawable_padding</item>
+        <item name="android:background">@drawable/bordered_button_secondary</item>
+        <item name="android:textColor">@color/colorSecondary</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textSize">@dimen/game_detail_store_button_text_size</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
+        <item name="android:maxLines">1</item>
+    </style>
+
+    <style name="GridImages">
+        <item name="android:numColumns">2</item>
+        <item name="android:horizontalSpacing">@dimen/grid_images_spacing</item>
+        <item name="android:verticalSpacing">@dimen/grid_images_spacing</item>
+        <item name="android:gravity">center</item>
+    </style>
 
 </resources>

@@ -1,32 +1,38 @@
 package es.upsa.mimo.gamerdb.models;
 
+import com.google.gson.annotations.SerializedName;
+
 public class PlatformObjectResponse {
 
     private int id;
     private String name;
     private String slug;
     private String image;
-    private String year_end;
-    private String year_start;
-    private int games_count;
-    private String image_background;
+    @SerializedName("year_end")
+    private String yearEnd;
+    @SerializedName("year_start")
+    private String yearStart;
+    @SerializedName("games_count")
+    private int gamesCount;
+    @SerializedName("image_background")
+    private String imageBackground;
 
     public PlatformObjectResponse(int id,
                                   String name,
                                   String slug,
                                   String image,
-                                  String year_end,
-                                  String year_start,
-                                  int games_count,
-                                  String image_background) {
+                                  String yearEnd,
+                                  String yearStart,
+                                  int gamesCount,
+                                  String imageBackground) {
         this.id = id;
         this.name = name;
         this.slug = slug;
         this.image = image;
-        this.year_end = year_end;
-        this.year_start = year_start;
-        this.games_count = games_count;
-        this.image_background = image_background;
+        this.yearEnd = yearEnd;
+        this.yearStart = yearStart;
+        this.gamesCount = gamesCount;
+        this.imageBackground = imageBackground;
     }
 
     public int getId() {
@@ -61,35 +67,35 @@ public class PlatformObjectResponse {
         this.image = image;
     }
 
-    public String getYear_end() {
-        return year_end;
+    public String getYearEnd() {
+        return yearEnd;
     }
 
-    public void setYear_end(String year_end) {
-        this.year_end = year_end;
+    public void setYearEnd(String yearEnd) {
+        this.yearEnd = yearEnd;
     }
 
-    public String getYear_start() {
-        return year_start;
+    public String getYearStart() {
+        return yearStart;
     }
 
-    public void setYear_start(String year_start) {
-        this.year_start = year_start;
+    public void setYearStart(String yearStart) {
+        this.yearStart = yearStart;
     }
 
-    public int getGames_count() {
-        return games_count;
+    public int getGamesCount() {
+        return gamesCount;
     }
 
-    public void setGames_count(int games_count) {
-        this.games_count = games_count;
+    public void setGamesCount(int gamesCount) {
+        this.gamesCount = gamesCount;
     }
 
-    public String getImage_background() {
-        return image_background;
+    public String getImageBackground() {
+        return imageBackground;
     }
 
-    public void setImage_background(String image_background) {
-        this.image_background = image_background;
+    public void setImageBackground(String imageBackground) {
+        this.imageBackground = imageBackground;
     }
 }

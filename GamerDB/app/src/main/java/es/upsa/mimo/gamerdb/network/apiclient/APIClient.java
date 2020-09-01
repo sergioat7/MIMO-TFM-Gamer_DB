@@ -19,7 +19,10 @@ public class APIClient {
 
     private static Gson getGson() {
         return new GsonBuilder()
-                .registerTypeAdapter(Date.class, (JsonDeserializer<Date>) (json, typeOfT, context) -> Constants.stringToDate(json.toString()))
+                .registerTypeAdapter(
+                        Date.class,
+                        (JsonDeserializer<Date>) (json, typeOfT, context) -> Constants.stringToDate(json.toString(), Constants.dateFormat)
+                )
                 .setDateFormat(Constants.dateFormat)
                 .serializeNulls()
                 .create();
@@ -27,9 +30,9 @@ public class APIClient {
 
     private static OkHttpClient getOkHttpClient() {
         return new OkHttpClient.Builder()
-                .connectTimeout(1, TimeUnit.MINUTES)
-                .readTimeout(30, TimeUnit.SECONDS)
-                .writeTimeout(15, TimeUnit.SECONDS)
+                .connectTimeout(Constants.connectTimeout, TimeUnit.SECONDS)
+                .readTimeout(Constants.readTimeout, TimeUnit.SECONDS)
+                .writeTimeout(Constants.writeTimeout, TimeUnit.SECONDS)
                 .build();
     }
 
