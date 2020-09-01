@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2020 Sergio Aragonés. All rights reserved.
+ * Created by Sergio Aragonés on 30/8/2020
+ */
+
 package es.upsa.mimo.gamerdb.activities;
 
 import androidx.appcompat.app.AppCompatActivity;

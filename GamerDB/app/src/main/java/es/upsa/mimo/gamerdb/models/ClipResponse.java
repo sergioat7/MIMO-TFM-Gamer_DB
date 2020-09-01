@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2020 Sergio Aragonés. All rights reserved.
+ * Created by Sergio Aragonés on 27/8/2020
+ */
+
 package es.upsa.mimo.gamerdb.models;
 
 import es.upsa.mimo.gamerdb.utils.Constants;

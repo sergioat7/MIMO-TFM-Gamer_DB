@@ -1,13 +1,16 @@
+/*
+ * Copyright (c) 2020 Sergio Aragonés. All rights reserved.
+ * Created by Sergio Aragonés on 29/8/2020
+ */
+
 package es.upsa.mimo.gamerdb.adapters;
 
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.GridView;
 import android.widget.ImageView;
 import com.squareup.picasso.Picasso;
-
 import java.util.List;
 
 public class ImagesAdapter extends BaseAdapter {
