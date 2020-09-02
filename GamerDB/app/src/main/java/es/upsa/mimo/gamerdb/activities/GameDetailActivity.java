@@ -28,7 +28,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import es.upsa.mimo.gamerdb.R;
 import es.upsa.mimo.gamerdb.customviews.ImageLoading;
-import es.upsa.mimo.gamerdb.fragments.popups.PopupVideoFragment;
+import es.upsa.mimo.gamerdb.fragments.popups.PopupVideoDialogFragment;
 import es.upsa.mimo.gamerdb.models.DeveloperResponse;
 import es.upsa.mimo.gamerdb.models.ErrorResponse;
 import es.upsa.mimo.gamerdb.models.GameResponse;
@@ -281,7 +281,7 @@ public class GameDetailActivity extends AppCompatActivity {
             transaction.remove(prev);
         }
         transaction.addToBackStack(null);
-        PopupVideoFragment dialogFragment = new PopupVideoFragment(videoUrl);
+        PopupVideoDialogFragment dialogFragment = new PopupVideoDialogFragment(videoUrl);
         dialogFragment.setCancelable(true);
         dialogFragment.show(transaction, "videoPopup");//TODO move to Constants
     }
