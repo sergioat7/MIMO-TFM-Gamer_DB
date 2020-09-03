@@ -6,8 +6,6 @@
 package es.upsa.mimo.gamerdb.fragments.popups;
 
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,13 +14,11 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.MediaController;
-import android.widget.VideoView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import es.upsa.mimo.gamerdb.R;
 
-public class PopupVideoFragment extends DialogFragment {
+public class PopupVideoDialogFragment extends DialogFragment {
 
     //MARK: - Public properties
 
@@ -33,7 +29,7 @@ public class PopupVideoFragment extends DialogFragment {
 
     private String url;
 
-    public PopupVideoFragment(String url) {
+    public PopupVideoDialogFragment(String url) {
         this.url = url;
     }
 
@@ -42,16 +38,11 @@ public class PopupVideoFragment extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_popup_video, container, false);
+        View view = inflater.inflate(R.layout.fragment_popup_video_dialog, container, false);
         ButterKnife.bind(this, view);
         initializeUI();
 
         return view;
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
     }
 
     //MARK: - Private functions

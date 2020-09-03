@@ -55,10 +55,11 @@ public class Constants {
         }
     }
 
-    //MARK: - Intent extras
+    //MARK: - Ids
 
     public static String GAME_ID = "gameId";
     public static String IMAGE_URL = "imageUrl";
+    public static String ERROR_POPUP_ID = "errorPopup";
 
     //MARK: - Game list
 
@@ -70,6 +71,8 @@ public class Constants {
     public static int MAX_LINES = Integer.MAX_VALUE;
     public static int STORE_BUTTON_SEPARATOR_WIDTH = 40;
     public static int STORE_BUTTON_HEIGHT = 50;
+    public static String emptyValue = "-";
+    public static String nextValueSeparator = ", ";
 
     public static int getStoreImageId(String storeId) {
 

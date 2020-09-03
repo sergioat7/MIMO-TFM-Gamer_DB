@@ -5,7 +5,6 @@
 
 package es.upsa.mimo.gamerdb.activities;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
@@ -27,8 +26,9 @@ import java.util.Objects;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import es.upsa.mimo.gamerdb.R;
+import es.upsa.mimo.gamerdb.activities.base.BaseActivity;
 import es.upsa.mimo.gamerdb.customviews.ImageLoading;
-import es.upsa.mimo.gamerdb.fragments.popups.PopupVideoFragment;
+import es.upsa.mimo.gamerdb.fragments.popups.PopupVideoDialogFragment;
 import es.upsa.mimo.gamerdb.models.DeveloperResponse;
 import es.upsa.mimo.gamerdb.models.ErrorResponse;
 import es.upsa.mimo.gamerdb.models.GameResponse;
@@ -41,7 +41,7 @@ import es.upsa.mimo.gamerdb.network.apiclient.CompletionHandler;
 import es.upsa.mimo.gamerdb.network.apiclient.GameAPIClient;
 import es.upsa.mimo.gamerdb.utils.Constants;
 
-public class GameDetailActivity extends AppCompatActivity {
+public class GameDetailActivity extends BaseActivity {
 
     //MARK: - Public properties
 
@@ -147,20 +147,27 @@ public class GameDetailActivity extends AppCompatActivity {
                         imageLoading.setVisibility(View.GONE);
                     }
                 });
+
                 tvName.setText(gameResponse.getName());
                 tvRating.setText(String.valueOf(gameResponse.getRating()));
-                tvDescription.setText(gameResponse.getDescription());
+
+                String description = gameResponse.getDescription();
+                tvDescription.setText(description);
+                tvDescription.setVisibility(description.isEmpty() ? View.GONE : View.VISIBLE);
+                btShowMoreText.setVisibility(description.isEmpty() ? View.GONE : View.VISIBLE);
+
                 List<PlatformResponse> platforms = gameResponse.getPlatforms();
                 StringBuilder platformsText = new StringBuilder();
                 if (platforms != null) {
                     for (int i = 0; i < platforms.size(); i++) {
 
                         platformsText.append(platforms.get(i).getPlatform().getName());
-                        platformsText.append(", ");
+                        platformsText.append(Constants.nextValueSeparator);
                     }
-                    platformsText = new StringBuilder((platformsText.length() == 0) ? "" : platformsText.substring(0, platformsText.length() - 2));
                 }
+                platformsText = new StringBuilder((platformsText.length() == 0) ? Constants.emptyValue : platformsText.substring(0, platformsText.length() - 2));
                 tvPlatforms.setText(platformsText.toString());
+
                 String releasedDate;
                 try {
                     Date date = Constants.stringToDate(gameResponse.getReleased(), Constants.DATE_FORMAT);
@@ -168,46 +175,57 @@ public class GameDetailActivity extends AppCompatActivity {
                     assert releasedDate != null;
                     releasedDate = releasedDate.substring(0,1).toUpperCase() + releasedDate.substring(1);
                 } catch (Exception ignored) {
-                    releasedDate = "-";
+                    releasedDate = Constants.emptyValue;
                 }
                 tvReleaseDate.setText(releasedDate);
+
                 List<GenreResponse> genres = gameResponse.getGenres();
                 StringBuilder genresText = new StringBuilder();
                 if (genres != null) {
                     for (int i = 0; i < genres.size(); i++) {
 
                         genresText.append(genres.get(i).getName());
-                        genresText.append(", ");
+                        genresText.append(Constants.nextValueSeparator);
                     }
-                    genresText = new StringBuilder((genresText.length() == 0) ? "" : genresText.substring(0, genresText.length() - 2));
                 }
+                genresText = new StringBuilder((genresText.length() == 0) ? Constants.emptyValue : genresText.substring(0, genresText.length() - 2));
                 tvGenres.setText(genresText.toString());
+
+                String ageRating = Constants.emptyValue;
                 if (gameResponse.getEsrbRating() != null) {
-                    tvAgeRating.setText(gameResponse.getEsrbRating().getName());
+                    ageRating = gameResponse.getEsrbRating().getName();
                 }
+                tvAgeRating.setText(ageRating);
+
                 List<DeveloperResponse> developers = gameResponse.getDevelopers();
                 StringBuilder developersText = new StringBuilder();
                 if (developers != null) {
                     for (int i = 0; i < developers.size(); i++) {
 
                         developersText.append(developers.get(i).getName());
-                        developersText.append(", ");
+                        developersText.append(Constants.nextValueSeparator);
                     }
-                    developersText = new StringBuilder((developersText.length() == 0) ? "" : developersText.substring(0, developersText.length() - 2));
                 }
+                developersText = new StringBuilder((developersText.length() == 0) ? Constants.emptyValue : developersText.substring(0, developersText.length() - 2));
                 tvDeveloper.setText(developersText.toString());
+
                 List<PublisherResponse> publishers = gameResponse.getPublishers();
                 StringBuilder publishersText = new StringBuilder();
                 if (publishers != null) {
                     for (int i = 0; i < publishers.size(); i++) {
 
                         publishersText.append(publishers.get(i).getName());
-                        publishersText.append(", ");
+                        publishersText.append(Constants.nextValueSeparator);
                     }
-                    publishersText = new StringBuilder((publishersText.length() == 0) ? "" : publishersText.substring(0, publishersText.length() - 2));
                 }
+                publishersText = new StringBuilder((publishersText.length() == 0) ? Constants.emptyValue : publishersText.substring(0, publishersText.length() - 2));
                 tvPublisher.setText(publishersText.toString());
-                tvWebsite.setText(gameResponse.getWebsite());
+
+                String website = Constants.emptyValue;
+                if (gameResponse.getWebsite() != null && !gameResponse.getWebsite().isEmpty()) {
+                    website = gameResponse.getWebsite();
+                }
+                tvWebsite.setText(website);
 
                 llStores.removeAllViews();
                 List<StoreResponse> stores = gameResponse.getStores();
@@ -249,16 +267,16 @@ public class GameDetailActivity extends AppCompatActivity {
                     for (int i = 0; i < tags.size(); i++) {
 
                         tagsText.append(tags.get(i).getName());
-                        tagsText.append(", ");
+                        tagsText.append(Constants.nextValueSeparator);
                     }
-                    tagsText = new StringBuilder((tagsText.length() == 0) ? "" : tagsText.substring(0, tagsText.length() - 2));
+                    tagsText = new StringBuilder((tagsText.length() == 0) ? Constants.emptyValue : tagsText.substring(0, tagsText.length() - 2));
                 }
                 tvTags.setText(tagsText.toString());
             }
 
             @Override
             public void failure(ErrorResponse error) {
-                //TODO show error and go back
+                manageError(error);
             }
         });
     }
@@ -281,7 +299,7 @@ public class GameDetailActivity extends AppCompatActivity {
             transaction.remove(prev);
         }
         transaction.addToBackStack(null);
-        PopupVideoFragment dialogFragment = new PopupVideoFragment(videoUrl);
+        PopupVideoDialogFragment dialogFragment = new PopupVideoDialogFragment(videoUrl);
         dialogFragment.setCancelable(true);
         dialogFragment.show(transaction, "videoPopup");//TODO move to Constants
     }

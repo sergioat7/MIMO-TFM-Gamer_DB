@@ -18,5 +18,6 @@
     <string name="loading_image">Loading image…</string>
     <string name="game_image">Image of the game</string>
     <string name="rating_image">Star image to represent rating</string>
+    <string name="accept">Accept</string>
 
 </resources>
