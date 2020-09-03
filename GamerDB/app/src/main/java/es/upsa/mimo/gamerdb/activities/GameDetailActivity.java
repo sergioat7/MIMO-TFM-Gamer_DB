@@ -65,40 +65,22 @@ public class GameDetailActivity extends BaseActivity {
     TextView tvDescription;
     @BindView(R.id.button_show_more_text)
     Button btShowMoreText;
-    @BindView(R.id.text_view_platforms_title)
-    TextView tvPlatformsTitle;
     @BindView(R.id.text_view_platforms)
     TextView tvPlatforms;
-    @BindView(R.id.text_view_released_date_title)
-    TextView tvReleaseDateTitle;
     @BindView(R.id.text_view_released_date)
     TextView tvReleaseDate;
-    @BindView(R.id.text_view_genres_title)
-    TextView tvGenresTitle;
     @BindView(R.id.text_view_genres)
     TextView tvGenres;
-    @BindView(R.id.text_view_age_rating_title)
-    TextView tvAgeRatingTitle;
     @BindView(R.id.text_view_age_rating)
     TextView tvAgeRating;
-    @BindView(R.id.text_view_developer_title)
-    TextView tvDeveloperTitle;
     @BindView(R.id.text_view_developer)
     TextView tvDeveloper;
-    @BindView(R.id.text_view_publisher_title)
-    TextView tvPublisherTitle;
     @BindView(R.id.text_view_publisher)
     TextView tvPublisher;
-    @BindView(R.id.text_view_website_title)
-    TextView tvWebsiteTitle;
     @BindView(R.id.text_view_website)
     TextView tvWebsite;
-    @BindView(R.id.text_view_stores_title)
-    TextView tvStoresTitle;
     @BindView(R.id.linear_layout_stores)
     LinearLayout llStores;
-    @BindView(R.id.text_view_tags_title)
-    TextView tvTagsTitle;
     @BindView(R.id.text_view_tags)
     TextView tvTags;
 
@@ -185,8 +167,6 @@ public class GameDetailActivity extends BaseActivity {
                 }
                 platformsText = new StringBuilder((platformsText.length() == 0) ? Constants.emptyValue : platformsText.substring(0, platformsText.length() - 2));
                 tvPlatforms.setText(platformsText.toString());
-                tvPlatforms.setVisibility(platformsText.length() == 0 ? View.GONE : View.VISIBLE);
-                tvPlatformsTitle.setVisibility(platformsText.length() == 0 ? View.GONE : View.VISIBLE);
 
                 String releasedDate;
                 try {
@@ -198,8 +178,6 @@ public class GameDetailActivity extends BaseActivity {
                     releasedDate = Constants.emptyValue;
                 }
                 tvReleaseDate.setText(releasedDate);
-                tvReleaseDate.setVisibility(releasedDate.isEmpty() ? View.GONE : View.VISIBLE);
-                tvReleaseDateTitle.setVisibility(releasedDate.isEmpty() ? View.GONE : View.VISIBLE);
 
                 List<GenreResponse> genres = gameResponse.getGenres();
                 StringBuilder genresText = new StringBuilder();
@@ -212,16 +190,12 @@ public class GameDetailActivity extends BaseActivity {
                 }
                 genresText = new StringBuilder((genresText.length() == 0) ? Constants.emptyValue : genresText.substring(0, genresText.length() - 2));
                 tvGenres.setText(genresText.toString());
-                tvGenres.setVisibility(genresText.length() == 0 ? View.GONE : View.VISIBLE);
-                tvGenresTitle.setVisibility(genresText.length() == 0 ? View.GONE : View.VISIBLE);
 
                 String ageRating = Constants.emptyValue;
                 if (gameResponse.getEsrbRating() != null) {
                     ageRating = gameResponse.getEsrbRating().getName();
                 }
                 tvAgeRating.setText(ageRating);
-                tvAgeRating.setVisibility(ageRating.isEmpty() ? View.GONE : View.VISIBLE);
-                tvAgeRatingTitle.setVisibility(ageRating.isEmpty() ? View.GONE : View.VISIBLE);
 
                 List<DeveloperResponse> developers = gameResponse.getDevelopers();
                 StringBuilder developersText = new StringBuilder();
@@ -234,8 +208,6 @@ public class GameDetailActivity extends BaseActivity {
                 }
                 developersText = new StringBuilder((developersText.length() == 0) ? Constants.emptyValue : developersText.substring(0, developersText.length() - 2));
                 tvDeveloper.setText(developersText.toString());
-                tvDeveloper.setVisibility(developersText.length() == 0 ? View.GONE : View.VISIBLE);
-                tvDeveloperTitle.setVisibility(developersText.length() == 0 ? View.GONE : View.VISIBLE);
 
                 List<PublisherResponse> publishers = gameResponse.getPublishers();
                 StringBuilder publishersText = new StringBuilder();
@@ -248,13 +220,12 @@ public class GameDetailActivity extends BaseActivity {
                 }
                 publishersText = new StringBuilder((publishersText.length() == 0) ? Constants.emptyValue : publishersText.substring(0, publishersText.length() - 2));
                 tvPublisher.setText(publishersText.toString());
-                tvPublisher.setVisibility(publishersText.length() == 0 ? View.GONE : View.VISIBLE);
-                tvPublisherTitle.setVisibility(publishersText.length() == 0 ? View.GONE : View.VISIBLE);
 
-                String website = gameResponse.getWebsite();
+                String website = Constants.emptyValue;
+                if (gameResponse.getWebsite() != null && !gameResponse.getWebsite().isEmpty()) {
+                    website = gameResponse.getWebsite();
+                }
                 tvWebsite.setText(website);
-                tvWebsite.setVisibility(website.isEmpty() ? View.GONE : View.VISIBLE);
-                tvWebsiteTitle.setVisibility(website.isEmpty() ? View.GONE : View.VISIBLE);
 
                 llStores.removeAllViews();
                 List<StoreResponse> stores = gameResponse.getStores();
@@ -288,11 +259,6 @@ public class GameDetailActivity extends BaseActivity {
                 }
                 if (llStores.getChildCount() > 0) {
                     llStores.removeViewAt(llStores.getChildCount() - 1);
-                    llStores.setVisibility(View.VISIBLE);
-                    tvStoresTitle.setVisibility(View.VISIBLE);
-                } else {
-                    llStores.setVisibility(View.GONE);
-                    tvStoresTitle.setVisibility(View.GONE);
                 }
 
                 List<TagResponse> tags = gameResponse.getTags();
@@ -306,8 +272,6 @@ public class GameDetailActivity extends BaseActivity {
                     tagsText = new StringBuilder((tagsText.length() == 0) ? Constants.emptyValue : tagsText.substring(0, tagsText.length() - 2));
                 }
                 tvTags.setText(tagsText.toString());
-                tvTags.setVisibility(tagsText.length() == 0 ? View.GONE : View.VISIBLE);
-                tvTagsTitle.setVisibility(tagsText.length() == 0 ? View.GONE : View.VISIBLE);
             }
 
             @Override
