@@ -5,10 +5,8 @@
 
 package es.upsa.mimo.gamerdb.activities;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
@@ -19,10 +17,11 @@ import java.util.Objects;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import es.upsa.mimo.gamerdb.R;
+import es.upsa.mimo.gamerdb.activities.base.BaseActivity;
 import es.upsa.mimo.gamerdb.customviews.ImageLoading;
 import es.upsa.mimo.gamerdb.utils.Constants;
 
-public class ImageDetailActivity extends AppCompatActivity {
+public class ImageDetailActivity extends BaseActivity {
 
     //MARK: - Public properties
 

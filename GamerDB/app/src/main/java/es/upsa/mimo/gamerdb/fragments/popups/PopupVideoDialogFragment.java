@@ -6,8 +6,6 @@
 package es.upsa.mimo.gamerdb.fragments.popups;
 
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -45,11 +43,6 @@ public class PopupVideoDialogFragment extends DialogFragment {
         initializeUI();
 
         return view;
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
     }
 
     //MARK: - Private functions

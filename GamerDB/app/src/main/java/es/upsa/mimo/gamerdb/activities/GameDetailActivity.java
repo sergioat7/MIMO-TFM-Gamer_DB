@@ -5,7 +5,6 @@
 
 package es.upsa.mimo.gamerdb.activities;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
@@ -27,6 +26,7 @@ import java.util.Objects;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import es.upsa.mimo.gamerdb.R;
+import es.upsa.mimo.gamerdb.activities.base.BaseActivity;
 import es.upsa.mimo.gamerdb.customviews.ImageLoading;
 import es.upsa.mimo.gamerdb.fragments.popups.PopupVideoDialogFragment;
 import es.upsa.mimo.gamerdb.models.DeveloperResponse;
@@ -41,7 +41,7 @@ import es.upsa.mimo.gamerdb.network.apiclient.CompletionHandler;
 import es.upsa.mimo.gamerdb.network.apiclient.GameAPIClient;
 import es.upsa.mimo.gamerdb.utils.Constants;
 
-public class GameDetailActivity extends AppCompatActivity {
+public class GameDetailActivity extends BaseActivity {
 
     //MARK: - Public properties
 
@@ -258,7 +258,7 @@ public class GameDetailActivity extends AppCompatActivity {
 
             @Override
             public void failure(ErrorResponse error) {
-                //TODO show error and go back
+                manageError(error);
             }
         });
     }

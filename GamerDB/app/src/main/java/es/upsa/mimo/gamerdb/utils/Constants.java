@@ -55,10 +55,11 @@ public class Constants {
         }
     }
 
-    //MARK: - Intent extras
+    //MARK: - Ids
 
     public static String GAME_ID = "gameId";
     public static String IMAGE_URL = "imageUrl";
+    public static String ERROR_POPUP_ID = "errorPopup";
 
     //MARK: - Game list
 

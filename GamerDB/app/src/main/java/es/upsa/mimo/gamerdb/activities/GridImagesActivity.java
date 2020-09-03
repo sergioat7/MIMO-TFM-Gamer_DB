@@ -5,22 +5,17 @@
 
 package es.upsa.mimo.gamerdb.activities;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.GridView;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import es.upsa.mimo.gamerdb.R;
+import es.upsa.mimo.gamerdb.activities.base.BaseActivity;
 import es.upsa.mimo.gamerdb.adapters.ImagesAdapter;
 import es.upsa.mimo.gamerdb.models.ErrorResponse;
 import es.upsa.mimo.gamerdb.models.ScreenshotListResponse;
@@ -29,7 +24,7 @@ import es.upsa.mimo.gamerdb.network.apiclient.CompletionHandler;
 import es.upsa.mimo.gamerdb.network.apiclient.GameAPIClient;
 import es.upsa.mimo.gamerdb.utils.Constants;
 
-public class GridImagesActivity extends AppCompatActivity {
+public class GridImagesActivity extends BaseActivity {
 
     //MARK: - Public properties
 
@@ -95,7 +90,7 @@ public class GridImagesActivity extends AppCompatActivity {
 
             @Override
             public void failure(ErrorResponse error) {
-                //TODO show error and go back
+                manageError(error);
             }
         });
     }

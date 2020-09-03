@@ -6,7 +6,6 @@
 package es.upsa.mimo.gamerdb.activities;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -27,6 +26,7 @@ import java.util.Objects;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import es.upsa.mimo.gamerdb.R;
+import es.upsa.mimo.gamerdb.activities.base.BaseActivity;
 import es.upsa.mimo.gamerdb.adapters.GamesAdapter;
 import es.upsa.mimo.gamerdb.models.ErrorResponse;
 import es.upsa.mimo.gamerdb.models.GameListResponse;
@@ -34,7 +34,7 @@ import es.upsa.mimo.gamerdb.network.apiclient.CompletionHandler;
 import es.upsa.mimo.gamerdb.network.apiclient.GameAPIClient;
 import es.upsa.mimo.gamerdb.utils.Constants;
 
-public class MainActivity extends AppCompatActivity implements GamesAdapter.OnItemClickListener {
+public class MainActivity extends BaseActivity implements GamesAdapter.OnItemClickListener {
 
     //MARK: - Public properties
 
@@ -187,9 +187,9 @@ public class MainActivity extends AppCompatActivity implements GamesAdapter.OnIt
             @Override
             public void failure(ErrorResponse error) {
 
-                //TODO show error
                 srlGames.setRefreshing(false);
                 pbPagination.setVisibility(View.GONE);
+                manageError(error);
             }
         });
     }
