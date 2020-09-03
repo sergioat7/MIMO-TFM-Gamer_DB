@@ -65,22 +65,40 @@ public class GameDetailActivity extends BaseActivity {
     TextView tvDescription;
     @BindView(R.id.button_show_more_text)
     Button btShowMoreText;
+    @BindView(R.id.text_view_platforms_title)
+    TextView tvPlatformsTitle;
     @BindView(R.id.text_view_platforms)
     TextView tvPlatforms;
+    @BindView(R.id.text_view_released_date_title)
+    TextView tvReleaseDateTitle;
     @BindView(R.id.text_view_released_date)
     TextView tvReleaseDate;
+    @BindView(R.id.text_view_genres_title)
+    TextView tvGenresTitle;
     @BindView(R.id.text_view_genres)
     TextView tvGenres;
+    @BindView(R.id.text_view_age_rating_title)
+    TextView tvAgeRatingTitle;
     @BindView(R.id.text_view_age_rating)
     TextView tvAgeRating;
+    @BindView(R.id.text_view_developer_title)
+    TextView tvDeveloperTitle;
     @BindView(R.id.text_view_developer)
     TextView tvDeveloper;
+    @BindView(R.id.text_view_publisher_title)
+    TextView tvPublisherTitle;
     @BindView(R.id.text_view_publisher)
     TextView tvPublisher;
+    @BindView(R.id.text_view_website_title)
+    TextView tvWebsiteTitle;
     @BindView(R.id.text_view_website)
     TextView tvWebsite;
+    @BindView(R.id.text_view_stores_title)
+    TextView tvStoresTitle;
     @BindView(R.id.linear_layout_stores)
     LinearLayout llStores;
+    @BindView(R.id.text_view_tags_title)
+    TextView tvTagsTitle;
     @BindView(R.id.text_view_tags)
     TextView tvTags;
 
@@ -147,20 +165,29 @@ public class GameDetailActivity extends BaseActivity {
                         imageLoading.setVisibility(View.GONE);
                     }
                 });
+
                 tvName.setText(gameResponse.getName());
                 tvRating.setText(String.valueOf(gameResponse.getRating()));
-                tvDescription.setText(gameResponse.getDescription());
+
+                String description = gameResponse.getDescription();
+                tvDescription.setText(description);
+                tvDescription.setVisibility(description.isEmpty() ? View.GONE : View.VISIBLE);
+                btShowMoreText.setVisibility(description.isEmpty() ? View.GONE : View.VISIBLE);
+
                 List<PlatformResponse> platforms = gameResponse.getPlatforms();
                 StringBuilder platformsText = new StringBuilder();
                 if (platforms != null) {
                     for (int i = 0; i < platforms.size(); i++) {
 
                         platformsText.append(platforms.get(i).getPlatform().getName());
-                        platformsText.append(", ");
+                        platformsText.append(Constants.nextValueSeparator);
                     }
-                    platformsText = new StringBuilder((platformsText.length() == 0) ? "" : platformsText.substring(0, platformsText.length() - 2));
                 }
+                platformsText = new StringBuilder((platformsText.length() == 0) ? Constants.emptyValue : platformsText.substring(0, platformsText.length() - 2));
                 tvPlatforms.setText(platformsText.toString());
+                tvPlatforms.setVisibility(platformsText.length() == 0 ? View.GONE : View.VISIBLE);
+                tvPlatformsTitle.setVisibility(platformsText.length() == 0 ? View.GONE : View.VISIBLE);
+
                 String releasedDate;
                 try {
                     Date date = Constants.stringToDate(gameResponse.getReleased(), Constants.DATE_FORMAT);
@@ -168,46 +195,66 @@ public class GameDetailActivity extends BaseActivity {
                     assert releasedDate != null;
                     releasedDate = releasedDate.substring(0,1).toUpperCase() + releasedDate.substring(1);
                 } catch (Exception ignored) {
-                    releasedDate = "-";
+                    releasedDate = Constants.emptyValue;
                 }
                 tvReleaseDate.setText(releasedDate);
+                tvReleaseDate.setVisibility(releasedDate.isEmpty() ? View.GONE : View.VISIBLE);
+                tvReleaseDateTitle.setVisibility(releasedDate.isEmpty() ? View.GONE : View.VISIBLE);
+
                 List<GenreResponse> genres = gameResponse.getGenres();
                 StringBuilder genresText = new StringBuilder();
                 if (genres != null) {
                     for (int i = 0; i < genres.size(); i++) {
 
                         genresText.append(genres.get(i).getName());
-                        genresText.append(", ");
+                        genresText.append(Constants.nextValueSeparator);
                     }
-                    genresText = new StringBuilder((genresText.length() == 0) ? "" : genresText.substring(0, genresText.length() - 2));
                 }
+                genresText = new StringBuilder((genresText.length() == 0) ? Constants.emptyValue : genresText.substring(0, genresText.length() - 2));
                 tvGenres.setText(genresText.toString());
+                tvGenres.setVisibility(genresText.length() == 0 ? View.GONE : View.VISIBLE);
+                tvGenresTitle.setVisibility(genresText.length() == 0 ? View.GONE : View.VISIBLE);
+
+                String ageRating = Constants.emptyValue;
                 if (gameResponse.getEsrbRating() != null) {
-                    tvAgeRating.setText(gameResponse.getEsrbRating().getName());
+                    ageRating = gameResponse.getEsrbRating().getName();
                 }
+                tvAgeRating.setText(ageRating);
+                tvAgeRating.setVisibility(ageRating.isEmpty() ? View.GONE : View.VISIBLE);
+                tvAgeRatingTitle.setVisibility(ageRating.isEmpty() ? View.GONE : View.VISIBLE);
+
                 List<DeveloperResponse> developers = gameResponse.getDevelopers();
                 StringBuilder developersText = new StringBuilder();
                 if (developers != null) {
                     for (int i = 0; i < developers.size(); i++) {
 
                         developersText.append(developers.get(i).getName());
-                        developersText.append(", ");
+                        developersText.append(Constants.nextValueSeparator);
                     }
-                    developersText = new StringBuilder((developersText.length() == 0) ? "" : developersText.substring(0, developersText.length() - 2));
                 }
+                developersText = new StringBuilder((developersText.length() == 0) ? Constants.emptyValue : developersText.substring(0, developersText.length() - 2));
                 tvDeveloper.setText(developersText.toString());
+                tvDeveloper.setVisibility(developersText.length() == 0 ? View.GONE : View.VISIBLE);
+                tvDeveloperTitle.setVisibility(developersText.length() == 0 ? View.GONE : View.VISIBLE);
+
                 List<PublisherResponse> publishers = gameResponse.getPublishers();
                 StringBuilder publishersText = new StringBuilder();
                 if (publishers != null) {
                     for (int i = 0; i < publishers.size(); i++) {
 
                         publishersText.append(publishers.get(i).getName());
-                        publishersText.append(", ");
+                        publishersText.append(Constants.nextValueSeparator);
                     }
-                    publishersText = new StringBuilder((publishersText.length() == 0) ? "" : publishersText.substring(0, publishersText.length() - 2));
                 }
+                publishersText = new StringBuilder((publishersText.length() == 0) ? Constants.emptyValue : publishersText.substring(0, publishersText.length() - 2));
                 tvPublisher.setText(publishersText.toString());
-                tvWebsite.setText(gameResponse.getWebsite());
+                tvPublisher.setVisibility(publishersText.length() == 0 ? View.GONE : View.VISIBLE);
+                tvPublisherTitle.setVisibility(publishersText.length() == 0 ? View.GONE : View.VISIBLE);
+
+                String website = gameResponse.getWebsite();
+                tvWebsite.setText(website);
+                tvWebsite.setVisibility(website.isEmpty() ? View.GONE : View.VISIBLE);
+                tvWebsiteTitle.setVisibility(website.isEmpty() ? View.GONE : View.VISIBLE);
 
                 llStores.removeAllViews();
                 List<StoreResponse> stores = gameResponse.getStores();
@@ -241,6 +288,11 @@ public class GameDetailActivity extends BaseActivity {
                 }
                 if (llStores.getChildCount() > 0) {
                     llStores.removeViewAt(llStores.getChildCount() - 1);
+                    llStores.setVisibility(View.VISIBLE);
+                    tvStoresTitle.setVisibility(View.VISIBLE);
+                } else {
+                    llStores.setVisibility(View.GONE);
+                    tvStoresTitle.setVisibility(View.GONE);
                 }
 
                 List<TagResponse> tags = gameResponse.getTags();
@@ -249,11 +301,13 @@ public class GameDetailActivity extends BaseActivity {
                     for (int i = 0; i < tags.size(); i++) {
 
                         tagsText.append(tags.get(i).getName());
-                        tagsText.append(", ");
+                        tagsText.append(Constants.nextValueSeparator);
                     }
-                    tagsText = new StringBuilder((tagsText.length() == 0) ? "" : tagsText.substring(0, tagsText.length() - 2));
+                    tagsText = new StringBuilder((tagsText.length() == 0) ? Constants.emptyValue : tagsText.substring(0, tagsText.length() - 2));
                 }
                 tvTags.setText(tagsText.toString());
+                tvTags.setVisibility(tagsText.length() == 0 ? View.GONE : View.VISIBLE);
+                tvTagsTitle.setVisibility(tagsText.length() == 0 ? View.GONE : View.VISIBLE);
             }
 
             @Override
