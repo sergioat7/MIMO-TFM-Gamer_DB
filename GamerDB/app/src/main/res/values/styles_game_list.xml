@@ -1,5 +1,19 @@
 <resources>
 
+    <style name="EndListButton">
+        <item name="android:layout_marginBottom">@dimen/spacing_small</item>
+        <item name="android:layout_marginEnd">@dimen/spacing_small</item>
+        <item name="android:src">@drawable/ic_double_arrow_down</item>
+        <item name="android:tint">@color/colorSecondary</item>
+        <item name="android:backgroundTint">@color/colorPrimary</item>
+        <item name="android:scaleType">center</item>
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+        <item name="borderWidth">@dimen/size_none</item>
+        <item name="maxImageSize">@dimen/size_small</item>
+        <item name="fabSize">mini</item>
+    </style>
+
     <style name="ImageSlider">
         <item name="android:layout_gravity">center</item>
         <item name="android:layout_margin">@dimen/spacing_small</item>

@@ -21,6 +21,7 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.TextView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.ArrayList;
 import java.util.Objects;
 import butterknife.BindView;
@@ -49,6 +50,9 @@ public class MainActivity extends BaseActivity implements GamesAdapter.OnItemCli
 
     @BindView(R.id.progress_bar_pagination)
     ProgressBar pbPagination;
+
+    @BindView(R.id.floating_action_button_end_list)
+    FloatingActionButton btEndList;
 
     //MARK: - Private properties
 
@@ -101,6 +105,7 @@ public class MainActivity extends BaseActivity implements GamesAdapter.OnItemCli
         if (item.getItemId() == android.R.id.home) {
 
             rvGames.scrollToPosition(0);
+            btEndList.setVisibility(View.VISIBLE);
             return true;
         }
 
@@ -132,8 +137,17 @@ public class MainActivity extends BaseActivity implements GamesAdapter.OnItemCli
 
                 if (!recyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
                     loadGames();
+                } else {
+                    btEndList.setVisibility(View.VISIBLE);
                 }
             }
+        });
+
+        btEndList.setOnClickListener(v -> {
+
+            int position = Math.max(0, ((page - 1) * Constants.PAGE_SIZE) - 1);
+            rvGames.scrollToPosition(position);
+            btEndList.setVisibility(View.GONE);
         });
 
         gameAPIClient = new GameAPIClient();
