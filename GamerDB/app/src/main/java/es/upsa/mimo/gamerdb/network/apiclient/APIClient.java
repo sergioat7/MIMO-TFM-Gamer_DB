@@ -6,10 +6,8 @@
 package es.upsa.mimo.gamerdb.network.apiclient;
 
 import com.google.gson.*;
-import java.lang.reflect.Type;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
-
 import es.upsa.mimo.gamerdb.R;
 import es.upsa.mimo.gamerdb.models.ErrorResponse;
 import es.upsa.mimo.gamerdb.utils.Constants;
@@ -18,6 +16,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class APIClient {
@@ -46,6 +45,7 @@ public class APIClient {
                 .baseUrl(Constants.BASE_ENDPOINT)
                 .client(getOkHttpClient())
                 .addConverterFactory(GsonConverterFactory.create(getGson()))
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build();
     }
 

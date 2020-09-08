@@ -12,13 +12,19 @@ import es.upsa.mimo.gamerdb.models.GameResponse;
 import es.upsa.mimo.gamerdb.models.ScreenshotListResponse;
 import es.upsa.mimo.gamerdb.network.apiservice.GameAPIService;
 import es.upsa.mimo.gamerdb.utils.Constants;
+import io.reactivex.Scheduler;
+import io.reactivex.Single;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
 
 public class GameAPIClient {
 
     private GameAPIService api = APIClient.getRetrofit().create(GameAPIService.class);
+    private Scheduler subscriberScheduler = Schedulers.io();
+    private Scheduler observerScheduler = AndroidSchedulers.mainThread();
 
-    public void getGames(int page, int pageSize, String query, CompletionHandler<GameListResponse> completion) {
+    public Single<GameListResponse> getGamesObserver(int page, int pageSize, String query) {
 
         Map<String, String> params = new HashMap<>();
         params.put(Constants.PAGE_PARAM, String.valueOf(page));
@@ -27,8 +33,7 @@ public class GameAPIClient {
             params.put(Constants.SEARCH_PARAM, query);
         }
 
-        Call<GameListResponse> request = api.getGames(params);
-        APIClient.sendServer(request,completion);
+        return api.getGames(params).subscribeOn(subscriberScheduler).observeOn(observerScheduler);
     }
 
     public void getGame(int gameId, CompletionHandler<GameResponse> completion) {

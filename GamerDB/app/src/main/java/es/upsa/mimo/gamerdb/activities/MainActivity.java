@@ -23,6 +23,7 @@ import android.widget.SearchView;
 import android.widget.TextView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -31,9 +32,11 @@ import es.upsa.mimo.gamerdb.activities.base.BaseActivity;
 import es.upsa.mimo.gamerdb.adapters.GamesAdapter;
 import es.upsa.mimo.gamerdb.models.ErrorResponse;
 import es.upsa.mimo.gamerdb.models.GameListResponse;
-import es.upsa.mimo.gamerdb.network.apiclient.CompletionHandler;
+import es.upsa.mimo.gamerdb.models.GameResponse;
 import es.upsa.mimo.gamerdb.network.apiclient.GameAPIClient;
 import es.upsa.mimo.gamerdb.utils.Constants;
+import io.reactivex.SingleObserver;
+import io.reactivex.disposables.Disposable;
 
 public class MainActivity extends BaseActivity implements GamesAdapter.OnItemClickListener {
 
@@ -185,27 +188,42 @@ public class MainActivity extends BaseActivity implements GamesAdapter.OnItemCli
             pbPagination.setVisibility(View.VISIBLE);
         }
 
-        gameAPIClient.getGames(page, Constants.PAGE_SIZE, query, new CompletionHandler<GameListResponse>() {
-            @Override
-            public void success(GameListResponse gameListResponse) {
+        gameAPIClient
+                .getGamesObserver(page, Constants.PAGE_SIZE, query)
+                .subscribe(new SingleObserver<GameListResponse>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                    }
 
-                GamesAdapter adapter = (GamesAdapter) rvGames.getAdapter();
-                if (adapter != null) {
-                    adapter.addGames(gameListResponse.getResults());
-                }
-                srlGames.setRefreshing(false);
-                page++;
-                pbPagination.setVisibility(View.GONE);
-            }
+                    @Override
+                    public void onSuccess(GameListResponse gameListResponse) {
 
-            @Override
-            public void failure(ErrorResponse error) {
+                        addGames(gameListResponse.getResults());
+                        srlGames.setRefreshing(false);
+                        page++;
+                        pbPagination.setVisibility(View.GONE);
+                    }
 
-                srlGames.setRefreshing(false);
-                pbPagination.setVisibility(View.GONE);
-                manageError(error);
-            }
-        });
+                    @Override
+                    public void onError(Throwable e) {
+
+                        srlGames.setRefreshing(false);
+                        pbPagination.setVisibility(View.GONE);
+                        manageError(new ErrorResponse(
+                                "",
+                                R.string.error_server,
+                                "Error in MainActivity getGames")
+                        );
+                    }
+                });
+    }
+
+    private void addGames(List<GameResponse> games) {
+
+        GamesAdapter adapter = (GamesAdapter) rvGames.getAdapter();
+        if (adapter != null) {
+            adapter.addGames(games);
+        }
     }
 
     private void reloadGames() {
