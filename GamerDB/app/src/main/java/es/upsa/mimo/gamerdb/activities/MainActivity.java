@@ -18,7 +18,6 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.TextView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -50,9 +49,6 @@ public class MainActivity extends BaseActivity implements GamesAdapter.OnItemCli
 
     @BindView(R.id.recycler_view_games)
     RecyclerView rvGames;
-
-    @BindView(R.id.progress_bar_pagination)
-    ProgressBar pbPagination;
 
     @BindView(R.id.floating_action_button_end_list)
     FloatingActionButton btEndList;
@@ -123,6 +119,11 @@ public class MainActivity extends BaseActivity implements GamesAdapter.OnItemCli
         startActivity(intent);
     }
 
+    @Override
+    public void onReachEndList() {
+        loadGames();
+    }
+
     //MARK: - Private methods
 
     private void initializeUI() {
@@ -139,7 +140,7 @@ public class MainActivity extends BaseActivity implements GamesAdapter.OnItemCli
                 super.onScrollStateChanged(recyclerView, newState);
 
                 if (!recyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    loadGames();
+                    btEndList.setVisibility(View.GONE);
                 } else {
                     btEndList.setVisibility(View.VISIBLE);
                 }
@@ -148,7 +149,11 @@ public class MainActivity extends BaseActivity implements GamesAdapter.OnItemCli
 
         btEndList.setOnClickListener(v -> {
 
-            int position = Math.max(0, ((page - 1) * Constants.PAGE_SIZE) - 1);
+            int position = 0;
+            GamesAdapter adapter = (GamesAdapter) rvGames.getAdapter();
+            if (adapter != null) {
+                position = adapter.getGamesCount() - 1;
+            }
             rvGames.scrollToPosition(position);
             btEndList.setVisibility(View.GONE);
         });
@@ -184,10 +189,6 @@ public class MainActivity extends BaseActivity implements GamesAdapter.OnItemCli
 
     private void loadGames() {
 
-        if (page > 1) {
-            pbPagination.setVisibility(View.VISIBLE);
-        }
-
         gameAPIClient
                 .getGamesObserver(page, Constants.PAGE_SIZE, query)
                 .subscribe(new SingleObserver<GameListResponse>() {
@@ -200,15 +201,14 @@ public class MainActivity extends BaseActivity implements GamesAdapter.OnItemCli
 
                         addGames(gameListResponse.getResults());
                         srlGames.setRefreshing(false);
+                        btEndList.setVisibility(View.VISIBLE);
                         page++;
-                        pbPagination.setVisibility(View.GONE);
                     }
 
                     @Override
                     public void onError(Throwable e) {
 
                         srlGames.setRefreshing(false);
-                        pbPagination.setVisibility(View.GONE);
                         manageError(new ErrorResponse(
                                 "",
                                 R.string.error_server,

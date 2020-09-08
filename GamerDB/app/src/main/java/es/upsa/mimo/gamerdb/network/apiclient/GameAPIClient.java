@@ -32,7 +32,6 @@ public class GameAPIClient {
         if (query != null) {
             params.put(Constants.SEARCH_PARAM, query);
         }
-
         return api.getGames(params).subscribeOn(subscriberScheduler).observeOn(observerScheduler);
     }
 
