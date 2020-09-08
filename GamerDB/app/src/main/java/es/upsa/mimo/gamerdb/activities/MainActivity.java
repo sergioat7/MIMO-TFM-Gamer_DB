@@ -152,7 +152,7 @@ public class MainActivity extends BaseActivity implements GamesAdapter.OnItemCli
             int position = 0;
             GamesAdapter adapter = (GamesAdapter) rvGames.getAdapter();
             if (adapter != null) {
-                position = adapter.getGamesCount() - 1;
+                position = adapter.getItemCount() - 1;
             }
             rvGames.scrollToPosition(position);
             btEndList.setVisibility(View.GONE);
@@ -202,6 +202,9 @@ public class MainActivity extends BaseActivity implements GamesAdapter.OnItemCli
                         addGames(gameListResponse.getResults());
                         srlGames.setRefreshing(false);
                         btEndList.setVisibility(View.VISIBLE);
+                        if (page == 1) {
+                            rvGames.scrollToPosition(0);
+                        }
                         page++;
                     }
 

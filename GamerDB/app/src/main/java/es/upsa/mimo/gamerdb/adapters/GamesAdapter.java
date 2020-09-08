@@ -34,10 +34,6 @@ public class GamesAdapter extends RecyclerView.Adapter<ViewHolder> {
         this.showLoadMoreItems = true;
     }
 
-    public int getGamesCount() {
-        return this.games.size();
-    }
-
     public void addGames(List<GameResponse> games) {
 
         int position = this.games.size();
