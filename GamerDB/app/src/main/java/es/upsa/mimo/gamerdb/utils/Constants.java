@@ -58,6 +58,7 @@ public class Constants {
     //MARK: - Ids
 
     public static String GAME_ID = "gameId";
+    public static String IMAGES_URL = "imagesUrl";
     public static String IMAGE_URL = "imageUrl";
     public static String ERROR_POPUP_ID = "errorPopup";
 

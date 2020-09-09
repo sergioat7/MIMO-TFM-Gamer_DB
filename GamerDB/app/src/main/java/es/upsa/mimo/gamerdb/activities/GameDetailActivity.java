@@ -20,6 +20,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -35,6 +36,8 @@ import es.upsa.mimo.gamerdb.models.GameResponse;
 import es.upsa.mimo.gamerdb.models.GenreResponse;
 import es.upsa.mimo.gamerdb.models.PlatformResponse;
 import es.upsa.mimo.gamerdb.models.PublisherResponse;
+import es.upsa.mimo.gamerdb.models.ScreenshotListResponse;
+import es.upsa.mimo.gamerdb.models.ScreenshotResponse;
 import es.upsa.mimo.gamerdb.models.StoreResponse;
 import es.upsa.mimo.gamerdb.models.TagResponse;
 import es.upsa.mimo.gamerdb.network.apiclient.GameAPIClient;
@@ -90,6 +93,7 @@ public class GameDetailActivity extends BaseActivity {
     private int gameId;
     private GameAPIClient gameAPIClient;
     private GameResponse game;
+    private ArrayList<String> imagesUrl;
 
     //MARK: - Lifecycle methods
 
@@ -154,22 +158,55 @@ public class GameDetailActivity extends BaseActivity {
                         );
                     }
                 });
+
+        btViewImages.setVisibility(View.GONE);
+        gameAPIClient
+                .getScreenshots(gameId)
+                .subscribe(new SingleObserver<ScreenshotListResponse>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                    }
+
+                    @Override
+                    public void onSuccess(ScreenshotListResponse screenshotListResponse) {
+
+                        List<ScreenshotResponse> screenshots = screenshotListResponse.getResults();
+                        imagesUrl = new ArrayList<>();
+                        for (int i = 0; i < screenshots.size(); i++) {
+                            imagesUrl.add(screenshots.get(i).getImage());
+                        }
+                        btViewImages.setVisibility(View.VISIBLE);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                        manageError(new ErrorResponse(
+                                "",
+                                R.string.error_server,
+                                "Error in GameDetailActivity getScreenshots")
+                        );
+                    }
+                });
     }
 
     private void fillData(GameResponse game) {
 
         this.game = game;
-        Picasso.get().load(game.getBackgroundImage()).into(ivGame, new Callback() {
-            @Override
-            public void onSuccess() {
-                imageLoading.setVisibility(View.GONE);
-            }
+        Picasso
+                .get()
+                .load(game.getBackgroundImage())
+                .into(ivGame, new Callback() {
+                    @Override
+                    public void onSuccess() {
+                        imageLoading.setVisibility(View.GONE);
+                    }
 
-            @Override
-            public void onError(Exception e) {
-                imageLoading.setVisibility(View.GONE);
-            }
-        });
+                    @Override
+                    public void onError(Exception e) {
+                        imageLoading.setVisibility(View.GONE);
+                    }
+                });
 
         tvName.setText(game.getName());
         tvRating.setText(String.valueOf(game.getRating()));
@@ -323,7 +360,7 @@ public class GameDetailActivity extends BaseActivity {
     private void viewImages() {
 
         Intent intent = new Intent(this, GridImagesActivity.class);
-        intent.putExtra(Constants.GAME_ID, gameId);
+        intent.putExtra(Constants.IMAGES_URL, imagesUrl);
         startActivity(intent);
     }
 
