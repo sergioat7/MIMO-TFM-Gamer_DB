@@ -10,7 +10,6 @@ import es.upsa.mimo.gamerdb.models.GameListResponse;
 import es.upsa.mimo.gamerdb.models.GameResponse;
 import es.upsa.mimo.gamerdb.models.ScreenshotListResponse;
 import io.reactivex.Single;
-import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
 import retrofit2.http.Path;
@@ -28,5 +27,5 @@ public interface GameAPIService {
 
     @Headers("User-Agent:GamerDB")
     @GET("games/{gameId}/screenshots")
-    Call<ScreenshotListResponse> getScreenshots(@Path(value = "gameId") int gameId);
+    Single<ScreenshotListResponse> getScreenshots(@Path(value = "gameId") int gameId);
 }

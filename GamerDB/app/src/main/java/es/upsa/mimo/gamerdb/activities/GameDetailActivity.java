@@ -37,7 +37,6 @@ import es.upsa.mimo.gamerdb.models.PlatformResponse;
 import es.upsa.mimo.gamerdb.models.PublisherResponse;
 import es.upsa.mimo.gamerdb.models.StoreResponse;
 import es.upsa.mimo.gamerdb.models.TagResponse;
-import es.upsa.mimo.gamerdb.network.apiclient.CompletionHandler;
 import es.upsa.mimo.gamerdb.network.apiclient.GameAPIClient;
 import es.upsa.mimo.gamerdb.utils.Constants;
 import io.reactivex.SingleObserver;
@@ -133,26 +132,28 @@ public class GameDetailActivity extends BaseActivity {
     private void loadGame() {
 
         imageLoading.setVisibility(View.VISIBLE);
-        gameAPIClient.getGame(gameId).subscribe(new SingleObserver<GameResponse>() {
-            @Override
-            public void onSubscribe(Disposable d) {
-            }
+        gameAPIClient
+                .getGame(gameId)
+                .subscribe(new SingleObserver<GameResponse>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                    }
 
-            @Override
-            public void onSuccess(GameResponse gameResponse) {
-                fillData(gameResponse);
-            }
+                    @Override
+                    public void onSuccess(GameResponse gameResponse) {
+                        fillData(gameResponse);
+                    }
 
-            @Override
-            public void onError(Throwable e) {
+                    @Override
+                    public void onError(Throwable e) {
 
-                manageError(new ErrorResponse(
-                        "",
-                        R.string.error_server,
-                        "Error in GameDetailActivity getGame")
-                );
-            }
-        });
+                        manageError(new ErrorResponse(
+                                "",
+                                R.string.error_server,
+                                "Error in GameDetailActivity getGame")
+                        );
+                    }
+                });
     }
 
     private void fillData(GameResponse game) {

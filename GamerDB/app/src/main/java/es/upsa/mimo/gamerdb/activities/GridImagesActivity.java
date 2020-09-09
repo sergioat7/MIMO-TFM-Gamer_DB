@@ -20,9 +20,10 @@ import es.upsa.mimo.gamerdb.adapters.ImagesAdapter;
 import es.upsa.mimo.gamerdb.models.ErrorResponse;
 import es.upsa.mimo.gamerdb.models.ScreenshotListResponse;
 import es.upsa.mimo.gamerdb.models.ScreenshotResponse;
-import es.upsa.mimo.gamerdb.network.apiclient.CompletionHandler;
 import es.upsa.mimo.gamerdb.network.apiclient.GameAPIClient;
 import es.upsa.mimo.gamerdb.utils.Constants;
+import io.reactivex.SingleObserver;
+import io.reactivex.disposables.Disposable;
 
 public class GridImagesActivity extends BaseActivity {
 
@@ -76,22 +77,33 @@ public class GridImagesActivity extends BaseActivity {
 
     private void loadImages() {
 
-        gameAPIClient.getScreenshots(gameId, new CompletionHandler<ScreenshotListResponse>() {
-            @Override
-            public void success(ScreenshotListResponse screenshotListResponse) {
+        gameAPIClient
+                .getScreenshots(gameId)
+                .subscribe(new SingleObserver<ScreenshotListResponse>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                    }
 
-                List<ScreenshotResponse> screenshots = screenshotListResponse.getResults();
-                imagesUrl = new ArrayList<>();
-                for (int i = 0; i < screenshots.size(); i++) {
-                    imagesUrl.add(screenshots.get(i).getImage());
-                }
-                gvImages.setAdapter(new ImagesAdapter(GridImagesActivity.this, imagesUrl));
-            }
+                    @Override
+                    public void onSuccess(ScreenshotListResponse screenshotListResponse) {
 
-            @Override
-            public void failure(ErrorResponse error) {
-                manageError(error);
-            }
-        });
+                        List<ScreenshotResponse> screenshots = screenshotListResponse.getResults();
+                        imagesUrl = new ArrayList<>();
+                        for (int i = 0; i < screenshots.size(); i++) {
+                            imagesUrl.add(screenshots.get(i).getImage());
+                        }
+                        gvImages.setAdapter(new ImagesAdapter(GridImagesActivity.this, imagesUrl));
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                        manageError(new ErrorResponse(
+                                "",
+                                R.string.error_server,
+                                "Error in GameDetailActivity getGame")
+                        );
+                    }
+                });
     }
 }

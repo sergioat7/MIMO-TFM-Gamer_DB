@@ -16,7 +16,6 @@ import io.reactivex.Scheduler;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
-import retrofit2.Call;
 
 public class GameAPIClient {
 
@@ -39,9 +38,7 @@ public class GameAPIClient {
         return api.getGame(gameId).subscribeOn(subscriberScheduler).observeOn(observerScheduler);
     }
 
-    public void getScreenshots(int gameId, CompletionHandler<ScreenshotListResponse> completion) {
-
-        Call<ScreenshotListResponse> request = api.getScreenshots(gameId);
-        APIClient.sendServer(request, completion);
+    public Single<ScreenshotListResponse> getScreenshots(int gameId) {
+        return api.getScreenshots(gameId).subscribeOn(subscriberScheduler).observeOn(observerScheduler);
     }
 }
