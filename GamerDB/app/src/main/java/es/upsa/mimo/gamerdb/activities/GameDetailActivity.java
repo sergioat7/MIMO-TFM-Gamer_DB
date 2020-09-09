@@ -196,6 +196,9 @@ public class GameDetailActivity extends BaseActivity {
         Picasso
                 .get()
                 .load(game.getBackgroundImage())
+                .fit()
+                .centerCrop()
+                .error(R.drawable.error_image_2)
                 .into(ivGame, new Callback() {
                     @Override
                     public void onSuccess() {

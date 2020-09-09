@@ -29,8 +29,6 @@
     <style name="ImageSlider">
         <item name="android:layout_gravity">center</item>
         <item name="android:layout_margin">@dimen/spacing_small</item>
-        <item name="android:adjustViewBounds">true</item>
-        <item name="android:scaleType">centerCrop</item>
     </style>
 
     <style name="GameCellName">
