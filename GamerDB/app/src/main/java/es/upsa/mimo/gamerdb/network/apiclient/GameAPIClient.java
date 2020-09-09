@@ -35,10 +35,8 @@ public class GameAPIClient {
         return api.getGames(params).subscribeOn(subscriberScheduler).observeOn(observerScheduler);
     }
 
-    public void getGame(int gameId, CompletionHandler<GameResponse> completion) {
-
-        Call<GameResponse> request = api.getGame(gameId);
-        APIClient.sendServer(request, completion);
+    public Single<GameResponse> getGame(int gameId) {
+        return api.getGame(gameId).subscribeOn(subscriberScheduler).observeOn(observerScheduler);
     }
 
     public void getScreenshots(int gameId, CompletionHandler<ScreenshotListResponse> completion) {

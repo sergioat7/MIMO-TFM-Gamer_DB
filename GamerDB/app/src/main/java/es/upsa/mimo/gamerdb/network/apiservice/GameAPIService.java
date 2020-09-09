@@ -24,7 +24,7 @@ public interface GameAPIService {
 
     @Headers("User-Agent:GamerDB")
     @GET("games/{gameId}")
-    Call<GameResponse> getGame(@Path(value = "gameId") int gameId);
+    Single<GameResponse> getGame(@Path(value = "gameId") int gameId);
 
     @Headers("User-Agent:GamerDB")
     @GET("games/{gameId}/screenshots")
