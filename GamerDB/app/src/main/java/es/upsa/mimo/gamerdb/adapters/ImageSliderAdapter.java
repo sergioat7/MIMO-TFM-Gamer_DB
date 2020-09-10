@@ -55,23 +55,29 @@ public class ImageSliderAdapter extends PagerAdapter {
         ImageView imageView = imageLayout.findViewById(R.id.image_view);
         ImageLoading loading = imageLayout.findViewById(R.id.image_loading);
 
-        loading.setVisibility(View.VISIBLE);
-        Picasso.get().load(images.get(position)).into(imageView, new Callback() {
-            @Override
-            public void onSuccess() {
-                loading.setVisibility(View.GONE);
-            }
-
-            @Override
-            public void onError(Exception e) {
-                loading.setVisibility(View.GONE);
-            }
-        });
         container.addView(imageLayout, 0);
-
         imageView.setOnClickListener(v -> {
             onItemClickListener.onItemClick(gameId);
         });
+
+        loading.setVisibility(View.VISIBLE);
+        Picasso
+                .get()
+                .load(images.get(position))
+                .fit()
+                .centerCrop()
+                .error(R.drawable.error_image)
+                .into(imageView, new Callback() {
+                    @Override
+                    public void onSuccess() {
+                        loading.setVisibility(View.GONE);
+                    }
+
+                    @Override
+                    public void onError(Exception e) {
+                        loading.setVisibility(View.GONE);
+                    }
+                });
 
         return imageLayout;
     }

@@ -12,13 +12,18 @@ import es.upsa.mimo.gamerdb.models.GameResponse;
 import es.upsa.mimo.gamerdb.models.ScreenshotListResponse;
 import es.upsa.mimo.gamerdb.network.apiservice.GameAPIService;
 import es.upsa.mimo.gamerdb.utils.Constants;
-import retrofit2.Call;
+import io.reactivex.Scheduler;
+import io.reactivex.Single;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 public class GameAPIClient {
 
     private GameAPIService api = APIClient.getRetrofit().create(GameAPIService.class);
+    private Scheduler subscriberScheduler = Schedulers.io();
+    private Scheduler observerScheduler = AndroidSchedulers.mainThread();
 
-    public void getGames(int page, int pageSize, String query, CompletionHandler<GameListResponse> completion) {
+    public Single<GameListResponse> getGamesObserver(int page, int pageSize, String query) {
 
         Map<String, String> params = new HashMap<>();
         params.put(Constants.PAGE_PARAM, String.valueOf(page));
@@ -26,20 +31,14 @@ public class GameAPIClient {
         if (query != null) {
             params.put(Constants.SEARCH_PARAM, query);
         }
-
-        Call<GameListResponse> request = api.getGames(params);
-        APIClient.sendServer(request,completion);
+        return api.getGames(params).subscribeOn(subscriberScheduler).observeOn(observerScheduler);
     }
 
-    public void getGame(int gameId, CompletionHandler<GameResponse> completion) {
-
-        Call<GameResponse> request = api.getGame(gameId);
-        APIClient.sendServer(request, completion);
+    public Single<GameResponse> getGame(int gameId) {
+        return api.getGame(gameId).subscribeOn(subscriberScheduler).observeOn(observerScheduler);
     }
 
-    public void getScreenshots(int gameId, CompletionHandler<ScreenshotListResponse> completion) {
-
-        Call<ScreenshotListResponse> request = api.getScreenshots(gameId);
-        APIClient.sendServer(request, completion);
+    public Single<ScreenshotListResponse> getScreenshots(int gameId) {
+        return api.getScreenshots(gameId).subscribeOn(subscriberScheduler).observeOn(observerScheduler);
     }
 }

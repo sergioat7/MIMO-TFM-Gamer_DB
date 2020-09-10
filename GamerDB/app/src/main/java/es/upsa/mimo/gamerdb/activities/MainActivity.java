@@ -18,10 +18,11 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.TextView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -30,9 +31,11 @@ import es.upsa.mimo.gamerdb.activities.base.BaseActivity;
 import es.upsa.mimo.gamerdb.adapters.GamesAdapter;
 import es.upsa.mimo.gamerdb.models.ErrorResponse;
 import es.upsa.mimo.gamerdb.models.GameListResponse;
-import es.upsa.mimo.gamerdb.network.apiclient.CompletionHandler;
+import es.upsa.mimo.gamerdb.models.GameResponse;
 import es.upsa.mimo.gamerdb.network.apiclient.GameAPIClient;
 import es.upsa.mimo.gamerdb.utils.Constants;
+import io.reactivex.SingleObserver;
+import io.reactivex.disposables.Disposable;
 
 public class MainActivity extends BaseActivity implements GamesAdapter.OnItemClickListener {
 
@@ -47,8 +50,8 @@ public class MainActivity extends BaseActivity implements GamesAdapter.OnItemCli
     @BindView(R.id.recycler_view_games)
     RecyclerView rvGames;
 
-    @BindView(R.id.progress_bar_pagination)
-    ProgressBar pbPagination;
+    @BindView(R.id.floating_action_button_end_list)
+    FloatingActionButton btEndList;
 
     //MARK: - Private properties
 
@@ -101,6 +104,7 @@ public class MainActivity extends BaseActivity implements GamesAdapter.OnItemCli
         if (item.getItemId() == android.R.id.home) {
 
             rvGames.scrollToPosition(0);
+            btEndList.setVisibility(View.VISIBLE);
             return true;
         }
 
@@ -113,6 +117,11 @@ public class MainActivity extends BaseActivity implements GamesAdapter.OnItemCli
         Intent intent = new Intent(this, GameDetailActivity.class);
         intent.putExtra(Constants.GAME_ID, gameId);
         startActivity(intent);
+    }
+
+    @Override
+    public void onReachEndList() {
+        loadGames();
     }
 
     //MARK: - Private methods
@@ -131,9 +140,22 @@ public class MainActivity extends BaseActivity implements GamesAdapter.OnItemCli
                 super.onScrollStateChanged(recyclerView, newState);
 
                 if (!recyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    loadGames();
+                    btEndList.setVisibility(View.GONE);
+                } else {
+                    btEndList.setVisibility(View.VISIBLE);
                 }
             }
+        });
+
+        btEndList.setOnClickListener(v -> {
+
+            int position = 0;
+            GamesAdapter adapter = (GamesAdapter) rvGames.getAdapter();
+            if (adapter != null) {
+                position = adapter.getItemCount() - 1;
+            }
+            rvGames.scrollToPosition(position);
+            btEndList.setVisibility(View.GONE);
         });
 
         gameAPIClient = new GameAPIClient();
@@ -167,31 +189,44 @@ public class MainActivity extends BaseActivity implements GamesAdapter.OnItemCli
 
     private void loadGames() {
 
-        if (page > 1) {
-            pbPagination.setVisibility(View.VISIBLE);
+        gameAPIClient
+                .getGamesObserver(page, Constants.PAGE_SIZE, query)
+                .subscribe(new SingleObserver<GameListResponse>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                    }
+
+                    @Override
+                    public void onSuccess(GameListResponse gameListResponse) {
+
+                        addGames(gameListResponse.getResults());
+                        srlGames.setRefreshing(false);
+                        btEndList.setVisibility(View.VISIBLE);
+                        if (page == 1) {
+                            rvGames.scrollToPosition(0);
+                        }
+                        page++;
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                        srlGames.setRefreshing(false);
+                        manageError(new ErrorResponse(
+                                "",
+                                R.string.error_server,
+                                "Error in MainActivity getGames")
+                        );
+                    }
+                });
+    }
+
+    private void addGames(List<GameResponse> games) {
+
+        GamesAdapter adapter = (GamesAdapter) rvGames.getAdapter();
+        if (adapter != null) {
+            adapter.addGames(games);
         }
-
-        gameAPIClient.getGames(page, Constants.PAGE_SIZE, query, new CompletionHandler<GameListResponse>() {
-            @Override
-            public void success(GameListResponse gameListResponse) {
-
-                GamesAdapter adapter = (GamesAdapter) rvGames.getAdapter();
-                if (adapter != null) {
-                    adapter.addGames(gameListResponse.getResults());
-                }
-                srlGames.setRefreshing(false);
-                page++;
-                pbPagination.setVisibility(View.GONE);
-            }
-
-            @Override
-            public void failure(ErrorResponse error) {
-
-                srlGames.setRefreshing(false);
-                pbPagination.setVisibility(View.GONE);
-                manageError(error);
-            }
-        });
     }
 
     private void reloadGames() {

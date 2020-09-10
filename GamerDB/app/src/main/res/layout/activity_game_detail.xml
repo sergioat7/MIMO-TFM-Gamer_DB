@@ -12,7 +12,6 @@
         android:id="@+id/image_view_game"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:scaleType="centerCrop"
         android:contentDescription="@string/game_image"
         app:layout_constraintHeight_max="@dimen/size_huge"
         app:layout_constraintHeight_percent="0.5"
