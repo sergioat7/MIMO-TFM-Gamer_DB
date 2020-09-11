@@ -57,9 +57,10 @@ public class Constants {
 
     //MARK: - LiveData Ids
 
-    public static String ATT_GAMES_LIVE_DATA = "games";
     public static String ATT_PAGE_LIVE_DATA = "page";
     public static String ATT_QUERY_LIVE_DATA = "query";
+    public static String ATT_POSITION_LIVE_DATA = "position";
+    public static String ATT_REFRESHING_LIVE_DATA = "refreshing";
 
     //MARK: - Ids
 
@@ -70,6 +71,7 @@ public class Constants {
 
     //MARK: - Game list
 
+    public static int INITIAL_POSITION_LIST = 0;
     public static int MARGIN_LIST = 150;
     public static int NO_MARGIN_LIST = 0;
 

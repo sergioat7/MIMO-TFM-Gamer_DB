@@ -29,13 +29,9 @@ import butterknife.ButterKnife;
 import es.upsa.mimo.gamerdb.R;
 import es.upsa.mimo.gamerdb.activities.base.BaseActivity;
 import es.upsa.mimo.gamerdb.adapters.GamesAdapter;
-import es.upsa.mimo.gamerdb.models.ErrorResponse;
-import es.upsa.mimo.gamerdb.models.GameListResponse;
 import es.upsa.mimo.gamerdb.network.apiclient.GameAPIClient;
 import es.upsa.mimo.gamerdb.utils.Constants;
 import es.upsa.mimo.gamerdb.viewmodels.MainViewModel;
-import io.reactivex.SingleObserver;
-import io.reactivex.disposables.Disposable;
 
 public class MainActivity extends BaseActivity implements GamesAdapter.OnItemClickListener {
 
@@ -55,7 +51,6 @@ public class MainActivity extends BaseActivity implements GamesAdapter.OnItemCli
 
     //MARK: - Private properties
 
-    private GameAPIClient gameAPIClient;
     private MainViewModel viewModel;
     private GamesAdapter gamesAdapter;
 
@@ -75,13 +70,19 @@ public class MainActivity extends BaseActivity implements GamesAdapter.OnItemCli
         this.initializeUI();
     }
 
-    @Override
-    protected void onNewIntent(Intent intent) {
-        super.onNewIntent(intent);
+    //MARK: - Interface methods
 
-        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
-            searchGames(intent.getStringExtra(SearchManager.QUERY));
-        }
+    @Override
+    public void onItemClick(int gameId) {
+
+        Intent intent = new Intent(this, GameDetailActivity.class);
+        intent.putExtra(Constants.GAME_ID, gameId);
+        startActivity(intent);
+    }
+
+    @Override
+    public void onLoadMoreItemsClick() {
+        viewModel.loadGames();
     }
 
     //MARK: - Public methods
@@ -95,7 +96,6 @@ public class MainActivity extends BaseActivity implements GamesAdapter.OnItemCli
             getMenuInflater().inflate(R.menu.menu_main, menu);
             setupSearchView(menu);
         }
-
         return true;
     }
 
@@ -104,52 +104,60 @@ public class MainActivity extends BaseActivity implements GamesAdapter.OnItemCli
 
         if (item.getItemId() == android.R.id.home) {
 
-            rvGames.scrollToPosition(0);
+            viewModel.setPosition(Constants.INITIAL_POSITION_LIST);
             btEndList.setVisibility(View.VISIBLE);
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onItemClick(int gameId) {
-
-        Intent intent = new Intent(this, GameDetailActivity.class);
-        intent.putExtra(Constants.GAME_ID, gameId);
-        startActivity(intent);
-    }
+    //MARK: - Protected methods
 
     @Override
-    public void onLoadMoreItemsClick() {
-        loadGames();
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+
+        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+
+            toolbar.collapseActionView();
+            srlGames.setRefreshing(true);
+            viewModel.searchGames(intent.getStringExtra(SearchManager.QUERY));
+        }
     }
 
     //MARK: - Private methods
 
     private void initializeUI() {
 
-        gameAPIClient = new GameAPIClient();
-        viewModel = new ViewModelProvider
-                (
-                        this,
-                        new SavedStateViewModelFactory(this.getApplication(), this)
-                ).get(MainViewModel.class);
+        viewModel = new ViewModelProvider(
+                this,
+                new SavedStateViewModelFactory(this.getApplication(), this)
+        ).get(MainViewModel.class);
         viewModel
                 .getGames()
                 .observe(this, gameResponses -> {
-                    
+
                     if (gameResponses.isEmpty()) {
                         gamesAdapter.resetList();
                     } else{
                         gamesAdapter.setGames(gameResponses);
                     }
+                    btEndList.setVisibility(View.VISIBLE);
                 });
+        viewModel
+                .getError()
+                .observe(this, this::manageError);
+        viewModel
+                .getPosition()
+                .observe(this, position -> rvGames.scrollToPosition(position));
+        viewModel
+                .getRefreshing()
+                .observe(this, refreshing -> srlGames.setRefreshing(refreshing));
         gamesAdapter = new GamesAdapter(viewModel.getGames().getValue(), this);
 
         srlGames.setColorSchemeResources(R.color.colorPrimary);
         srlGames.setProgressBackgroundColorSchemeResource(android.R.color.white);
-        srlGames.setOnRefreshListener(this::reloadGames);
+        srlGames.setOnRefreshListener(() -> viewModel.reloadGames());
 
         rvGames.setLayoutManager(new LinearLayoutManager(this));
         rvGames.setAdapter(gamesAdapter);
@@ -169,7 +177,7 @@ public class MainActivity extends BaseActivity implements GamesAdapter.OnItemCli
         btEndList.setOnClickListener(v -> {
 
             int position = gamesAdapter.getItemCount() - 1;
-            rvGames.scrollToPosition(position);
+            viewModel.setPosition(position);
             btEndList.setVisibility(View.GONE);
         });
     }
@@ -198,58 +206,5 @@ public class MainActivity extends BaseActivity implements GamesAdapter.OnItemCli
                 searchText.setHintTextColor(ContextCompat.getColor(this, R.color.colorSecondary));
             }
         }
-    }
-
-    private void loadGames() {
-
-        //TODO pedir los juegos al ViewModel
-        gameAPIClient
-                .getGamesObserver(viewModel.getPage(), Constants.PAGE_SIZE, viewModel.getQuery())
-                .subscribe(new SingleObserver<GameListResponse>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                    }
-
-                    @Override
-                    public void onSuccess(GameListResponse gameListResponse) {
-
-                        viewModel.addGames(gameListResponse.getResults());
-                        if (viewModel.getPage() == 1) {
-                            rvGames.scrollToPosition(0);
-                        }
-                        viewModel.setPage(viewModel.getPage() + 1);
-                        srlGames.setRefreshing(false);
-                        btEndList.setVisibility(View.VISIBLE);
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                        srlGames.setRefreshing(false);
-                        manageError(new ErrorResponse(
-                                "",
-                                R.string.error_server,
-                                "Error in MainActivity getGames")
-                        );
-                    }
-                });
-    }
-
-    private void reloadGames() {
-
-        viewModel.setPage(Constants.FIRST_PAGE);
-        viewModel.setQuery(null);
-        viewModel.resetList();
-        loadGames();
-    }
-
-    private void searchGames(String query) {
-
-        toolbar.collapseActionView();
-        srlGames.setRefreshing(true);
-        viewModel.setPage(Constants.FIRST_PAGE);
-        viewModel.setQuery(query);
-        viewModel.resetList();
-        loadGames();
     }
 }

@@ -22,31 +22,20 @@ import es.upsa.mimo.gamerdb.viewholders.LoadMoreItemsViewHolder;
 
 public class GamesAdapter extends RecyclerView.Adapter<ViewHolder> {
 
+    //MARK: - Private properties
+
     private List<GameResponse> games;
     private OnItemClickListener onItemClickListener;
     private Context context;
     private boolean showLoadMoreItems;
+
+    //MARK: - Lifecycle methods
 
     public GamesAdapter(List<GameResponse> games, OnItemClickListener onItemClickListener) {
 
         this.games = games;
         this.onItemClickListener = onItemClickListener;
         this.showLoadMoreItems = true;
-    }
-
-    public void setGames(List<GameResponse> newGames) {
-
-        int position = this.games.size();
-        this.games = newGames;
-        showLoadMoreItems = (newGames.size() % Constants.PAGE_SIZE) == 0;
-        notifyItemInserted(position);
-    }
-
-    public void resetList() {
-
-        this.games = new ArrayList<>();
-        this.showLoadMoreItems = true;
-        notifyDataSetChanged();
     }
 
     @Override
@@ -88,11 +77,37 @@ public class GamesAdapter extends RecyclerView.Adapter<ViewHolder> {
 
     @Override
     public int getItemCount() {
-        return showLoadMoreItems ? games.size() + 1 : games.size();
+
+        if (games.size() == 0) {
+            return 0;
+        } else if (showLoadMoreItems) {
+            return games.size() + 1;
+        } else {
+            return games.size();
+        }
     }
+
+    //MARK: - Interface methods
 
     public interface OnItemClickListener {
         void onItemClick(int gameId);
         void onLoadMoreItemsClick();
+    }
+
+    //MARK: - Public methods
+
+    public void setGames(List<GameResponse> newGames) {
+
+        int position = this.games.size();
+        this.games = newGames;
+        showLoadMoreItems = (newGames.size() % Constants.PAGE_SIZE) == 0;
+        notifyItemInserted(position);
+    }
+
+    public void resetList() {
+
+        this.games = new ArrayList<>();
+        this.showLoadMoreItems = true;
+        notifyDataSetChanged();
     }
 }
