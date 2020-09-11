@@ -8,6 +8,8 @@ package es.upsa.mimo.gamerdb.activities;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
+import androidx.lifecycle.SavedStateViewModelFactory;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -21,8 +23,6 @@ import android.view.View;
 import android.widget.SearchView;
 import android.widget.TextView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -31,9 +31,9 @@ import es.upsa.mimo.gamerdb.activities.base.BaseActivity;
 import es.upsa.mimo.gamerdb.adapters.GamesAdapter;
 import es.upsa.mimo.gamerdb.models.ErrorResponse;
 import es.upsa.mimo.gamerdb.models.GameListResponse;
-import es.upsa.mimo.gamerdb.models.GameResponse;
 import es.upsa.mimo.gamerdb.network.apiclient.GameAPIClient;
 import es.upsa.mimo.gamerdb.utils.Constants;
+import es.upsa.mimo.gamerdb.viewmodels.MainViewModel;
 import io.reactivex.SingleObserver;
 import io.reactivex.disposables.Disposable;
 
@@ -56,8 +56,8 @@ public class MainActivity extends BaseActivity implements GamesAdapter.OnItemCli
     //MARK: - Private properties
 
     private GameAPIClient gameAPIClient;
-    private int page = Constants.FIRST_PAGE;
-    private String query = null;
+    private MainViewModel viewModel;
+    private GamesAdapter gamesAdapter;
 
     //MARK: - Lifecycle methods
 
@@ -71,6 +71,7 @@ public class MainActivity extends BaseActivity implements GamesAdapter.OnItemCli
         Objects.requireNonNull(getSupportActionBar()).setHomeAsUpIndicator(R.drawable.ic_home_white_24dp);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setTitle("");
+
         this.initializeUI();
     }
 
@@ -120,7 +121,7 @@ public class MainActivity extends BaseActivity implements GamesAdapter.OnItemCli
     }
 
     @Override
-    public void onReachEndList() {
+    public void onLoadMoreItemsClick() {
         loadGames();
     }
 
@@ -128,12 +129,30 @@ public class MainActivity extends BaseActivity implements GamesAdapter.OnItemCli
 
     private void initializeUI() {
 
+        gameAPIClient = new GameAPIClient();
+        viewModel = new ViewModelProvider
+                (
+                        this,
+                        new SavedStateViewModelFactory(this.getApplication(), this)
+                ).get(MainViewModel.class);
+        viewModel
+                .getGames()
+                .observe(this, gameResponses -> {
+                    
+                    if (gameResponses.isEmpty()) {
+                        gamesAdapter.resetList();
+                    } else{
+                        gamesAdapter.setGames(gameResponses);
+                    }
+                });
+        gamesAdapter = new GamesAdapter(viewModel.getGames().getValue(), this);
+
         srlGames.setColorSchemeResources(R.color.colorPrimary);
         srlGames.setProgressBackgroundColorSchemeResource(android.R.color.white);
         srlGames.setOnRefreshListener(this::reloadGames);
 
         rvGames.setLayoutManager(new LinearLayoutManager(this));
-        rvGames.setAdapter(new GamesAdapter(new ArrayList<>(), this));
+        rvGames.setAdapter(gamesAdapter);
         rvGames.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
@@ -149,17 +168,10 @@ public class MainActivity extends BaseActivity implements GamesAdapter.OnItemCli
 
         btEndList.setOnClickListener(v -> {
 
-            int position = 0;
-            GamesAdapter adapter = (GamesAdapter) rvGames.getAdapter();
-            if (adapter != null) {
-                position = adapter.getItemCount() - 1;
-            }
+            int position = gamesAdapter.getItemCount() - 1;
             rvGames.scrollToPosition(position);
             btEndList.setVisibility(View.GONE);
         });
-
-        gameAPIClient = new GameAPIClient();
-        loadGames();
     }
 
     private void setupSearchView(Menu menu) {
@@ -167,6 +179,7 @@ public class MainActivity extends BaseActivity implements GamesAdapter.OnItemCli
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
         if (searchManager != null) {
+
             searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
             searchView.setIconified(false);
             searchView.setIconifiedByDefault(false);
@@ -189,8 +202,9 @@ public class MainActivity extends BaseActivity implements GamesAdapter.OnItemCli
 
     private void loadGames() {
 
+        //TODO pedir los juegos al ViewModel
         gameAPIClient
-                .getGamesObserver(page, Constants.PAGE_SIZE, query)
+                .getGamesObserver(viewModel.getPage(), Constants.PAGE_SIZE, viewModel.getQuery())
                 .subscribe(new SingleObserver<GameListResponse>() {
                     @Override
                     public void onSubscribe(Disposable d) {
@@ -199,13 +213,13 @@ public class MainActivity extends BaseActivity implements GamesAdapter.OnItemCli
                     @Override
                     public void onSuccess(GameListResponse gameListResponse) {
 
-                        addGames(gameListResponse.getResults());
-                        srlGames.setRefreshing(false);
-                        btEndList.setVisibility(View.VISIBLE);
-                        if (page == 1) {
+                        viewModel.addGames(gameListResponse.getResults());
+                        if (viewModel.getPage() == 1) {
                             rvGames.scrollToPosition(0);
                         }
-                        page++;
+                        viewModel.setPage(viewModel.getPage() + 1);
+                        srlGames.setRefreshing(false);
+                        btEndList.setVisibility(View.VISIBLE);
                     }
 
                     @Override
@@ -221,19 +235,11 @@ public class MainActivity extends BaseActivity implements GamesAdapter.OnItemCli
                 });
     }
 
-    private void addGames(List<GameResponse> games) {
-
-        GamesAdapter adapter = (GamesAdapter) rvGames.getAdapter();
-        if (adapter != null) {
-            adapter.addGames(games);
-        }
-    }
-
     private void reloadGames() {
 
-        page = Constants.FIRST_PAGE;
-        query = null;
-        resetList();
+        viewModel.setPage(Constants.FIRST_PAGE);
+        viewModel.setQuery(null);
+        viewModel.resetList();
         loadGames();
     }
 
@@ -241,17 +247,9 @@ public class MainActivity extends BaseActivity implements GamesAdapter.OnItemCli
 
         toolbar.collapseActionView();
         srlGames.setRefreshing(true);
-        page = Constants.FIRST_PAGE;
-        this.query = query;
-        resetList();
+        viewModel.setPage(Constants.FIRST_PAGE);
+        viewModel.setQuery(query);
+        viewModel.resetList();
         loadGames();
-    }
-
-    private void resetList() {
-
-        GamesAdapter adapter = (GamesAdapter) rvGames.getAdapter();
-        if (adapter != null) {
-            adapter.resetList();
-        }
     }
 }

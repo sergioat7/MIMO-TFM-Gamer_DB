@@ -55,6 +55,12 @@ public class Constants {
         }
     }
 
+    //MARK: - LiveData Ids
+
+    public static String ATT_GAMES_LIVE_DATA = "games";
+    public static String ATT_PAGE_LIVE_DATA = "page";
+    public static String ATT_QUERY_LIVE_DATA = "query";
+
     //MARK: - Ids
 
     public static String GAME_ID = "gameId";

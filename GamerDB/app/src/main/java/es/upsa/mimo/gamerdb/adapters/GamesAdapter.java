@@ -34,11 +34,11 @@ public class GamesAdapter extends RecyclerView.Adapter<ViewHolder> {
         this.showLoadMoreItems = true;
     }
 
-    public void addGames(List<GameResponse> games) {
+    public void setGames(List<GameResponse> newGames) {
 
         int position = this.games.size();
-        this.games.addAll(games);
-        showLoadMoreItems = games.size() == Constants.PAGE_SIZE;
+        this.games = newGames;
+        showLoadMoreItems = (newGames.size() % Constants.PAGE_SIZE) == 0;
         notifyItemInserted(position);
     }
 
@@ -93,6 +93,6 @@ public class GamesAdapter extends RecyclerView.Adapter<ViewHolder> {
 
     public interface OnItemClickListener {
         void onItemClick(int gameId);
-        void onReachEndList();
+        void onLoadMoreItemsClick();
     }
 }
