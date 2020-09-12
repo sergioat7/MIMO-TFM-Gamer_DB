@@ -8,6 +8,8 @@ package es.upsa.mimo.gamerdb.activities;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.SavedStateViewModelFactory;
+import androidx.lifecycle.ViewModelProvider;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -42,6 +44,7 @@ import es.upsa.mimo.gamerdb.models.StoreResponse;
 import es.upsa.mimo.gamerdb.models.TagResponse;
 import es.upsa.mimo.gamerdb.network.apiclient.GameAPIClient;
 import es.upsa.mimo.gamerdb.utils.Constants;
+import es.upsa.mimo.gamerdb.viewmodels.GameDetailViewModel;
 import io.reactivex.SingleObserver;
 import io.reactivex.disposables.Disposable;
 
@@ -90,10 +93,9 @@ public class GameDetailActivity extends BaseActivity {
 
     //MARK: - Private properties
 
+    private GameDetailViewModel viewModel;
     private int gameId;
     private GameAPIClient gameAPIClient;
-    private GameResponse game;
-    private ArrayList<String> imagesUrl;
 
     //MARK: - Lifecycle methods
 
@@ -119,8 +121,23 @@ public class GameDetailActivity extends BaseActivity {
 
     private void initializeUI() {
 
-        btWatchVideo.setOnClickListener(v -> watchVideo());
+        viewModel = new ViewModelProvider(
+                this,
+                new SavedStateViewModelFactory(this.getApplication(), this)
+        ).get(GameDetailViewModel.class);
+        viewModel
+                .getGame()
+                .observe(this, this::fillData);
+        viewModel
+                .getError()
+                .observe(this, this::manageError);
+        viewModel
+                .getImagesUrl()
+                .observe(this, imagesUrl -> {
+                    btViewImages.setVisibility(View.VISIBLE);
+                });
 
+        btWatchVideo.setOnClickListener(v -> watchVideo());
         btViewImages.setOnClickListener(v -> viewImages());
 
         btShowMoreText.setOnClickListener(v -> {
@@ -129,8 +146,8 @@ public class GameDetailActivity extends BaseActivity {
             btShowMoreText.setVisibility(View.GONE);
         });
 
-        gameAPIClient = new GameAPIClient();
-        loadGame();
+        gameAPIClient = new GameAPIClient();//TODO borrar
+        loadGame();//TODO borrar
     }
 
     private void loadGame() {
@@ -145,16 +162,16 @@ public class GameDetailActivity extends BaseActivity {
 
                     @Override
                     public void onSuccess(GameResponse gameResponse) {
-                        fillData(gameResponse);
+                        viewModel.setGame(gameResponse);
                     }
 
                     @Override
                     public void onError(Throwable e) {
 
-                        manageError(new ErrorResponse(
+                        viewModel.setError(new ErrorResponse(
                                 "",
                                 R.string.error_server,
-                                "Error in GameDetailActivity getGame")
+                                "Error in GameDetailViewModel getGames")
                         );
                     }
                 });
@@ -171,11 +188,11 @@ public class GameDetailActivity extends BaseActivity {
                     public void onSuccess(ScreenshotListResponse screenshotListResponse) {
 
                         List<ScreenshotResponse> screenshots = screenshotListResponse.getResults();
-                        imagesUrl = new ArrayList<>();
+                        ArrayList<String> imagesUrl = new ArrayList<>();
                         for (int i = 0; i < screenshots.size(); i++) {
                             imagesUrl.add(screenshots.get(i).getImage());
                         }
-                        btViewImages.setVisibility(View.VISIBLE);
+                        viewModel.setImagesUrl(imagesUrl);
                     }
 
                     @Override
@@ -192,7 +209,6 @@ public class GameDetailActivity extends BaseActivity {
 
     private void fillData(GameResponse game) {
 
-        this.game = game;
         Picasso
                 .get()
                 .load(game.getBackgroundImage())
@@ -340,6 +356,7 @@ public class GameDetailActivity extends BaseActivity {
     private void watchVideo() {
 
         String videoUrl = "";
+        GameResponse game = viewModel.getGame().getValue();
         if (game != null && game.getClip() != null) {
             videoUrl = game.getClip().getVideo();
         }
@@ -362,6 +379,7 @@ public class GameDetailActivity extends BaseActivity {
 
     private void viewImages() {
 
+        ArrayList<String> imagesUrl = viewModel.getImagesUrl().getValue();
         Intent intent = new Intent(this, GridImagesActivity.class);
         intent.putExtra(Constants.IMAGES_URL, imagesUrl);
         startActivity(intent);
