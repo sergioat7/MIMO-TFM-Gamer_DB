@@ -61,6 +61,7 @@ public class Constants {
     public static String ATT_QUERY_LIVE_DATA = "query";
     public static String ATT_POSITION_LIVE_DATA = "position";
     public static String ATT_REFRESHING_LIVE_DATA = "refreshing";
+    public static String ATT_GAME_ID_LIVE_DATA = "gameId";
     public static String ATT_IMAGES_URL_LIVE_DATA = "imagesUrl";
 
     //MARK: - Ids

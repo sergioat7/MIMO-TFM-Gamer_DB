@@ -33,20 +33,14 @@ import es.upsa.mimo.gamerdb.activities.base.BaseActivity;
 import es.upsa.mimo.gamerdb.customviews.ImageLoading;
 import es.upsa.mimo.gamerdb.fragments.popups.PopupVideoDialogFragment;
 import es.upsa.mimo.gamerdb.models.DeveloperResponse;
-import es.upsa.mimo.gamerdb.models.ErrorResponse;
 import es.upsa.mimo.gamerdb.models.GameResponse;
 import es.upsa.mimo.gamerdb.models.GenreResponse;
 import es.upsa.mimo.gamerdb.models.PlatformResponse;
 import es.upsa.mimo.gamerdb.models.PublisherResponse;
-import es.upsa.mimo.gamerdb.models.ScreenshotListResponse;
-import es.upsa.mimo.gamerdb.models.ScreenshotResponse;
 import es.upsa.mimo.gamerdb.models.StoreResponse;
 import es.upsa.mimo.gamerdb.models.TagResponse;
-import es.upsa.mimo.gamerdb.network.apiclient.GameAPIClient;
 import es.upsa.mimo.gamerdb.utils.Constants;
 import es.upsa.mimo.gamerdb.viewmodels.GameDetailViewModel;
-import io.reactivex.SingleObserver;
-import io.reactivex.disposables.Disposable;
 
 public class GameDetailActivity extends BaseActivity {
 
@@ -94,8 +88,6 @@ public class GameDetailActivity extends BaseActivity {
     //MARK: - Private properties
 
     private GameDetailViewModel viewModel;
-    private int gameId;
-    private GameAPIClient gameAPIClient;
 
     //MARK: - Lifecycle methods
 
@@ -110,21 +102,19 @@ public class GameDetailActivity extends BaseActivity {
         setTitle("");
 
         int gameId = getIntent().getIntExtra(Constants.GAME_ID, 0);
-        if (gameId > 0) {
-            this.gameId = gameId;
-        }
-
-        this.initializeUI();
+        this.initializeUI(gameId);
     }
 
     //MARK: - Private methods
 
-    private void initializeUI() {
+    private void initializeUI(int gameId) {
 
         viewModel = new ViewModelProvider(
                 this,
                 new SavedStateViewModelFactory(this.getApplication(), this)
         ).get(GameDetailViewModel.class);
+        viewModel.setGameId(gameId);//TODO pass gameId to ViewModel constructor
+        viewModel.loadGame();//TODO move to ViewModel constructor
         viewModel
                 .getGame()
                 .observe(this, this::fillData);
@@ -133,9 +123,7 @@ public class GameDetailActivity extends BaseActivity {
                 .observe(this, this::manageError);
         viewModel
                 .getImagesUrl()
-                .observe(this, imagesUrl -> {
-                    btViewImages.setVisibility(View.VISIBLE);
-                });
+                .observe(this, imagesUrl -> btViewImages.setVisibility(View.VISIBLE));
 
         btWatchVideo.setOnClickListener(v -> watchVideo());
         btViewImages.setOnClickListener(v -> viewImages());
@@ -146,65 +134,8 @@ public class GameDetailActivity extends BaseActivity {
             btShowMoreText.setVisibility(View.GONE);
         });
 
-        gameAPIClient = new GameAPIClient();//TODO borrar
-        loadGame();//TODO borrar
-    }
-
-    private void loadGame() {
-
         imageLoading.setVisibility(View.VISIBLE);
-        gameAPIClient
-                .getGame(gameId)
-                .subscribe(new SingleObserver<GameResponse>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                    }
-
-                    @Override
-                    public void onSuccess(GameResponse gameResponse) {
-                        viewModel.setGame(gameResponse);
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                        viewModel.setError(new ErrorResponse(
-                                "",
-                                R.string.error_server,
-                                "Error in GameDetailViewModel getGames")
-                        );
-                    }
-                });
-
         btViewImages.setVisibility(View.GONE);
-        gameAPIClient
-                .getScreenshots(gameId)
-                .subscribe(new SingleObserver<ScreenshotListResponse>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                    }
-
-                    @Override
-                    public void onSuccess(ScreenshotListResponse screenshotListResponse) {
-
-                        List<ScreenshotResponse> screenshots = screenshotListResponse.getResults();
-                        ArrayList<String> imagesUrl = new ArrayList<>();
-                        for (int i = 0; i < screenshots.size(); i++) {
-                            imagesUrl.add(screenshots.get(i).getImage());
-                        }
-                        viewModel.setImagesUrl(imagesUrl);
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                        manageError(new ErrorResponse(
-                                "",
-                                R.string.error_server,
-                                "Error in GameDetailActivity getScreenshots")
-                        );
-                    }
-                });
     }
 
     private void fillData(GameResponse game) {
