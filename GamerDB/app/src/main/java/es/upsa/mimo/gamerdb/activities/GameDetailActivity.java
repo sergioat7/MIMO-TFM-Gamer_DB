@@ -8,6 +8,8 @@ package es.upsa.mimo.gamerdb.activities;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.SavedStateViewModelFactory;
+import androidx.lifecycle.ViewModelProvider;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -31,19 +33,14 @@ import es.upsa.mimo.gamerdb.activities.base.BaseActivity;
 import es.upsa.mimo.gamerdb.customviews.ImageLoading;
 import es.upsa.mimo.gamerdb.fragments.popups.PopupVideoDialogFragment;
 import es.upsa.mimo.gamerdb.models.DeveloperResponse;
-import es.upsa.mimo.gamerdb.models.ErrorResponse;
 import es.upsa.mimo.gamerdb.models.GameResponse;
 import es.upsa.mimo.gamerdb.models.GenreResponse;
 import es.upsa.mimo.gamerdb.models.PlatformResponse;
 import es.upsa.mimo.gamerdb.models.PublisherResponse;
-import es.upsa.mimo.gamerdb.models.ScreenshotListResponse;
-import es.upsa.mimo.gamerdb.models.ScreenshotResponse;
 import es.upsa.mimo.gamerdb.models.StoreResponse;
 import es.upsa.mimo.gamerdb.models.TagResponse;
-import es.upsa.mimo.gamerdb.network.apiclient.GameAPIClient;
 import es.upsa.mimo.gamerdb.utils.Constants;
-import io.reactivex.SingleObserver;
-import io.reactivex.disposables.Disposable;
+import es.upsa.mimo.gamerdb.viewmodels.GameDetailViewModel;
 
 public class GameDetailActivity extends BaseActivity {
 
@@ -90,10 +87,7 @@ public class GameDetailActivity extends BaseActivity {
 
     //MARK: - Private properties
 
-    private int gameId;
-    private GameAPIClient gameAPIClient;
-    private GameResponse game;
-    private ArrayList<String> imagesUrl;
+    private GameDetailViewModel viewModel;
 
     //MARK: - Lifecycle methods
 
@@ -108,19 +102,30 @@ public class GameDetailActivity extends BaseActivity {
         setTitle("");
 
         int gameId = getIntent().getIntExtra(Constants.GAME_ID, 0);
-        if (gameId > 0) {
-            this.gameId = gameId;
-        }
-
-        this.initializeUI();
+        this.initializeUI(gameId);
     }
 
     //MARK: - Private methods
 
-    private void initializeUI() {
+    private void initializeUI(int gameId) {
+
+        viewModel = new ViewModelProvider(
+                this,
+                new SavedStateViewModelFactory(this.getApplication(), this)
+        ).get(GameDetailViewModel.class);
+        viewModel.setGameId(gameId);//TODO pass gameId to ViewModel constructor
+        viewModel.loadGame();//TODO move to ViewModel constructor
+        viewModel
+                .getGame()
+                .observe(this, this::fillData);
+        viewModel
+                .getError()
+                .observe(this, this::manageError);
+        viewModel
+                .getImagesUrl()
+                .observe(this, imagesUrl -> btViewImages.setVisibility(View.VISIBLE));
 
         btWatchVideo.setOnClickListener(v -> watchVideo());
-
         btViewImages.setOnClickListener(v -> viewImages());
 
         btShowMoreText.setOnClickListener(v -> {
@@ -129,70 +134,12 @@ public class GameDetailActivity extends BaseActivity {
             btShowMoreText.setVisibility(View.GONE);
         });
 
-        gameAPIClient = new GameAPIClient();
-        loadGame();
-    }
-
-    private void loadGame() {
-
         imageLoading.setVisibility(View.VISIBLE);
-        gameAPIClient
-                .getGame(gameId)
-                .subscribe(new SingleObserver<GameResponse>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                    }
-
-                    @Override
-                    public void onSuccess(GameResponse gameResponse) {
-                        fillData(gameResponse);
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                        manageError(new ErrorResponse(
-                                "",
-                                R.string.error_server,
-                                "Error in GameDetailActivity getGame")
-                        );
-                    }
-                });
-
         btViewImages.setVisibility(View.GONE);
-        gameAPIClient
-                .getScreenshots(gameId)
-                .subscribe(new SingleObserver<ScreenshotListResponse>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                    }
-
-                    @Override
-                    public void onSuccess(ScreenshotListResponse screenshotListResponse) {
-
-                        List<ScreenshotResponse> screenshots = screenshotListResponse.getResults();
-                        imagesUrl = new ArrayList<>();
-                        for (int i = 0; i < screenshots.size(); i++) {
-                            imagesUrl.add(screenshots.get(i).getImage());
-                        }
-                        btViewImages.setVisibility(View.VISIBLE);
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                        manageError(new ErrorResponse(
-                                "",
-                                R.string.error_server,
-                                "Error in GameDetailActivity getScreenshots")
-                        );
-                    }
-                });
     }
 
     private void fillData(GameResponse game) {
 
-        this.game = game;
         Picasso
                 .get()
                 .load(game.getBackgroundImage())
@@ -340,6 +287,7 @@ public class GameDetailActivity extends BaseActivity {
     private void watchVideo() {
 
         String videoUrl = "";
+        GameResponse game = viewModel.getGame().getValue();
         if (game != null && game.getClip() != null) {
             videoUrl = game.getClip().getVideo();
         }
@@ -362,6 +310,7 @@ public class GameDetailActivity extends BaseActivity {
 
     private void viewImages() {
 
+        ArrayList<String> imagesUrl = viewModel.getImagesUrl().getValue();
         Intent intent = new Intent(this, GridImagesActivity.class);
         intent.putExtra(Constants.IMAGES_URL, imagesUrl);
         startActivity(intent);

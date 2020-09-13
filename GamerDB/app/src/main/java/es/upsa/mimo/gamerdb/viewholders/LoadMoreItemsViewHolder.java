@@ -21,6 +21,6 @@ public class LoadMoreItemsViewHolder extends RecyclerView.ViewHolder {
     public void setItem(GamesAdapter.OnItemClickListener onItemClickListener) {
 
         Button btLoadMoreItems = itemView.findViewById(R.id.button_load_more_items);
-        btLoadMoreItems.setOnClickListener(v -> onItemClickListener.onReachEndList());
+        btLoadMoreItems.setOnClickListener(v -> onItemClickListener.onLoadMoreItemsClick());
     }
 }
