@@ -34,6 +34,7 @@ import butterknife.ButterKnife;
 import es.upsa.mimo.gamerdb.R;
 import es.upsa.mimo.gamerdb.activities.base.BaseActivity;
 import es.upsa.mimo.gamerdb.adapters.GamesAdapter;
+import es.upsa.mimo.gamerdb.models.GenreResponse;
 import es.upsa.mimo.gamerdb.models.PlatformObjectResponse;
 import es.upsa.mimo.gamerdb.utils.Constants;
 import es.upsa.mimo.gamerdb.viewmodels.MainViewModel;
@@ -46,6 +47,8 @@ public class MainActivity extends BaseActivity implements GamesAdapter.OnItemCli
     Toolbar toolbar;
     @BindView(R.id.linear_layout_platforms)
     LinearLayout llPlatforms;
+    @BindView(R.id.linear_layout_genres)
+    LinearLayout llGenres;
     @BindView(R.id.swipe_refresh_layout)
     SwipeRefreshLayout srlGames;
     @BindView(R.id.recycler_view_games)
@@ -162,6 +165,16 @@ public class MainActivity extends BaseActivity implements GamesAdapter.OnItemCli
                     }
                 });
         viewModel
+                .getGenres()
+                .observe(this, genreResponses -> {
+
+                    if ((genreResponses.size() % Constants.PAGE_SIZE) == 0) {
+                        viewModel.loadGenres();
+                    } else{
+                        setupGenres();
+                    }
+                });
+        viewModel
                 .getError()
                 .observe(this, this::manageError);
         viewModel
@@ -247,17 +260,48 @@ public class MainActivity extends BaseActivity implements GamesAdapter.OnItemCli
                 PlatformObjectResponse platform = platforms.get(i);
                 if (platform != null) {
 
-                    int platformId = platform.getId();
+                    int id = platform.getId();
                     String name = platform.getName();
-                    boolean isSelected = selectedPlatforms != null && selectedPlatforms.contains(String.valueOf(platformId));
-                    Button button = getPlatformButton(name, platformId, isSelected);
+                    boolean isSelected = selectedPlatforms != null && selectedPlatforms.contains(String.valueOf(id));
+                    Button button = getButton(name, id, isSelected);
+                    button.setOnClickListener(v -> {
+
+                        v.setSelected(!v.isSelected());
+                        viewModel.selectPlatform(v.getTag().toString());
+                    });
                     llPlatforms.addView(button);
                 }
             }
         }
     }
 
-    private Button getPlatformButton(String text, int id, boolean isSelected) {
+    private void setupGenres() {
+
+        llGenres.removeAllViews();
+        List<GenreResponse> genres = viewModel.getGenres().getValue();
+        List<String> selectedGenres = viewModel.getSelectedGenres().getValue();
+        if (genres != null) {
+            for (int i = 0; i < genres.size(); i++) {
+
+                GenreResponse genre = genres.get(i);
+                if (genre != null) {
+
+                    int id = genre.getId();
+                    String name = genre.getName();
+                    boolean isSelected = selectedGenres != null && selectedGenres.contains(String.valueOf(id));
+                    Button button = getButton(name, id, isSelected);
+                    button.setOnClickListener(v -> {
+
+                        v.setSelected(!v.isSelected());
+                        viewModel.selectGenre(v.getTag().toString());
+                    });
+                    llGenres.addView(button);
+                }
+            }
+        }
+    }
+
+    private Button getButton(String text, int id, boolean isSelected) {
 
         Button button = new Button(this, null, 0, R.style.PlatformButton);
         int height = (int) (Constants.PLATFORM_BUTTON_HEIGHT * getResources().getDisplayMetrics().density);
@@ -268,19 +312,14 @@ public class MainActivity extends BaseActivity implements GamesAdapter.OnItemCli
         button.setTag(id);
         button.setText(text);
         button.setSelected(isSelected);
-        button.setOnClickListener(v -> {
-
-            v.setSelected(!v.isSelected());
-            viewModel.selectPlatform(v.getTag().toString());
-        });
         return button;
     }
 
-    private void resetPlatformButtons() {
+    private void resetButtons(LinearLayout layout) {
 
-        for (int i = 0; i < llPlatforms.getChildCount(); i ++) {
+        for (int i = 0; i < layout.getChildCount(); i ++) {
 
-            Button button = (Button)llPlatforms.getChildAt(i);
+            Button button = (Button)layout.getChildAt(i);
             button.setSelected(false);
         }
     }
