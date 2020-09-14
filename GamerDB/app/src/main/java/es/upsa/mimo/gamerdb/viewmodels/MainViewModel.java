@@ -15,7 +15,10 @@ import es.upsa.mimo.gamerdb.R;
 import es.upsa.mimo.gamerdb.models.ErrorResponse;
 import es.upsa.mimo.gamerdb.models.GameListResponse;
 import es.upsa.mimo.gamerdb.models.GameResponse;
+import es.upsa.mimo.gamerdb.models.PlatformListResponse;
+import es.upsa.mimo.gamerdb.models.PlatformObjectResponse;
 import es.upsa.mimo.gamerdb.network.apiclient.GameAPIClient;
+import es.upsa.mimo.gamerdb.network.apiclient.PlatformAPIClient;
 import es.upsa.mimo.gamerdb.utils.Constants;
 import io.reactivex.SingleObserver;
 import io.reactivex.disposables.Disposable;
@@ -27,11 +30,14 @@ public class MainViewModel extends ViewModel {
     private SavedStateHandle savedStateHandle;
     private MutableLiveData<List<GameResponse>> games;
     private MutableLiveData<ErrorResponse> error;
+    private MutableLiveData<List<PlatformObjectResponse>> platforms;
     private LiveData<Integer> page;
     private LiveData<String> query;
     private LiveData<Integer> position;
     private LiveData<Boolean> refreshing;
+    private int platformPage;
     private GameAPIClient gameAPIClient;
+    private PlatformAPIClient platformAPIClient;
 
     //MARK: - Lifecycle methods
 
@@ -39,14 +45,18 @@ public class MainViewModel extends ViewModel {
 
         this.savedStateHandle = savedStateHandle;
         games = new MutableLiveData<>();
-        resetList();
+        resetGames();
         error = new MutableLiveData<>();
+        platforms = new MutableLiveData<>();
         page = savedStateHandle.getLiveData(Constants.ATT_PAGE_LIVE_DATA, Constants.FIRST_PAGE);
         query = savedStateHandle.getLiveData(Constants.ATT_QUERY_LIVE_DATA, null);
         position = savedStateHandle.getLiveData(Constants.ATT_POSITION_LIVE_DATA, Constants.INITIAL_POSITION_LIST);
         refreshing = savedStateHandle.getLiveData(Constants.ATT_REFRESHING_LIVE_DATA, true);
+        platformPage = Constants.FIRST_PAGE;
         gameAPIClient = new GameAPIClient();
+        platformAPIClient = new PlatformAPIClient();
         loadGames();
+        loadPlatforms();
     }
 
     //MARK: - Public methods
@@ -65,7 +75,7 @@ public class MainViewModel extends ViewModel {
         this.games.setValue(currentGames);
     }
 
-    public void resetList() {
+    public void resetGames() {
         this.games.setValue(new ArrayList<>());
     }
 
@@ -75,6 +85,20 @@ public class MainViewModel extends ViewModel {
 
     public void setError(ErrorResponse error) {
         this.error.setValue(error);
+    }
+
+    public LiveData<List<PlatformObjectResponse>> getPlatforms() {
+        return platforms;
+    }
+
+    public void addPlatforms(List<PlatformObjectResponse> platforms) {
+
+        List<PlatformObjectResponse> currentPlatforms = this.platforms.getValue();
+        if (currentPlatforms == null) {
+            currentPlatforms = new ArrayList<>();
+        }
+        currentPlatforms.addAll(platforms);
+        this.platforms.setValue(currentPlatforms);
     }
 
     public int getPage() {
@@ -145,11 +169,38 @@ public class MainViewModel extends ViewModel {
                 });
     }
 
+    public void loadPlatforms() {
+
+        platformAPIClient
+                .getPlatformsObserver(platformPage, Constants.PAGE_SIZE)
+                .subscribe(new SingleObserver<PlatformListResponse>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {}
+
+                    @Override
+                    public void onSuccess(PlatformListResponse platformListResponse) {
+
+                        platformPage++;
+                        addPlatforms(platformListResponse.getResults());
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                        setError(new ErrorResponse(
+                                "",
+                                R.string.error_server,
+                                "Error in MainViewModel getPlatforms")
+                        );
+                    }
+                });
+    }
+
     public void reloadGames() {
 
         setPage(Constants.FIRST_PAGE);
         setQuery(null);
-        resetList();
+        resetGames();
         loadGames();
     }
 
@@ -157,7 +208,7 @@ public class MainViewModel extends ViewModel {
 
         setPage(Constants.FIRST_PAGE);
         setQuery(query);
-        resetList();
+        resetGames();
         loadGames();
     }
 }
