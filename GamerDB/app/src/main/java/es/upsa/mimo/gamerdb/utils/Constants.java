@@ -81,7 +81,6 @@ public class Constants {
 
     //MARK: - Game list
 
-    public static int TOOLBAR_TITLE_PADDING_LEFT = 200;
     public static int TOOLBAR_TITLE_PADDING_BOTTOM = 20;
     public static int PLATFORM_BUTTON_HEIGHT = 50;
     public static int INITIAL_POSITION_LIST = 0;

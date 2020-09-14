@@ -295,7 +295,8 @@ public class MainActivity extends BaseActivity implements GamesAdapter.OnItemCli
 
                 TextView textView = (TextView) view;
                 textView.setGravity(Gravity.CENTER);
-                textView.setPadding(Constants.TOOLBAR_TITLE_PADDING_LEFT, 0, 0, Constants.TOOLBAR_TITLE_PADDING_BOTTOM);
+                textView.setTextSize(getResources().getDimension(R.dimen.font_tiny));
+                textView.setPadding(0, 0, 0, Constants.TOOLBAR_TITLE_PADDING_BOTTOM);
             }
             toolbar.setTitle(title);
         }
