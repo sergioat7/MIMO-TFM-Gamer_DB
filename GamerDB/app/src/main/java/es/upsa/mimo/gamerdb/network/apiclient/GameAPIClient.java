@@ -21,7 +21,8 @@ public class GameAPIClient {
     public Single<GameListResponse> getGamesObserver(int page,
                                                      int pageSize,
                                                      String query,
-                                                     String platforms) {
+                                                     String platforms,
+                                                     String genres) {
 
         Map<String, String> params = new HashMap<>();
         params.put(Constants.PAGE_PARAM, String.valueOf(page));
@@ -31,6 +32,9 @@ public class GameAPIClient {
         }
         if (platforms != null) {
             params.put(Constants.PLATFORMS_PARAM, platforms);
+        }
+        if (genres != null) {
+            params.put(Constants.GENRES_PARAM, genres);
         }
         return api.getGames(params).subscribeOn(Constants.SUBSCRIBER_SCHEDULER).observeOn(Constants.OBSERVER_SCHEDULER);
     }

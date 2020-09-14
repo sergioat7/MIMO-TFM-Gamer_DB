@@ -39,6 +39,7 @@ public class MainViewModel extends ViewModel {
     private LiveData<Integer> page;
     private LiveData<String> query;
     private LiveData<List<String>> selectedPlatforms;
+    private LiveData<List<String>> selectedGenres;
     private LiveData<Integer> position;
     private LiveData<Boolean> refreshing;
     private GameAPIClient gameAPIClient;
@@ -61,6 +62,7 @@ public class MainViewModel extends ViewModel {
         page = savedStateHandle.getLiveData(Constants.ATT_PAGE_LIVE_DATA, Constants.FIRST_PAGE);
         query = savedStateHandle.getLiveData(Constants.ATT_QUERY_LIVE_DATA, null);
         selectedPlatforms = savedStateHandle.getLiveData(Constants.ATT_SELECTED_PLATFORMS_LIVE_DATA, new ArrayList<>());
+        selectedGenres = savedStateHandle.getLiveData(Constants.ATT_SELECTED_GENRES_LIVE_DATA, new ArrayList<>());
         position = savedStateHandle.getLiveData(Constants.ATT_POSITION_LIVE_DATA, Constants.INITIAL_POSITION_LIST);
         refreshing = savedStateHandle.getLiveData(Constants.ATT_REFRESHING_LIVE_DATA, true);
         gameAPIClient = new GameAPIClient();
@@ -173,7 +175,29 @@ public class MainViewModel extends ViewModel {
     }
 
     public void resetSelectedPlatforms() {
-        this.savedStateHandle.set(Constants.ATT_SELECTED_PLATFORMS_LIVE_DATA, new ArrayList<>());
+        this.savedStateHandle.set(Constants.ATT_SELECTED_PLATFORMS_LIVE_DATA, null);
+    }
+
+    public LiveData<List<String>> getSelectedGenres() {
+        return selectedGenres;
+    }
+
+    public void selectGenre(String genre) {
+
+        List<String> genres = selectedGenres.getValue();
+        if (genres == null) {
+            genres = new ArrayList<>();
+        }
+        if (genres.contains(genre)) {
+            genres.remove(genre);
+        } else {
+            genres.add(genre);
+        }
+        this.savedStateHandle.set(Constants.ATT_SELECTED_GENRES_LIVE_DATA, genres);
+    }
+
+    public void resetSelectedGenres() {
+        this.savedStateHandle.set(Constants.ATT_SELECTED_GENRES_LIVE_DATA, null);
     }
 
     public LiveData<Integer> getPosition() {
@@ -194,12 +218,14 @@ public class MainViewModel extends ViewModel {
 
     public void loadGames() {
 
+        setRefreshing(true);
         gameAPIClient
                 .getGamesObserver(
                         getPage(),
                         Constants.PAGE_SIZE,
                         getQuery(),
-                        listToString(getSelectedPlatforms().getValue()))
+                        listToString(getSelectedPlatforms().getValue()),
+                        listToString(getSelectedGenres().getValue())
                 )
                 .subscribe(new SingleObserver<GameListResponse>() {
                     @Override
@@ -234,6 +260,7 @@ public class MainViewModel extends ViewModel {
 
     public void loadPlatforms() {
 
+        setRefreshing(true);
         platformAPIClient
                 .getPlatformsObserver(platformPage, Constants.PAGE_SIZE)
                 .subscribe(new SingleObserver<PlatformListResponse>() {
@@ -245,11 +272,13 @@ public class MainViewModel extends ViewModel {
 
                         platformPage++;
                         addPlatforms(platformListResponse.getResults());
+                        setRefreshing(false);
                     }
 
                     @Override
                     public void onError(Throwable e) {
 
+                        setRefreshing(false);
                         setError(new ErrorResponse(
                                 "",
                                 R.string.error_server,
@@ -293,6 +322,10 @@ public class MainViewModel extends ViewModel {
 
         setQuery(null);
         resetSelectedPlatforms();
+        resetSelectedGenres();
+        setPage(Constants.FIRST_PAGE);
+        resetGames();
+        loadGames();
     }
 
     public void searchGames(String query) {

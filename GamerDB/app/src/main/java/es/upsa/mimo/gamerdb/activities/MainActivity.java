@@ -181,12 +181,23 @@ public class MainActivity extends BaseActivity implements GamesAdapter.OnItemCli
                 .getSelectedPlatforms()
                 .observe(this, selectedPlatforms -> {
 
-                    if (selectedPlatforms.isEmpty()) {
-                        resetPlatformButtons();
+                    if (selectedPlatforms == null || selectedPlatforms.isEmpty()) {
+                        resetButtons(llPlatforms);
                     }
-                    viewModel.setPage(Constants.FIRST_PAGE);
-                    viewModel.resetGames();
-                    viewModel.loadGames();
+                    if (selectedPlatforms != null) {
+                        reloadGames();
+                    }
+                });
+        viewModel
+                .getSelectedGenres()
+                .observe(this, selectedGenres -> {
+
+                    if (selectedGenres == null || selectedGenres.isEmpty()) {
+                        resetButtons(llGenres);
+                    }
+                    if (selectedGenres != null) {
+                        reloadGames();
+                    }
                 });
         viewModel
                 .getPosition()
@@ -339,5 +350,12 @@ public class MainActivity extends BaseActivity implements GamesAdapter.OnItemCli
             }
             toolbar.setTitle(title);
         }
+    }
+
+    private void reloadGames() {
+
+        viewModel.setPage(Constants.FIRST_PAGE);
+        viewModel.resetGames();
+        viewModel.loadGames();
     }
 }
