@@ -86,8 +86,7 @@ public class GameDetailViewModel extends ViewModel {
                 .getGame(getGameId())
                 .subscribe(new SingleObserver<GameResponse>() {
                     @Override
-                    public void onSubscribe(Disposable d) {
-                    }
+                    public void onSubscribe(Disposable d) {}
 
                     @Override
                     public void onSuccess(GameResponse gameResponse) {
