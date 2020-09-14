@@ -14,7 +14,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/horizontal_scroll_view_platforms"
         >
 
         <androidx.recyclerview.widget.RecyclerView
@@ -37,6 +37,24 @@
         app:layout_constraintEnd_toEndOf="@id/swipe_refresh_layout"
         style="@style/EndListButton"
         />
+
+    <HorizontalScrollView
+        android:id="@+id/horizontal_scroll_view_platforms"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        >
+
+        <LinearLayout
+            android:id="@+id/linear_layout_platforms"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            />
+    </HorizontalScrollView>
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"

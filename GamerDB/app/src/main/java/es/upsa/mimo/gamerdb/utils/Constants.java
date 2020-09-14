@@ -78,8 +78,9 @@ public class Constants {
 
     //MARK: - Game list
 
+    public static int PLATFORM_BUTTON_HEIGHT = 50;
     public static int INITIAL_POSITION_LIST = 0;
-    public static int MARGIN_LIST = 150;
+    public static int MARGIN_LIST = 50;
     public static int NO_MARGIN_LIST = 0;
 
     //MARK: - Game detail

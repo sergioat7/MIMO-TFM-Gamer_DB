@@ -20,16 +20,20 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.SearchView;
 import android.widget.TextView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import java.util.List;
 import java.util.Objects;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import es.upsa.mimo.gamerdb.R;
 import es.upsa.mimo.gamerdb.activities.base.BaseActivity;
 import es.upsa.mimo.gamerdb.adapters.GamesAdapter;
-import es.upsa.mimo.gamerdb.network.apiclient.GameAPIClient;
+import es.upsa.mimo.gamerdb.models.PlatformObjectResponse;
 import es.upsa.mimo.gamerdb.utils.Constants;
 import es.upsa.mimo.gamerdb.viewmodels.MainViewModel;
 
@@ -39,13 +43,12 @@ public class MainActivity extends BaseActivity implements GamesAdapter.OnItemCli
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
-
+    @BindView(R.id.linear_layout_platforms)
+    LinearLayout llPlatforms;
     @BindView(R.id.swipe_refresh_layout)
     SwipeRefreshLayout srlGames;
-
     @BindView(R.id.recycler_view_games)
     RecyclerView rvGames;
-
     @BindView(R.id.floating_action_button_end_list)
     FloatingActionButton btEndList;
 
@@ -148,6 +151,16 @@ public class MainActivity extends BaseActivity implements GamesAdapter.OnItemCli
                 .getError()
                 .observe(this, this::manageError);
         viewModel
+                .getPlatforms()
+                .observe(this, platformObjectResponses -> {
+
+                    if ((platformObjectResponses.size() % Constants.PAGE_SIZE) == 0) {
+                        viewModel.loadPlatforms();
+                    } else{
+                        setupPlatforms();
+                    }
+                });
+        viewModel
                 .getPosition()
                 .observe(this, position -> rvGames.scrollToPosition(position));
         viewModel
@@ -206,5 +219,41 @@ public class MainActivity extends BaseActivity implements GamesAdapter.OnItemCli
                 searchText.setHintTextColor(ContextCompat.getColor(this, R.color.colorSecondary));
             }
         }
+    }
+
+    private void setupPlatforms() {
+
+        llPlatforms.removeAllViews();
+        List<PlatformObjectResponse> platforms = viewModel.getPlatforms().getValue();
+        if (platforms != null) {
+            for (int i = 0; i < platforms.size(); i++) {
+
+                PlatformObjectResponse platform = platforms.get(i);
+                if (platform != null) {
+
+                    int platformId = platform.getId();
+                    String name = platform.getName();
+                    Button button = getPlatformButton(name, platformId);
+                    llPlatforms.addView(button);
+                }
+            }
+        }
+    }
+
+    private Button getPlatformButton(String text, int id) {
+
+        Button button = new Button(this, null, 0, R.style.PlatformButton);
+        int height = (int) (Constants.PLATFORM_BUTTON_HEIGHT * getResources().getDisplayMetrics().density);
+        button.setLayoutParams(new ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                height
+        ));
+        button.setTag(id);
+        button.setText(text);
+        button.setOnClickListener(v -> {
+
+            v.setSelected(!v.isSelected());
+        });
+        return button;
     }
 }

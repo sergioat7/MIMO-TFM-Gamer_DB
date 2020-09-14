@@ -18,7 +18,7 @@
     </style>
 
     <style name="AppTheme.Toolbar.List" parent="AppTheme.Toolbar">
-        <item name="android:background">@color/colorPrimarySemiTransparent</item>
+        <item name="android:background">@color/colorPrimary</item>
     </style>
 
     <style name="AppTheme.Toolbar.Detail" parent="AppTheme.Toolbar">

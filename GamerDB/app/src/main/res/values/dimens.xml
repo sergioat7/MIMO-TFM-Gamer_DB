@@ -13,7 +13,9 @@
     <dimen name="size_normal">20dp</dimen>
     <dimen name="size_small">10dp</dimen>
     <dimen name="size_tiny">5dp</dimen>
+    <dimen name="size_mini">2dp</dimen>
     <dimen name="size_none">0dp</dimen>
+    <dimen name="size_tiny_negative">-5dp</dimen>
 
     <!-- font sizes -->
     <dimen name="font_larger">24sp</dimen>
