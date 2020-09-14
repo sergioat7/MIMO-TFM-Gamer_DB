@@ -114,6 +114,10 @@ public class MainActivity extends BaseActivity implements GamesAdapter.OnItemCli
             viewModel.setPosition(Constants.INITIAL_POSITION_LIST);
             btEndList.setVisibility(View.VISIBLE);
             return true;
+        } else if (item.getItemId() == R.id.action_filter) {
+
+            //TODO filter
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }
