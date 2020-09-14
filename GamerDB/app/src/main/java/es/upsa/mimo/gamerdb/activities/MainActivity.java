@@ -34,7 +34,6 @@ import butterknife.ButterKnife;
 import es.upsa.mimo.gamerdb.R;
 import es.upsa.mimo.gamerdb.activities.base.BaseActivity;
 import es.upsa.mimo.gamerdb.adapters.GamesAdapter;
-import es.upsa.mimo.gamerdb.models.GameResponse;
 import es.upsa.mimo.gamerdb.models.PlatformObjectResponse;
 import es.upsa.mimo.gamerdb.utils.Constants;
 import es.upsa.mimo.gamerdb.viewmodels.MainViewModel;
@@ -139,15 +138,16 @@ public class MainActivity extends BaseActivity implements GamesAdapter.OnItemCli
                 new SavedStateViewModelFactory(this.getApplication(), this)
         ).get(MainViewModel.class);
         viewModel
+                .getGamesCount()
+                .observe(this, this::setGamesCount);
+        viewModel
                 .getGames()
                 .observe(this, gameResponses -> {
 
                     if (gameResponses.isEmpty()) {
                         gamesAdapter.resetList();
                     } else {
-
                         gamesAdapter.setGames(gameResponses);
-                        setTitle();
                     }
                     btEndList.setVisibility(View.VISIBLE);
                 });
@@ -285,24 +285,17 @@ public class MainActivity extends BaseActivity implements GamesAdapter.OnItemCli
         }
     }
 
-    private void setTitle() {
+    private void setGamesCount(int gamesCount) {
 
-        int gamesCount = 0;
-        List<GameResponse> games = viewModel.getGames().getValue();
-        if (games != null) {
-            gamesCount = games.size();
-        }
         String title = getResources().getString(R.string.games_title, gamesCount);
-
         for(int i = 0; i < toolbar.getChildCount(); i++) {
 
             View view = toolbar.getChildAt(i);
             if (view instanceof TextView) {
 
                 TextView textView = (TextView) view;
-                Toolbar.LayoutParams params = new Toolbar.LayoutParams(Toolbar.LayoutParams.WRAP_CONTENT, Toolbar.LayoutParams.MATCH_PARENT);
-                params.gravity = Gravity.CENTER_HORIZONTAL;
-                textView.setLayoutParams(params);
+                textView.setGravity(Gravity.CENTER);
+                textView.setPadding(Constants.TOOLBAR_TITLE_PADDING_LEFT, 0, 0, Constants.TOOLBAR_TITLE_PADDING_BOTTOM);
             }
             toolbar.setTitle(title);
         }

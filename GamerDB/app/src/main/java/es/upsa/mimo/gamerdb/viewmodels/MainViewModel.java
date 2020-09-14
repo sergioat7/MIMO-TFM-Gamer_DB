@@ -28,6 +28,7 @@ public class MainViewModel extends ViewModel {
     //MARK: - Private properties
 
     private SavedStateHandle savedStateHandle;
+    private LiveData<Integer> gamesCount;
     private MutableLiveData<List<GameResponse>> games;
     private MutableLiveData<List<PlatformObjectResponse>> platforms;
     private MutableLiveData<ErrorResponse> error;
@@ -45,6 +46,7 @@ public class MainViewModel extends ViewModel {
     public MainViewModel(SavedStateHandle savedStateHandle) {
 
         this.savedStateHandle = savedStateHandle;
+        gamesCount = savedStateHandle.getLiveData(Constants.ATT_GAMES_COUNT_LIVE_DATA, 0);
         games = new MutableLiveData<>();
         resetGames();
         platforms = new MutableLiveData<>();
@@ -61,6 +63,14 @@ public class MainViewModel extends ViewModel {
     }
 
     //MARK: - Public methods
+
+    public LiveData<Integer> getGamesCount() {
+        return gamesCount;
+    }
+
+    public void setGamesCount(int gamesCount) {
+        this.savedStateHandle.set(Constants.ATT_GAMES_COUNT_LIVE_DATA, gamesCount);
+    }
 
     public LiveData<List<GameResponse>> getGames() {
         return games;
@@ -177,7 +187,9 @@ public class MainViewModel extends ViewModel {
                         addGames(gameListResponse.getResults());
                         int page = getPage();
                         if (page == 1) {
+
                             setPosition(Constants.INITIAL_POSITION_LIST);
+                            setGamesCount(gameListResponse.getCount());
                         }
                         setPage(page + 1);
                         setRefreshing(false);
