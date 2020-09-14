@@ -18,13 +18,19 @@ public class GameAPIClient {
 
     private GameAPIService api = APIClient.getRetrofit().create(GameAPIService.class);
 
-    public Single<GameListResponse> getGamesObserver(int page, int pageSize, String query) {
+    public Single<GameListResponse> getGamesObserver(int page,
+                                                     int pageSize,
+                                                     String query,
+                                                     String platforms) {
 
         Map<String, String> params = new HashMap<>();
         params.put(Constants.PAGE_PARAM, String.valueOf(page));
         params.put(Constants.PAGE_SIZE_PARAM, String.valueOf(pageSize));
         if (query != null) {
             params.put(Constants.SEARCH_PARAM, query);
+        }
+        if (platforms != null) {
+            params.put(Constants.PLATFORMS_PARAM, platforms);
         }
         return api.getGames(params).subscribeOn(Constants.SUBSCRIBER_SCHEDULER).observeOn(Constants.OBSERVER_SCHEDULER);
     }

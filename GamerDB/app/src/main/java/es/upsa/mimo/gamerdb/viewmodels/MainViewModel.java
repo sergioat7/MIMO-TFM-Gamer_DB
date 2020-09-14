@@ -33,6 +33,7 @@ public class MainViewModel extends ViewModel {
     private MutableLiveData<List<PlatformObjectResponse>> platforms;
     private LiveData<Integer> page;
     private LiveData<String> query;
+    private LiveData<List<String>> selectedPlatforms;
     private LiveData<Integer> position;
     private LiveData<Boolean> refreshing;
     private int platformPage;
@@ -50,6 +51,7 @@ public class MainViewModel extends ViewModel {
         platforms = new MutableLiveData<>();
         page = savedStateHandle.getLiveData(Constants.ATT_PAGE_LIVE_DATA, Constants.FIRST_PAGE);
         query = savedStateHandle.getLiveData(Constants.ATT_QUERY_LIVE_DATA, null);
+        selectedPlatforms = savedStateHandle.getLiveData(Constants.ATT_SELECTED_PLATFORMS_LIVE_DATA, new ArrayList<>());
         position = savedStateHandle.getLiveData(Constants.ATT_POSITION_LIVE_DATA, Constants.INITIAL_POSITION_LIST);
         refreshing = savedStateHandle.getLiveData(Constants.ATT_REFRESHING_LIVE_DATA, true);
         platformPage = Constants.FIRST_PAGE;
@@ -119,6 +121,28 @@ public class MainViewModel extends ViewModel {
         this.savedStateHandle.set(Constants.ATT_QUERY_LIVE_DATA, query);
     }
 
+    public LiveData<List<String>> getSelectedPlatforms() {
+        return selectedPlatforms;
+    }
+
+    public void selectPlatform(String platform) {
+
+        List<String> platforms = selectedPlatforms.getValue();
+        if (platforms == null) {
+            platforms = new ArrayList<>();
+        }
+        if (platforms.contains(platform)) {
+            platforms.remove(platform);
+        } else {
+            platforms.add(platform);
+        }
+        this.savedStateHandle.set(Constants.ATT_SELECTED_PLATFORMS_LIVE_DATA, platforms);
+    }
+
+    public void resetSelectedPlatforms() {
+        this.savedStateHandle.set(Constants.ATT_SELECTED_PLATFORMS_LIVE_DATA, new ArrayList<>());
+    }
+
     public LiveData<Integer> getPosition() {
         return position;
     }
@@ -138,11 +162,15 @@ public class MainViewModel extends ViewModel {
     public void loadGames() {
 
         gameAPIClient
-                .getGamesObserver(getPage(), Constants.PAGE_SIZE, getQuery())
+                .getGamesObserver(
+                        getPage(),
+                        Constants.PAGE_SIZE,
+                        getQuery(),
+                        listToString(getSelectedPlatforms().getValue()))
+                )
                 .subscribe(new SingleObserver<GameListResponse>() {
                     @Override
-                    public void onSubscribe(Disposable d) {
-                    }
+                    public void onSubscribe(Disposable d) {}
 
                     @Override
                     public void onSuccess(GameListResponse gameListResponse) {
@@ -200,6 +228,7 @@ public class MainViewModel extends ViewModel {
 
         setPage(Constants.FIRST_PAGE);
         setQuery(null);
+        resetSelectedPlatforms();
         resetGames();
         loadGames();
     }
@@ -210,5 +239,20 @@ public class MainViewModel extends ViewModel {
         setQuery(query);
         resetGames();
         loadGames();
+    }
+
+    //MARK: - Private methods
+
+    private String listToString(List<String> list) {
+
+        StringBuilder result = new StringBuilder();
+        if (list != null) {
+            for (int i = 0; i < list.size(); i++) {
+
+                result.append(list.get(i));
+                result.append(Constants.nextValueSeparator);
+            }
+        }
+        return result.length() == 0 ? null : result.substring(0, result.length() - 2);
     }
 }

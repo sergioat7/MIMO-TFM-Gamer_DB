@@ -161,6 +161,17 @@ public class MainActivity extends BaseActivity implements GamesAdapter.OnItemCli
                     }
                 });
         viewModel
+                .getSelectedPlatforms()
+                .observe(this, selectedPlatforms -> {
+
+                    if (selectedPlatforms.isEmpty()) {
+                        resetPlatformButtons();
+                    }
+                    viewModel.setPage(Constants.FIRST_PAGE);
+                    viewModel.resetGames();
+                    viewModel.loadGames();
+                });
+        viewModel
                 .getPosition()
                 .observe(this, position -> rvGames.scrollToPosition(position));
         viewModel
@@ -225,6 +236,7 @@ public class MainActivity extends BaseActivity implements GamesAdapter.OnItemCli
 
         llPlatforms.removeAllViews();
         List<PlatformObjectResponse> platforms = viewModel.getPlatforms().getValue();
+        List<String> selectedPlatforms = viewModel.getSelectedPlatforms().getValue();
         if (platforms != null) {
             for (int i = 0; i < platforms.size(); i++) {
 
@@ -233,14 +245,15 @@ public class MainActivity extends BaseActivity implements GamesAdapter.OnItemCli
 
                     int platformId = platform.getId();
                     String name = platform.getName();
-                    Button button = getPlatformButton(name, platformId);
+                    boolean isSelected = selectedPlatforms != null && selectedPlatforms.contains(String.valueOf(platformId));
+                    Button button = getPlatformButton(name, platformId, isSelected);
                     llPlatforms.addView(button);
                 }
             }
         }
     }
 
-    private Button getPlatformButton(String text, int id) {
+    private Button getPlatformButton(String text, int id, boolean isSelected) {
 
         Button button = new Button(this, null, 0, R.style.PlatformButton);
         int height = (int) (Constants.PLATFORM_BUTTON_HEIGHT * getResources().getDisplayMetrics().density);
@@ -250,10 +263,21 @@ public class MainActivity extends BaseActivity implements GamesAdapter.OnItemCli
         ));
         button.setTag(id);
         button.setText(text);
+        button.setSelected(isSelected);
         button.setOnClickListener(v -> {
 
             v.setSelected(!v.isSelected());
+            viewModel.selectPlatform(v.getTag().toString());
         });
         return button;
+    }
+
+    private void resetPlatformButtons() {
+
+        for (int i = 0; i < llPlatforms.getChildCount(); i ++) {
+
+            Button button = (Button)llPlatforms.getChildAt(i);
+            button.setSelected(false);
+        }
     }
 }
