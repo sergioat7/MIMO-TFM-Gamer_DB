@@ -10,6 +10,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 import es.upsa.mimo.gamerdb.R;
+import io.reactivex.Scheduler;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 public class Constants {
 
@@ -22,6 +25,8 @@ public class Constants {
     public static String PAGE_PARAM = "page";
     public static String PAGE_SIZE_PARAM = "page_size";
     public static String SEARCH_PARAM = "search";
+    public static Scheduler SUBSCRIBER_SCHEDULER = Schedulers.io();
+    public static Scheduler OBSERVER_SCHEDULER = AndroidSchedulers.mainThread();
     public static int FIRST_PAGE = 1;
     public static int PAGE_SIZE = 20;
     public static String BASE_YOUTUBE_URL = "https://www.youtube.com/embed/";
