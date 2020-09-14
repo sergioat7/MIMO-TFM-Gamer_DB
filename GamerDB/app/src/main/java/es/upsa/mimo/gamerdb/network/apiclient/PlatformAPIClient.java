@@ -5,7 +5,6 @@
 
 package es.upsa.mimo.gamerdb.network.apiclient;
 
-import android.util.Log;
 import java.util.HashMap;
 import java.util.Map;
 import es.upsa.mimo.gamerdb.models.PlatformListResponse;
