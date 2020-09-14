@@ -29,8 +29,8 @@ public class MainViewModel extends ViewModel {
 
     private SavedStateHandle savedStateHandle;
     private MutableLiveData<List<GameResponse>> games;
-    private MutableLiveData<ErrorResponse> error;
     private MutableLiveData<List<PlatformObjectResponse>> platforms;
+    private MutableLiveData<ErrorResponse> error;
     private LiveData<Integer> page;
     private LiveData<String> query;
     private LiveData<List<String>> selectedPlatforms;
@@ -47,8 +47,8 @@ public class MainViewModel extends ViewModel {
         this.savedStateHandle = savedStateHandle;
         games = new MutableLiveData<>();
         resetGames();
-        error = new MutableLiveData<>();
         platforms = new MutableLiveData<>();
+        error = new MutableLiveData<>();
         page = savedStateHandle.getLiveData(Constants.ATT_PAGE_LIVE_DATA, Constants.FIRST_PAGE);
         query = savedStateHandle.getLiveData(Constants.ATT_QUERY_LIVE_DATA, null);
         selectedPlatforms = savedStateHandle.getLiveData(Constants.ATT_SELECTED_PLATFORMS_LIVE_DATA, new ArrayList<>());
@@ -57,7 +57,6 @@ public class MainViewModel extends ViewModel {
         platformPage = Constants.FIRST_PAGE;
         gameAPIClient = new GameAPIClient();
         platformAPIClient = new PlatformAPIClient();
-        loadGames();
         loadPlatforms();
     }
 
@@ -81,14 +80,6 @@ public class MainViewModel extends ViewModel {
         this.games.setValue(new ArrayList<>());
     }
 
-    public LiveData<ErrorResponse> getError() {
-        return error;
-    }
-
-    public void setError(ErrorResponse error) {
-        this.error.setValue(error);
-    }
-
     public LiveData<List<PlatformObjectResponse>> getPlatforms() {
         return platforms;
     }
@@ -101,6 +92,14 @@ public class MainViewModel extends ViewModel {
         }
         currentPlatforms.addAll(platforms);
         this.platforms.setValue(currentPlatforms);
+    }
+
+    public LiveData<ErrorResponse> getError() {
+        return error;
+    }
+
+    public void setError(ErrorResponse error) {
+        this.error.setValue(error);
     }
 
     public int getPage() {
@@ -226,11 +225,8 @@ public class MainViewModel extends ViewModel {
 
     public void reloadGames() {
 
-        setPage(Constants.FIRST_PAGE);
         setQuery(null);
         resetSelectedPlatforms();
-        resetGames();
-        loadGames();
     }
 
     public void searchGames(String query) {

@@ -142,14 +142,11 @@ public class MainActivity extends BaseActivity implements GamesAdapter.OnItemCli
 
                     if (gameResponses.isEmpty()) {
                         gamesAdapter.resetList();
-                    } else{
+                    } else {
                         gamesAdapter.setGames(gameResponses);
                     }
                     btEndList.setVisibility(View.VISIBLE);
                 });
-        viewModel
-                .getError()
-                .observe(this, this::manageError);
         viewModel
                 .getPlatforms()
                 .observe(this, platformObjectResponses -> {
@@ -160,6 +157,9 @@ public class MainActivity extends BaseActivity implements GamesAdapter.OnItemCli
                         setupPlatforms();
                     }
                 });
+        viewModel
+                .getError()
+                .observe(this, this::manageError);
         viewModel
                 .getSelectedPlatforms()
                 .observe(this, selectedPlatforms -> {
