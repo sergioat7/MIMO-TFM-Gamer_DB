@@ -15,9 +15,12 @@ import es.upsa.mimo.gamerdb.R;
 import es.upsa.mimo.gamerdb.models.ErrorResponse;
 import es.upsa.mimo.gamerdb.models.GameListResponse;
 import es.upsa.mimo.gamerdb.models.GameResponse;
+import es.upsa.mimo.gamerdb.models.GenreListResponse;
+import es.upsa.mimo.gamerdb.models.GenreResponse;
 import es.upsa.mimo.gamerdb.models.PlatformListResponse;
 import es.upsa.mimo.gamerdb.models.PlatformObjectResponse;
 import es.upsa.mimo.gamerdb.network.apiclient.GameAPIClient;
+import es.upsa.mimo.gamerdb.network.apiclient.GenreAPIClient;
 import es.upsa.mimo.gamerdb.network.apiclient.PlatformAPIClient;
 import es.upsa.mimo.gamerdb.utils.Constants;
 import io.reactivex.SingleObserver;
@@ -31,15 +34,18 @@ public class MainViewModel extends ViewModel {
     private LiveData<Integer> gamesCount;
     private MutableLiveData<List<GameResponse>> games;
     private MutableLiveData<List<PlatformObjectResponse>> platforms;
+    private MutableLiveData<List<GenreResponse>> genres;
     private MutableLiveData<ErrorResponse> error;
     private LiveData<Integer> page;
     private LiveData<String> query;
     private LiveData<List<String>> selectedPlatforms;
     private LiveData<Integer> position;
     private LiveData<Boolean> refreshing;
-    private int platformPage;
     private GameAPIClient gameAPIClient;
     private PlatformAPIClient platformAPIClient;
+    private GenreAPIClient genreAPIClient;
+    private int platformPage;
+    private int genrePage;
 
     //MARK: - Lifecycle methods
 
@@ -50,16 +56,20 @@ public class MainViewModel extends ViewModel {
         games = new MutableLiveData<>();
         resetGames();
         platforms = new MutableLiveData<>();
+        genres = new MutableLiveData<>();
         error = new MutableLiveData<>();
         page = savedStateHandle.getLiveData(Constants.ATT_PAGE_LIVE_DATA, Constants.FIRST_PAGE);
         query = savedStateHandle.getLiveData(Constants.ATT_QUERY_LIVE_DATA, null);
         selectedPlatforms = savedStateHandle.getLiveData(Constants.ATT_SELECTED_PLATFORMS_LIVE_DATA, new ArrayList<>());
         position = savedStateHandle.getLiveData(Constants.ATT_POSITION_LIVE_DATA, Constants.INITIAL_POSITION_LIST);
         refreshing = savedStateHandle.getLiveData(Constants.ATT_REFRESHING_LIVE_DATA, true);
-        platformPage = Constants.FIRST_PAGE;
         gameAPIClient = new GameAPIClient();
         platformAPIClient = new PlatformAPIClient();
+        genreAPIClient = new GenreAPIClient();
+        platformPage = Constants.FIRST_PAGE;
+        genrePage = Constants.FIRST_PAGE;
         loadPlatforms();
+        loadGenres();
     }
 
     //MARK: - Public methods
@@ -102,6 +112,20 @@ public class MainViewModel extends ViewModel {
         }
         currentPlatforms.addAll(platforms);
         this.platforms.setValue(currentPlatforms);
+    }
+
+    public LiveData<List<GenreResponse>> getGenres() {
+        return genres;
+    }
+
+    public void addGenres(List<GenreResponse> genres) {
+
+        List<GenreResponse> currentGenres = this.genres.getValue();
+        if (currentGenres == null) {
+            currentGenres = new ArrayList<>();
+        }
+        currentGenres.addAll(genres);
+        this.genres.setValue(currentGenres);
     }
 
     public LiveData<ErrorResponse> getError() {
@@ -230,6 +254,36 @@ public class MainViewModel extends ViewModel {
                                 "",
                                 R.string.error_server,
                                 "Error in MainViewModel getPlatforms")
+                        );
+                    }
+                });
+    }
+
+    public void loadGenres() {
+
+        setRefreshing(true);
+        genreAPIClient
+                .getGenresObserver(genrePage, Constants.PAGE_SIZE)
+                .subscribe(new SingleObserver<GenreListResponse>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {}
+
+                    @Override
+                    public void onSuccess(GenreListResponse genreListResponse) {
+
+                        genrePage++;
+                        addGenres(genreListResponse.getResults());
+                        setRefreshing(false);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                        setRefreshing(false);
+                        setError(new ErrorResponse(
+                                "",
+                                R.string.error_server,
+                                "Error in MainViewModel getGenres")
                         );
                     }
                 });
