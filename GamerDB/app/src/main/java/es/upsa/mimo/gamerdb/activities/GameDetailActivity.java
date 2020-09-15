@@ -172,10 +172,10 @@ public class GameDetailActivity extends BaseActivity {
             for (int i = 0; i < platforms.size(); i++) {
 
                 platformsText.append(platforms.get(i).getPlatform().getName());
-                platformsText.append(Constants.nextValueSeparator);
+                platformsText.append(Constants.NEXT_VALUE_SEPARATOR);
             }
         }
-        platformsText = new StringBuilder((platformsText.length() == 0) ? Constants.emptyValue : platformsText.substring(0, platformsText.length() - 2));
+        platformsText = new StringBuilder((platformsText.length() == 0) ? Constants.EMPTY_VALUE : platformsText.substring(0, platformsText.length() - 2));
         tvPlatforms.setText(platformsText.toString());
 
         String releasedDate;
@@ -185,7 +185,7 @@ public class GameDetailActivity extends BaseActivity {
             assert releasedDate != null;
             releasedDate = releasedDate.substring(0,1).toUpperCase() + releasedDate.substring(1);
         } catch (Exception ignored) {
-            releasedDate = Constants.emptyValue;
+            releasedDate = Constants.EMPTY_VALUE;
         }
         tvReleaseDate.setText(releasedDate);
 
@@ -195,13 +195,13 @@ public class GameDetailActivity extends BaseActivity {
             for (int i = 0; i < genres.size(); i++) {
 
                 genresText.append(genres.get(i).getName());
-                genresText.append(Constants.nextValueSeparator);
+                genresText.append(Constants.NEXT_VALUE_SEPARATOR);
             }
         }
-        genresText = new StringBuilder((genresText.length() == 0) ? Constants.emptyValue : genresText.substring(0, genresText.length() - 2));
+        genresText = new StringBuilder((genresText.length() == 0) ? Constants.EMPTY_VALUE : genresText.substring(0, genresText.length() - 2));
         tvGenres.setText(genresText.toString());
 
-        String ageRating = Constants.emptyValue;
+        String ageRating = Constants.EMPTY_VALUE;
         if (game.getEsrbRating() != null) {
             ageRating = game.getEsrbRating().getName();
         }
@@ -213,10 +213,10 @@ public class GameDetailActivity extends BaseActivity {
             for (int i = 0; i < developers.size(); i++) {
 
                 developersText.append(developers.get(i).getName());
-                developersText.append(Constants.nextValueSeparator);
+                developersText.append(Constants.NEXT_VALUE_SEPARATOR);
             }
         }
-        developersText = new StringBuilder((developersText.length() == 0) ? Constants.emptyValue : developersText.substring(0, developersText.length() - 2));
+        developersText = new StringBuilder((developersText.length() == 0) ? Constants.EMPTY_VALUE : developersText.substring(0, developersText.length() - 2));
         tvDeveloper.setText(developersText.toString());
 
         List<PublisherResponse> publishers = game.getPublishers();
@@ -225,13 +225,13 @@ public class GameDetailActivity extends BaseActivity {
             for (int i = 0; i < publishers.size(); i++) {
 
                 publishersText.append(publishers.get(i).getName());
-                publishersText.append(Constants.nextValueSeparator);
+                publishersText.append(Constants.NEXT_VALUE_SEPARATOR);
             }
         }
-        publishersText = new StringBuilder((publishersText.length() == 0) ? Constants.emptyValue : publishersText.substring(0, publishersText.length() - 2));
+        publishersText = new StringBuilder((publishersText.length() == 0) ? Constants.EMPTY_VALUE : publishersText.substring(0, publishersText.length() - 2));
         tvPublisher.setText(publishersText.toString());
 
-        String website = Constants.emptyValue;
+        String website = Constants.EMPTY_VALUE;
         if (game.getWebsite() != null && !game.getWebsite().isEmpty()) {
             website = game.getWebsite();
         }
@@ -277,9 +277,9 @@ public class GameDetailActivity extends BaseActivity {
             for (int i = 0; i < tags.size(); i++) {
 
                 tagsText.append(tags.get(i).getName());
-                tagsText.append(Constants.nextValueSeparator);
+                tagsText.append(Constants.NEXT_VALUE_SEPARATOR);
             }
-            tagsText = new StringBuilder((tagsText.length() == 0) ? Constants.emptyValue : tagsText.substring(0, tagsText.length() - 2));
+            tagsText = new StringBuilder((tagsText.length() == 0) ? Constants.EMPTY_VALUE : tagsText.substring(0, tagsText.length() - 2));
         }
         tvTags.setText(tagsText.toString());
     }
