@@ -42,6 +42,7 @@ public class GameDetailViewModel extends ViewModel {
         error = new MutableLiveData<>();
         imagesUrl = savedStateHandle.getLiveData(Constants.ATT_IMAGES_URL_LIVE_DATA, new ArrayList<>());
         gameAPIClient = new GameAPIClient();
+        loadGame();
     }
 
     //MARK: - Public methods
@@ -80,7 +81,9 @@ public class GameDetailViewModel extends ViewModel {
         this.savedStateHandle.set(Constants.ATT_IMAGES_URL_LIVE_DATA, imagesUrl);
     }
 
-    public void loadGame() {
+    //MARK: - Private methods
+
+    private void loadGame() {
 
         gameAPIClient
                 .getGame(getGameId())

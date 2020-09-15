@@ -109,12 +109,16 @@ public class GameDetailActivity extends BaseActivity {
 
     private void initializeUI(int gameId) {
 
+        Bundle extraParameters = new Bundle();
+        extraParameters.putInt(Constants.ATT_GAME_ID_LIVE_DATA, gameId);
+
         viewModel = new ViewModelProvider(
                 this,
-                new SavedStateViewModelFactory(this.getApplication(), this)
+                new SavedStateViewModelFactory(
+                        this.getApplication(),
+                        this,
+                        extraParameters)
         ).get(GameDetailViewModel.class);
-        viewModel.setGameId(gameId);//TODO pass gameId to ViewModel constructor
-        viewModel.loadGame();//TODO move to ViewModel constructor
         viewModel
                 .getGame()
                 .observe(this, this::fillData);
