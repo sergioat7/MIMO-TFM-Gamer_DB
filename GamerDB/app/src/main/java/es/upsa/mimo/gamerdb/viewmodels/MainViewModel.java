@@ -318,21 +318,25 @@ public class MainViewModel extends ViewModel {
                 });
     }
 
+    public void resetPage() {
+
+        setPage(Constants.FIRST_PAGE);
+        resetGames();
+    }
+
     public void reloadGames() {
 
         setQuery(null);
         resetSelectedPlatforms();
         resetSelectedGenres();
-        setPage(Constants.FIRST_PAGE);
-        resetGames();
+        resetPage();
         loadGames();
     }
 
     public void searchGames(String query) {
 
-        setPage(Constants.FIRST_PAGE);
         setQuery(query);
-        resetGames();
+        resetPage();
         loadGames();
     }
 
@@ -345,7 +349,7 @@ public class MainViewModel extends ViewModel {
             for (int i = 0; i < list.size(); i++) {
 
                 result.append(list.get(i));
-                result.append(Constants.nextValueSeparator);
+                result.append(Constants.NEXT_VALUE_SEPARATOR);
             }
         }
         return result.length() == 0 ? null : result.substring(0, result.length() - 2);

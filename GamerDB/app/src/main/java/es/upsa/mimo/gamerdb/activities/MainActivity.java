@@ -114,7 +114,7 @@ public class MainActivity extends BaseActivity implements GamesAdapter.OnItemCli
             viewModel.setPosition(Constants.INITIAL_POSITION_LIST);
             btEndList.setVisibility(View.VISIBLE);
             return true;
-        } else if (item.getItemId() == R.id.action_filter) {
+        } else if (item.getItemId() == R.id.action_sort) {
 
             //TODO filter
             return true;
@@ -358,8 +358,7 @@ public class MainActivity extends BaseActivity implements GamesAdapter.OnItemCli
 
     private void reloadGames() {
 
-        viewModel.setPage(Constants.FIRST_PAGE);
-        viewModel.resetGames();
+        viewModel.resetPage();
         viewModel.loadGames();
     }
 }
