@@ -81,12 +81,17 @@ public class MainViewModel extends ViewModel {
         genrePage = Constants.FIRST_PAGE;
         loadPlatforms();
         loadGenres();
+        loadGames();
     }
 
     //MARK: - Public methods
 
     public LiveData<Integer> getGamesCount() {
         return gamesCount;
+    }
+
+    public int getGamesCountValue() {
+        return (gamesCount != null && gamesCount.getValue() != null) ? gamesCount.getValue() : 0;
     }
 
     public void setGamesCount(int gamesCount) {

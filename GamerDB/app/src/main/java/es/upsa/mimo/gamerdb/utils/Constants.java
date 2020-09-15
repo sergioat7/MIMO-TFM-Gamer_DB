@@ -7,8 +7,12 @@ package es.upsa.mimo.gamerdb.utils;
 
 import android.content.Context;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
+import android.widget.TextView;
+import androidx.appcompat.widget.Toolbar;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -97,6 +101,21 @@ public class Constants {
     public static int INITIAL_POSITION_LIST = 0;
     public static int MARGIN_LIST = 50;
     public static int NO_MARGIN_LIST = 0;
+
+    public static void setToolbarTitleStyle(Context context, Toolbar toolbar) {
+
+        for(int i = 0; i < toolbar.getChildCount(); i++) {
+
+            View view = toolbar.getChildAt(i);
+            if (view instanceof TextView) {
+
+                TextView textView = (TextView) view;
+                textView.setGravity(Gravity.CENTER);
+                textView.setTextSize(context.getResources().getDimension(R.dimen.font_tiny));
+                textView.setPadding(0, 0, 0, Constants.TOOLBAR_TITLE_PADDING_BOTTOM);
+            }
+        }
+    }
 
     public static String listToString(List<String> list, String separator) {
 

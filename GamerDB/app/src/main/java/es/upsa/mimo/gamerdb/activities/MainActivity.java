@@ -17,7 +17,6 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -72,7 +71,6 @@ public class MainActivity extends BaseActivity implements GamesAdapter.OnItemCli
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setHomeAsUpIndicator(R.drawable.ic_home_white_24dp);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        setTitle("");
 
         this.initializeUI();
     }
@@ -144,13 +142,15 @@ public class MainActivity extends BaseActivity implements GamesAdapter.OnItemCli
 
     private void initializeUI() {
 
+        Constants.setToolbarTitleStyle(this, toolbar);
+
         viewModel = new ViewModelProvider(
                 this,
                 new SavedStateViewModelFactory(this.getApplication(), this)
         ).get(MainViewModel.class);
         viewModel
                 .getGamesCount()
-                .observe(this, this::setGamesCount);
+                .observe(this, integer -> setGamesCountTitle());
         viewModel
                 .getGames()
                 .observe(this, gameResponses -> {
@@ -192,9 +192,6 @@ public class MainActivity extends BaseActivity implements GamesAdapter.OnItemCli
                     if (selectedPlatforms == null || selectedPlatforms.isEmpty()) {
                         resetButtons(llPlatforms);
                     }
-                    if (selectedPlatforms != null) {
-                        reloadGames();
-                    }
                 });
         viewModel
                 .getSelectedGenres()
@@ -202,9 +199,6 @@ public class MainActivity extends BaseActivity implements GamesAdapter.OnItemCli
 
                     if (selectedGenres == null || selectedGenres.isEmpty()) {
                         resetButtons(llGenres);
-                    }
-                    if (selectedGenres != null) {
-                        reloadGames();
                     }
                 });
         viewModel
@@ -287,6 +281,7 @@ public class MainActivity extends BaseActivity implements GamesAdapter.OnItemCli
 
                         v.setSelected(!v.isSelected());
                         viewModel.selectPlatform(v.getTag().toString());
+                        reloadGames();
                     });
                     llPlatforms.addView(button);
                 }
@@ -313,6 +308,7 @@ public class MainActivity extends BaseActivity implements GamesAdapter.OnItemCli
 
                         v.setSelected(!v.isSelected());
                         viewModel.selectGenre(v.getTag().toString());
+                        reloadGames();
                     });
                     llGenres.addView(button);
                 }
@@ -343,21 +339,11 @@ public class MainActivity extends BaseActivity implements GamesAdapter.OnItemCli
         }
     }
 
-    private void setGamesCount(int gamesCount) {
+    private void setGamesCountTitle() {
 
+        int gamesCount = viewModel.getGamesCountValue();
         String title = getResources().getString(R.string.games_title, gamesCount);
-        for(int i = 0; i < toolbar.getChildCount(); i++) {
-
-            View view = toolbar.getChildAt(i);
-            if (view instanceof TextView) {
-
-                TextView textView = (TextView) view;
-                textView.setGravity(Gravity.CENTER);
-                textView.setTextSize(getResources().getDimension(R.dimen.font_tiny));
-                textView.setPadding(0, 0, 0, Constants.TOOLBAR_TITLE_PADDING_BOTTOM);
-            }
-            toolbar.setTitle(title);
-        }
+        setTitle(title);
     }
 
     private void reloadGames() {
