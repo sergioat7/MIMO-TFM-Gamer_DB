@@ -21,6 +21,7 @@ public class GameAPIClient {
     public Single<GameListResponse> getGamesObserver(int page,
                                                      int pageSize,
                                                      String query,
+                                                     String ordering,
                                                      String platforms,
                                                      String genres) {
 
@@ -29,6 +30,9 @@ public class GameAPIClient {
         params.put(Constants.PAGE_SIZE_PARAM, String.valueOf(pageSize));
         if (query != null) {
             params.put(Constants.SEARCH_PARAM, query);
+        }
+        if (ordering != null) {
+            params.put(Constants.ORDERING_PARAM, ordering);
         }
         if (platforms != null) {
             params.put(Constants.PLATFORMS_PARAM, platforms);

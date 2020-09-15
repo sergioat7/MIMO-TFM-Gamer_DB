@@ -43,6 +43,8 @@ public class MainViewModel extends ViewModel {
     private MutableLiveData<ErrorResponse> error;
     private LiveData<Integer> page;
     private LiveData<String> query;
+    private LiveData<String> sortKey;
+    private LiveData<String> sortOrder;
     private LiveData<List<String>> selectedPlatforms;
     private LiveData<List<String>> selectedGenres;
     private LiveData<Integer> position;
@@ -66,6 +68,8 @@ public class MainViewModel extends ViewModel {
         error = new MutableLiveData<>();
         page = savedStateHandle.getLiveData(Constants.ATT_PAGE_LIVE_DATA, Constants.FIRST_PAGE);
         query = savedStateHandle.getLiveData(Constants.ATT_QUERY_LIVE_DATA, null);
+        sortKey = savedStateHandle.getLiveData(Constants.ATT_SORT_KEY_LIVE_DATA, null);
+        sortOrder = savedStateHandle.getLiveData(Constants.ATT_SORT_ORDER_LIVE_DATA, null);
         selectedPlatforms = savedStateHandle.getLiveData(Constants.ATT_SELECTED_PLATFORMS_LIVE_DATA, new ArrayList<>());
         selectedGenres = savedStateHandle.getLiveData(Constants.ATT_SELECTED_GENRES_LIVE_DATA, new ArrayList<>());
         position = savedStateHandle.getLiveData(Constants.ATT_POSITION_LIVE_DATA, Constants.INITIAL_POSITION_LIST);
@@ -161,6 +165,22 @@ public class MainViewModel extends ViewModel {
         this.savedStateHandle.set(Constants.ATT_QUERY_LIVE_DATA, query);
     }
 
+    public String getSortKey() {
+        return sortKey != null ? sortKey.getValue() : null;
+    }
+
+    public void setSortKey(String sortKey) {
+        this.savedStateHandle.set(Constants.ATT_SORT_KEY_LIVE_DATA, sortKey);
+    }
+
+    public String getSortOrder() {
+        return sortOrder != null ? sortOrder.getValue() : null;
+    }
+
+    public void setSortOrder(String sortOrder) {
+        this.savedStateHandle.set(Constants.ATT_SORT_ORDER_LIVE_DATA, sortOrder);
+    }
+
     public LiveData<List<String>> getSelectedPlatforms() {
         return selectedPlatforms;
     }
@@ -229,6 +249,7 @@ public class MainViewModel extends ViewModel {
                         getPage(),
                         Constants.PAGE_SIZE,
                         getQuery(),
+                        getSortValue(),
                         listToString(getSelectedPlatforms().getValue()),
                         listToString(getSelectedGenres().getValue())
                 )
@@ -332,6 +353,8 @@ public class MainViewModel extends ViewModel {
     public void reloadGames() {
 
         setQuery(null);
+        setSortKey(null);
+        setSortOrder(null);
         resetSelectedPlatforms();
         resetSelectedGenres();
         resetPage();
@@ -351,11 +374,19 @@ public class MainViewModel extends ViewModel {
         dialogView.setOrientation(LinearLayout.HORIZONTAL);
 
         NumberPicker sortKeysPicker = getPicker(context, sortingValues);
+        String sortKey = getSortKey();
+        if (sortKey != null) {
+            int position = getValuePosition(sortKey, sortingKeys);
+            sortKeysPicker.setValue(position);
+        }
         LinearLayout.LayoutParams sortKeysPickerParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT);
         sortKeysPickerParams.weight = 1f;
 
         String[] values = {context.getResources().getString(R.string.ascending), context.getResources().getString(R.string.descending)};
         NumberPicker sortOrdersPicker = getPicker(context, values);
+        if (getSortOrder() != null && !getSortOrder().isEmpty()) {
+            sortOrdersPicker.setValue(1);
+        }
         LinearLayout.LayoutParams sortOrdersPickerParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT);
         sortOrdersPickerParams.weight = 1f;
 
@@ -372,7 +403,9 @@ public class MainViewModel extends ViewModel {
                 .setCancelable(false)
                 .setPositiveButton(context.getResources().getString(R.string.accept), (dialog, which) -> {
 
-                    //TODO set sort values
+                    setSortKey(sortingKeys[sortKeysPicker.getValue()]);
+                    String sortOrder = sortOrdersPicker.getValue() == 0 ? Constants.ASCENDING_VALUE : Constants.DESCENDING_VALUE;
+                    setSortOrder(sortOrder);
                     resetPage();
                     loadGames();
                     dialog.dismiss();
@@ -382,6 +415,20 @@ public class MainViewModel extends ViewModel {
     }
 
     //MARK: - Private methods
+
+    private String getSortValue() {
+
+        StringBuilder sortValue = new StringBuilder();
+        String sortOrder = getSortOrder();
+        if (sortOrder != null && !sortOrder.isEmpty()) {
+            sortValue.append(sortOrder);
+        }
+        String sortKey = getSortKey();
+        if (sortKey != null) {
+            sortValue.append(sortKey);
+        }
+        return sortValue.length() == 0 ? null : sortValue.toString();
+    }
 
     private String listToString(List<String> list) {
 
@@ -405,5 +452,18 @@ public class MainViewModel extends ViewModel {
         picker.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
         picker.setDisplayedValues(values);
         return picker;
+    }
+
+    private int getValuePosition(String value, String[] values) {
+
+        int i = 0;
+        while (i < values.length) {
+
+            if (values[i].equals(value)) {
+                break;
+            }
+            i++;
+        }
+        return i % values.length;
     }
 }

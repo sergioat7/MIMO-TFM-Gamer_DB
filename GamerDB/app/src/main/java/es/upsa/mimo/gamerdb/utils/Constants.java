@@ -25,8 +25,11 @@ public class Constants {
     public static String PAGE_PARAM = "page";
     public static String PAGE_SIZE_PARAM = "page_size";
     public static String SEARCH_PARAM = "search";
+    public static String ORDERING_PARAM = "ordering";
     public static String PLATFORMS_PARAM = "platforms";
     public static String GENRES_PARAM = "genres";
+    public static String ASCENDING_VALUE = "";
+    public static String DESCENDING_VALUE = "-";
     public static Scheduler SUBSCRIBER_SCHEDULER = Schedulers.io();
     public static Scheduler OBSERVER_SCHEDULER = AndroidSchedulers.mainThread();
     public static int FIRST_PAGE = 1;
@@ -67,6 +70,8 @@ public class Constants {
     public static String ATT_GAMES_COUNT_LIVE_DATA = "gamesCount";
     public static String ATT_PAGE_LIVE_DATA = "page";
     public static String ATT_QUERY_LIVE_DATA = "query";
+    public static String ATT_SORT_KEY_LIVE_DATA = "sortKey";
+    public static String ATT_SORT_ORDER_LIVE_DATA = "sortOrder";
     public static String ATT_SELECTED_PLATFORMS_LIVE_DATA = "platforms";
     public static String ATT_SELECTED_GENRES_LIVE_DATA = "genres";
     public static String ATT_POSITION_LIVE_DATA = "position";
