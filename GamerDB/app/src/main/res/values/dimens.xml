@@ -1,7 +1,7 @@
 <resources>
 
     <!-- spacing between two views -->
-    <dimen name="spacing_huge">30dp</dimen>
+    <dimen name="spacing_larger">30dp</dimen>
     <dimen name="spacing_large">20dp</dimen>
     <dimen name="spacing_normal">15dp</dimen>
     <dimen name="spacing_small">10dp</dimen>
@@ -13,12 +13,15 @@
     <dimen name="size_normal">20dp</dimen>
     <dimen name="size_small">10dp</dimen>
     <dimen name="size_tiny">5dp</dimen>
+    <dimen name="size_mini">2dp</dimen>
     <dimen name="size_none">0dp</dimen>
+    <dimen name="size_tiny_negative">-5dp</dimen>
 
     <!-- font sizes -->
     <dimen name="font_larger">24sp</dimen>
     <dimen name="font_large">18sp</dimen>
     <dimen name="font_normal">16sp</dimen>
     <dimen name="font_small">14sp</dimen>
+    <dimen name="font_tiny">8sp</dimen>
 
 </resources>

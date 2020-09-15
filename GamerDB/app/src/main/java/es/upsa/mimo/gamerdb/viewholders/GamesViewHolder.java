@@ -41,10 +41,12 @@ public class GamesViewHolder extends RecyclerView.ViewHolder {
 
         List<ScreenshotResponse> screenshots = game.getShortScreenshots();
         List<String> images = new ArrayList<>();
-        for (int i=0; i< screenshots.size(); i++) {
+        if (screenshots != null) {
+            for (int i=0; i< screenshots.size(); i++) {
 
-            ScreenshotResponse screenshot = screenshots.get(i);
-            images.add(screenshot.getImage());
+                ScreenshotResponse screenshot = screenshots.get(i);
+                images.add(screenshot.getImage());
+            }
         }
 
         ViewGroup.MarginLayoutParams lp = (ViewGroup.MarginLayoutParams) vpImages.getLayoutParams();

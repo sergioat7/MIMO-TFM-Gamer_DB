@@ -1,7 +1,8 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="es.upsa.mimo.gamerdb.activities.MainActivity">
+    tools:context="es.upsa.mimo.gamerdb.activities.MainActivity"
+    >
 
     <item
         android:id="@+id/action_search"
@@ -9,6 +10,13 @@
         android:title=""
         app:actionViewClass="android.widget.SearchView"
         app:showAsAction="collapseActionView|ifRoom"
+        />
+
+    <item
+        android:id="@+id/action_sort"
+        android:icon="@drawable/ic_sort_white_24dp"
+        android:title=""
+        app:showAsAction="ifRoom"
         />
 
 </menu>

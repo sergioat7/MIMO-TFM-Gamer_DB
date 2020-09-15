@@ -19,6 +19,16 @@
     <string name="game_image">Image of the game</string>
     <string name="rating_image">Star image to represent rating</string>
     <string name="accept">Accept</string>
+    <string name="cancel">Cancel</string>
     <string name="load_more">Load more</string>
+    <string name="games_title">%d games</string>
+    <string name="order_by">Order by</string>
+    <string name="name_sorting_key">Name</string>
+    <string name="released_sorting_key">Release date</string>
+    <string name="added_sorting_key">Date added</string>
+    <string name="created_sorting_key">Date created</string>
+    <string name="rating_sorting_key">Average rating</string>
+    <string name="ascending">Ascending</string>
+    <string name="descending">Descending</string>
 
 </resources>

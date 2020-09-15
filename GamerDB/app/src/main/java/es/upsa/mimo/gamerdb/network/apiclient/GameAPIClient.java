@@ -12,18 +12,18 @@ import es.upsa.mimo.gamerdb.models.GameResponse;
 import es.upsa.mimo.gamerdb.models.ScreenshotListResponse;
 import es.upsa.mimo.gamerdb.network.apiservice.GameAPIService;
 import es.upsa.mimo.gamerdb.utils.Constants;
-import io.reactivex.Scheduler;
 import io.reactivex.Single;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
 
 public class GameAPIClient {
 
     private GameAPIService api = APIClient.getRetrofit().create(GameAPIService.class);
-    private Scheduler subscriberScheduler = Schedulers.io();
-    private Scheduler observerScheduler = AndroidSchedulers.mainThread();
 
-    public Single<GameListResponse> getGamesObserver(int page, int pageSize, String query) {
+    public Single<GameListResponse> getGamesObserver(int page,
+                                                     int pageSize,
+                                                     String query,
+                                                     String ordering,
+                                                     String platforms,
+                                                     String genres) {
 
         Map<String, String> params = new HashMap<>();
         params.put(Constants.PAGE_PARAM, String.valueOf(page));
@@ -31,14 +31,23 @@ public class GameAPIClient {
         if (query != null) {
             params.put(Constants.SEARCH_PARAM, query);
         }
-        return api.getGames(params).subscribeOn(subscriberScheduler).observeOn(observerScheduler);
+        if (ordering != null) {
+            params.put(Constants.ORDERING_PARAM, ordering);
+        }
+        if (platforms != null) {
+            params.put(Constants.PLATFORMS_PARAM, platforms);
+        }
+        if (genres != null) {
+            params.put(Constants.GENRES_PARAM, genres);
+        }
+        return api.getGames(params).subscribeOn(Constants.SUBSCRIBER_SCHEDULER).observeOn(Constants.OBSERVER_SCHEDULER);
     }
 
     public Single<GameResponse> getGame(int gameId) {
-        return api.getGame(gameId).subscribeOn(subscriberScheduler).observeOn(observerScheduler);
+        return api.getGame(gameId).subscribeOn(Constants.SUBSCRIBER_SCHEDULER).observeOn(Constants.OBSERVER_SCHEDULER);
     }
 
     public Single<ScreenshotListResponse> getScreenshots(int gameId) {
-        return api.getScreenshots(gameId).subscribeOn(subscriberScheduler).observeOn(observerScheduler);
+        return api.getScreenshots(gameId).subscribeOn(Constants.SUBSCRIBER_SCHEDULER).observeOn(Constants.OBSERVER_SCHEDULER);
     }
 }
