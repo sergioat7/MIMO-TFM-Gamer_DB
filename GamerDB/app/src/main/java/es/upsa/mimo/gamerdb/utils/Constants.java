@@ -5,9 +5,13 @@
 
 package es.upsa.mimo.gamerdb.utils;
 
+import android.content.Context;
 import android.util.Log;
+import android.widget.LinearLayout;
+import android.widget.NumberPicker;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import es.upsa.mimo.gamerdb.R;
 import io.reactivex.Scheduler;
@@ -93,6 +97,53 @@ public class Constants {
     public static int INITIAL_POSITION_LIST = 0;
     public static int MARGIN_LIST = 50;
     public static int NO_MARGIN_LIST = 0;
+
+    public static String listToString(List<String> list, String separator) {
+
+        StringBuilder result = new StringBuilder();
+        if (list != null) {
+            for (int i = 0; i < list.size(); i++) {
+
+                result.append(list.get(i));
+                result.append(separator);
+            }
+        }
+        return result.length() == 0 ? null : result.substring(0, result.length() - separator.length());
+    }
+
+    public static NumberPicker getPicker(Context context, String[] values) {
+
+        NumberPicker picker = new NumberPicker(context);
+        picker.setMinValue(0);
+        picker.setMaxValue(values.length - 1);
+        picker.setWrapSelectorWheel(true);
+        picker.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
+        picker.setDisplayedValues(values);
+        return picker;
+    }
+
+    public static LinearLayout.LayoutParams getPickerParams() {
+
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+        );
+        params.weight = 1f;
+        return params;
+    }
+
+    public static int getValuePositionInArray(String value, String[] values) {
+
+        int i = 0;
+        while (i < values.length) {
+
+            if (values[i].equals(value)) {
+                break;
+            }
+            i++;
+        }
+        return i % values.length;
+    }
 
     //MARK: - Game detail
 

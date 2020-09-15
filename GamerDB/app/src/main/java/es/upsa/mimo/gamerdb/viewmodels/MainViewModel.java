@@ -250,8 +250,8 @@ public class MainViewModel extends ViewModel {
                         Constants.PAGE_SIZE,
                         getQuery(),
                         getSortValue(),
-                        listToString(getSelectedPlatforms().getValue()),
-                        listToString(getSelectedGenres().getValue())
+                        Constants.listToString(getSelectedPlatforms().getValue(), Constants.NEXT_VALUE_SEPARATOR),
+                        Constants.listToString(getSelectedGenres().getValue(), Constants.NEXT_VALUE_SEPARATOR)
                 )
                 .subscribe(new SingleObserver<GameListResponse>() {
                     @Override
@@ -373,29 +373,25 @@ public class MainViewModel extends ViewModel {
         LinearLayout dialogView = new LinearLayout(context);
         dialogView.setOrientation(LinearLayout.HORIZONTAL);
 
-        NumberPicker sortKeysPicker = getPicker(context, sortingValues);
+        NumberPicker sortKeysPicker = Constants.getPicker(context, sortingValues);
         String sortKey = getSortKey();
         if (sortKey != null) {
-            int position = getValuePosition(sortKey, sortingKeys);
+            int position = Constants.getValuePositionInArray(sortKey, sortingKeys);
             sortKeysPicker.setValue(position);
         }
-        LinearLayout.LayoutParams sortKeysPickerParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT);
-        sortKeysPickerParams.weight = 1f;
 
         String[] values = {context.getResources().getString(R.string.ascending), context.getResources().getString(R.string.descending)};
-        NumberPicker sortOrdersPicker = getPicker(context, values);
+        NumberPicker sortOrdersPicker = Constants.getPicker(context, values);
         if (getSortOrder() != null && !getSortOrder().isEmpty()) {
             sortOrdersPicker.setValue(1);
         }
-        LinearLayout.LayoutParams sortOrdersPickerParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT);
-        sortOrdersPickerParams.weight = 1f;
 
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(50, 50);
         params.gravity = Gravity.CENTER;
 
         dialogView.setLayoutParams(params);
-        dialogView.addView(sortKeysPicker, sortKeysPickerParams);
-        dialogView.addView(sortOrdersPicker, sortOrdersPickerParams);
+        dialogView.addView(sortKeysPicker, Constants.getPickerParams());
+        dialogView.addView(sortOrdersPicker, Constants.getPickerParams());
 
         new AlertDialog.Builder(context)
                 .setTitle(context.getResources().getString(R.string.order_by))
@@ -428,42 +424,5 @@ public class MainViewModel extends ViewModel {
             sortValue.append(sortKey);
         }
         return sortValue.length() == 0 ? null : sortValue.toString();
-    }
-
-    private String listToString(List<String> list) {
-
-        StringBuilder result = new StringBuilder();
-        if (list != null) {
-            for (int i = 0; i < list.size(); i++) {
-
-                result.append(list.get(i));
-                result.append(Constants.NEXT_VALUE_SEPARATOR);
-            }
-        }
-        return result.length() == 0 ? null : result.substring(0, result.length() - 2);
-    }
-
-    private NumberPicker getPicker(Context context, String[] values) {
-
-        NumberPicker picker = new NumberPicker(context);
-        picker.setMinValue(0);
-        picker.setMaxValue(values.length - 1);
-        picker.setWrapSelectorWheel(true);
-        picker.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
-        picker.setDisplayedValues(values);
-        return picker;
-    }
-
-    private int getValuePosition(String value, String[] values) {
-
-        int i = 0;
-        while (i < values.length) {
-
-            if (values[i].equals(value)) {
-                break;
-            }
-            i++;
-        }
-        return i % values.length;
     }
 }
