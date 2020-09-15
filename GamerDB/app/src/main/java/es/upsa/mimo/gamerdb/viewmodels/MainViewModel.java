@@ -5,6 +5,11 @@
 
 package es.upsa.mimo.gamerdb.viewmodels;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.view.Gravity;
+import android.widget.LinearLayout;
+import android.widget.NumberPicker;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.SavedStateHandle;
@@ -340,6 +345,42 @@ public class MainViewModel extends ViewModel {
         loadGames();
     }
 
+    public void sort(Context context, String[] sortingKeys, String[] sortingValues) {
+
+        LinearLayout dialogView = new LinearLayout(context);
+        dialogView.setOrientation(LinearLayout.HORIZONTAL);
+
+        NumberPicker sortKeysPicker = getPicker(context, sortingValues);
+        LinearLayout.LayoutParams sortKeysPickerParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT);
+        sortKeysPickerParams.weight = 1f;
+
+        String[] values = {context.getResources().getString(R.string.ascending), context.getResources().getString(R.string.descending)};
+        NumberPicker sortOrdersPicker = getPicker(context, values);
+        LinearLayout.LayoutParams sortOrdersPickerParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT);
+        sortOrdersPickerParams.weight = 1f;
+
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(50, 50);
+        params.gravity = Gravity.CENTER;
+
+        dialogView.setLayoutParams(params);
+        dialogView.addView(sortKeysPicker, sortKeysPickerParams);
+        dialogView.addView(sortOrdersPicker, sortOrdersPickerParams);
+
+        new AlertDialog.Builder(context)
+                .setTitle(context.getResources().getString(R.string.order_by))
+                .setView(dialogView)
+                .setCancelable(false)
+                .setPositiveButton(context.getResources().getString(R.string.accept), (dialog, which) -> {
+
+                    //TODO set sort values
+                    resetPage();
+                    loadGames();
+                    dialog.dismiss();
+                })
+                .setNegativeButton(context.getResources().getString(R.string.cancel), (dialog, which) -> dialog.dismiss())
+                .show();
+    }
+
     //MARK: - Private methods
 
     private String listToString(List<String> list) {
@@ -353,5 +394,16 @@ public class MainViewModel extends ViewModel {
             }
         }
         return result.length() == 0 ? null : result.substring(0, result.length() - 2);
+    }
+
+    private NumberPicker getPicker(Context context, String[] values) {
+
+        NumberPicker picker = new NumberPicker(context);
+        picker.setMinValue(0);
+        picker.setMaxValue(values.length - 1);
+        picker.setWrapSelectorWheel(true);
+        picker.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
+        picker.setDisplayedValues(values);
+        return picker;
     }
 }

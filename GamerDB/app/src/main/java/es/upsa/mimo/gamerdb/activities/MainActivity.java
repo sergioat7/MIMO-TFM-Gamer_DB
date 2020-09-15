@@ -116,7 +116,11 @@ public class MainActivity extends BaseActivity implements GamesAdapter.OnItemCli
             return true;
         } else if (item.getItemId() == R.id.action_sort) {
 
-            //TODO filter
+            viewModel.sort(
+                    this,
+                    getResources().getStringArray(R.array.sorting_keys_ids),
+                    getResources().getStringArray(R.array.sorting_keys)
+            );
             return true;
         }
         return super.onOptionsItemSelected(item);
