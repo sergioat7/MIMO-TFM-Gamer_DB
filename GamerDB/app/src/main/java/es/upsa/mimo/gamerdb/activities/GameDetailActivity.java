@@ -87,6 +87,8 @@ public class GameDetailActivity extends BaseActivity implements GamesAdapter.OnI
     LinearLayout llStores;
     @BindView(R.id.text_view_tags)
     TextView tvTags;
+    @BindView(R.id.text_view_game_series_title)
+    TextView tvGameSeriesTitle;
     @BindView(R.id.recycler_view_game_series)
     RecyclerView rvGameSeries;
 
@@ -158,6 +160,7 @@ public class GameDetailActivity extends BaseActivity implements GamesAdapter.OnI
                     } else {
                         gamesAdapter.setGames(gameResponses);
                     }
+                    tvGameSeriesTitle.setVisibility(gameResponses.isEmpty() ? View.GONE : View.VISIBLE);
                 });
         gamesAdapter = new GamesAdapter(
                 viewModel.getGameSeries().getValue(),
