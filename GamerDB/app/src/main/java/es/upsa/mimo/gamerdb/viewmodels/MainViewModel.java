@@ -104,11 +104,7 @@ public class MainViewModel extends ViewModel {
 
     public void addGames(List<GameResponse> games) {
 
-        List<GameResponse> currentGames = this.games.getValue();
-        if (currentGames == null) {
-            currentGames = new ArrayList<>();
-        }
-        currentGames.addAll(games);
+        List<GameResponse> currentGames = Constants.addElementsToList(this.games.getValue(), games, true);
         this.games.setValue(currentGames);
     }
 
@@ -265,7 +261,11 @@ public class MainViewModel extends ViewModel {
                     @Override
                     public void onSuccess(GameListResponse gameListResponse) {
 
-                        addGames(gameListResponse.getResults());
+                        List<GameResponse> results = gameListResponse.getResults();
+                        if (gameListResponse.getNext() != null) {
+                            results.add(new GameResponse(0));
+                        }
+                        addGames(results);
                         int page = getPage();
                         if (page == 1) {
 

@@ -14,6 +14,7 @@ import android.widget.NumberPicker;
 import android.widget.TextView;
 import androidx.appcompat.widget.Toolbar;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -162,6 +163,19 @@ public class Constants {
             i++;
         }
         return i % values.length;
+    }
+
+    public static <T> List<T> addElementsToList(List<T> list,
+                                                List<T> elementsToAdd,
+                                                boolean removeLast) {
+
+        if (list == null) {
+            list = new ArrayList<>();
+        } else if (list.size() > 0 && removeLast) {
+            list.remove(list.size() - 1);
+        }
+        list.addAll(elementsToAdd);
+        return list;
     }
 
     //MARK: - Game detail

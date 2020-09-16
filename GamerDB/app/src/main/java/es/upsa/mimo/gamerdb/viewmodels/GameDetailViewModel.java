@@ -61,10 +61,6 @@ public class GameDetailViewModel extends ViewModel {
         return value != null ? value : 0;
     }
 
-    public void setGameId(int gameId) {
-        this.savedStateHandle.set(Constants.ATT_GAME_ID_LIVE_DATA, gameId);
-    }
-
     public MutableLiveData<GameResponse> getGame() {
         return game;
     }
@@ -101,11 +97,7 @@ public class GameDetailViewModel extends ViewModel {
 
     public void addGameSeries(List<GameResponse> games) {
 
-        List<GameResponse> currentGames = this.gameSeries.getValue();
-        if (currentGames == null) {
-            currentGames = new ArrayList<>();
-        }
-        currentGames.addAll(games);
+        List<GameResponse> currentGames = Constants.addElementsToList(this.gameSeries.getValue(), games, true);
         this.gameSeries.setValue(currentGames);
     }
 
@@ -121,7 +113,11 @@ public class GameDetailViewModel extends ViewModel {
                     public void onSuccess(GameListResponse gameListResponse) {
 
                         gameSeriesPage++;
-                        addGameSeries(gameListResponse.getResults());
+                        List<GameResponse> results = gameListResponse.getResults();
+                        if (gameListResponse.getNext() != null) {
+                            results.add(new GameResponse(0));
+                        }
+                        addGameSeries(results);
                     }
 
                     @Override

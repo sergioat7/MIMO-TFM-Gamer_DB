@@ -28,7 +28,6 @@ public class GamesAdapter extends RecyclerView.Adapter<ViewHolder> {
     private OnItemClickListener onItemClickListener;
     private boolean multiImage;
     private Context context;
-    private boolean showLoadMoreItems;
 
     //MARK: - Lifecycle methods
 
@@ -39,13 +38,12 @@ public class GamesAdapter extends RecyclerView.Adapter<ViewHolder> {
         this.games = games;
         this.onItemClickListener = onItemClickListener;
         this.multiImage = multiImage;
-        this.showLoadMoreItems = true;
     }
 
     @Override
     public int getItemViewType(int position) {
 
-        if (position < games.size()) {
+        if (games.get(position).getId() > 0) {
             return R.layout.game_item;
         } else {
             return R.layout.load_more_items_item;
@@ -91,10 +89,8 @@ public class GamesAdapter extends RecyclerView.Adapter<ViewHolder> {
     @Override
     public int getItemCount() {
 
-        if (games == null || games.size() == 0) {
+        if (games == null) {
             return 0;
-        } else if (showLoadMoreItems) {
-            return games.size() + 1;
         } else {
             return games.size();
         }
@@ -113,14 +109,12 @@ public class GamesAdapter extends RecyclerView.Adapter<ViewHolder> {
 
         int position = this.games.size();
         this.games = newGames;
-        showLoadMoreItems = (newGames.size() % Constants.PAGE_SIZE) == 0;
         notifyItemInserted(position);
     }
 
     public void resetList() {
 
         this.games = new ArrayList<>();
-        this.showLoadMoreItems = true;
         notifyDataSetChanged();
     }
 }
