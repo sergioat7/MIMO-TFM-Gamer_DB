@@ -57,7 +57,10 @@ public class GamesViewHolder extends RecyclerView.ViewHolder {
         if (images.isEmpty()) {
             images.add(Constants.EMPTY_VALUE);
         } else if (!multiImage) {
-            images.removeAll(images.subList(1, images.size()));
+            
+            String firstImageUrl = images.get(0);
+            images.clear();
+            images.add(firstImageUrl);
         }
 
         clIndicator.setVisibility(images.size() > 1 ? View.VISIBLE : View.GONE);
