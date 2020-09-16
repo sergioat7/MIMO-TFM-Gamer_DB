@@ -68,10 +68,18 @@ public class GamesAdapter extends RecyclerView.Adapter<ViewHolder> {
 
         if (holder instanceof GamesViewHolder) {
 
+            GamesViewHolder gamesViewHolder = (GamesViewHolder) holder;
             GameResponse game = games.get(position);
-            ((GamesViewHolder) holder).fillData(game, position, context, onItemClickListener);
+            gamesViewHolder.fillData(
+                    game,
+                    position,
+                    context,
+                    onItemClickListener
+            );
         } else {
-            ((LoadMoreItemsViewHolder) holder).setItem(onItemClickListener);
+
+            LoadMoreItemsViewHolder loadMoreItemsViewHolder = (LoadMoreItemsViewHolder) holder;
+            loadMoreItemsViewHolder.setItem(onItemClickListener);
         }
     }
 

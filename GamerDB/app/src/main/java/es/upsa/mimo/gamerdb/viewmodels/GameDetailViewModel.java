@@ -31,7 +31,9 @@ public class GameDetailViewModel extends ViewModel {
     private MutableLiveData<GameResponse> game;
     private MutableLiveData<ErrorResponse> error;
     private LiveData<ArrayList<String>> imagesUrl;
+    private MutableLiveData<List<GameResponse>> gameSeries;
     private GameAPIClient gameAPIClient;
+    private int gameSeriesPage;
 
     //MARK: - Lifecycle methods
 
@@ -42,7 +44,10 @@ public class GameDetailViewModel extends ViewModel {
         game = new MutableLiveData<>();
         error = new MutableLiveData<>();
         imagesUrl = savedStateHandle.getLiveData(Constants.ATT_IMAGES_URL_LIVE_DATA, new ArrayList<>());
+        gameSeries = new MutableLiveData<>();
+        gameSeries.setValue(new ArrayList<>());
         gameAPIClient = new GameAPIClient();
+        gameSeriesPage = Constants.FIRST_PAGE;
         loadGame();
         loadScreenshots();
         loadGameSeries();
@@ -89,6 +94,46 @@ public class GameDetailViewModel extends ViewModel {
         currentImagesUrl.addAll(imagesUrl);
         this.savedStateHandle.set(Constants.ATT_IMAGES_URL_LIVE_DATA, currentImagesUrl);
     }
+
+    public LiveData<List<GameResponse>> getGameSeries() {
+        return gameSeries;
+    }
+
+    public void addGameSeries(List<GameResponse> games) {
+
+        List<GameResponse> currentGames = this.gameSeries.getValue();
+        if (currentGames == null) {
+            currentGames = new ArrayList<>();
+        }
+        currentGames.addAll(games);
+        this.gameSeries.setValue(currentGames);
+    }
+
+    public void loadGameSeries() {
+
+        gameAPIClient
+                .getGameSeries(getGameId(), gameSeriesPage, Constants.PAGE_SIZE)
+                .subscribe(new SingleObserver<GameListResponse>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {}
+
+                    @Override
+                    public void onSuccess(GameListResponse gameListResponse) {
+
+                        gameSeriesPage++;
+                        addGameSeries(gameListResponse.getResults());
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                        setError(new ErrorResponse(
+                                Constants.EMPTY_VALUE,
+                                R.string.error_server,
+                                "Error in GameDetailViewModel getGameSeries")
+                        );
+                    }
+                });
     }
 
     //MARK: - Private methods
@@ -145,33 +190,6 @@ public class GameDetailViewModel extends ViewModel {
                                 Constants.EMPTY_VALUE,
                                 R.string.error_server,
                                 "Error in GameDetailViewModel getScreenshots")
-                        );
-                    }
-                });
-    }
-
-    private void loadGameSeries() {
-
-        gameAPIClient
-                .getGameSeries(getGameId(), gameSeriesPage, Constants.PAGE_SIZE)
-                .subscribe(new SingleObserver<GameListResponse>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {}
-
-                    @Override
-                    public void onSuccess(GameListResponse gameListResponse) {
-
-                        gameSeriesPage++;
-                        //TODO add games
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                        setError(new ErrorResponse(
-                                "",
-                                R.string.error_server,
-                                "Error in GameDetailViewModel getGameSeries")
                         );
                     }
                 });

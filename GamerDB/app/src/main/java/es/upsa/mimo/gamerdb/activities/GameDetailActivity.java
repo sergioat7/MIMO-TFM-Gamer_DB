@@ -10,6 +10,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.SavedStateViewModelFactory;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -30,6 +32,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import es.upsa.mimo.gamerdb.R;
 import es.upsa.mimo.gamerdb.activities.base.BaseActivity;
+import es.upsa.mimo.gamerdb.adapters.GamesAdapter;
 import es.upsa.mimo.gamerdb.customviews.ImageLoading;
 import es.upsa.mimo.gamerdb.fragments.popups.PopupVideoDialogFragment;
 import es.upsa.mimo.gamerdb.models.DeveloperResponse;
@@ -42,7 +45,7 @@ import es.upsa.mimo.gamerdb.models.TagResponse;
 import es.upsa.mimo.gamerdb.utils.Constants;
 import es.upsa.mimo.gamerdb.viewmodels.GameDetailViewModel;
 
-public class GameDetailActivity extends BaseActivity {
+public class GameDetailActivity extends BaseActivity implements GamesAdapter.OnItemClickListener {
 
     //MARK: - Public properties
 
@@ -84,10 +87,13 @@ public class GameDetailActivity extends BaseActivity {
     LinearLayout llStores;
     @BindView(R.id.text_view_tags)
     TextView tvTags;
+    @BindView(R.id.recycler_view_game_series)
+    RecyclerView rvGameSeries;
 
     //MARK: - Private properties
 
     private GameDetailViewModel viewModel;
+    private GamesAdapter gamesAdapter;
 
     //MARK: - Lifecycle methods
 
@@ -103,6 +109,21 @@ public class GameDetailActivity extends BaseActivity {
 
         int gameId = getIntent().getIntExtra(Constants.GAME_ID, 0);
         this.initializeUI(gameId);
+    }
+
+    //MARK: - Interface methods
+
+    @Override
+    public void onItemClick(int gameId) {
+
+        Intent intent = new Intent(this, GameDetailActivity.class);
+        intent.putExtra(Constants.GAME_ID, gameId);
+        startActivity(intent);
+    }
+
+    @Override
+    public void onLoadMoreItemsClick() {
+        viewModel.loadGameSeries();
     }
 
     //MARK: - Private methods
@@ -128,6 +149,20 @@ public class GameDetailActivity extends BaseActivity {
         viewModel
                 .getImagesUrl()
                 .observe(this, imagesUrl -> btViewImages.setVisibility(imagesUrl.isEmpty() ? View.GONE : View.VISIBLE));
+        viewModel
+                .getGameSeries()
+                .observe(this, gameResponses -> {
+
+                    if (gameResponses.isEmpty()) {
+                        gamesAdapter.resetList();
+                    } else {
+                        gamesAdapter.setGames(gameResponses);
+                    }
+                });
+        gamesAdapter = new GamesAdapter(
+                viewModel.getGameSeries().getValue(),
+                this
+        );
 
         imageLoading.setVisibility(View.VISIBLE);
 
@@ -142,6 +177,12 @@ public class GameDetailActivity extends BaseActivity {
             btShowMoreText.setVisibility(View.GONE);
         });
 
+        rvGameSeries.setLayoutManager(new LinearLayoutManager(
+                this,
+                LinearLayoutManager.HORIZONTAL,
+                false)
+        );
+        rvGameSeries.setAdapter(gamesAdapter);
     }
 
     private void fillData(GameResponse game) {
