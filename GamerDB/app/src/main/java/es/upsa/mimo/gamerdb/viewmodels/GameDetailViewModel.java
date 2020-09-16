@@ -38,7 +38,7 @@ public class GameDetailViewModel extends ViewModel {
     public GameDetailViewModel(SavedStateHandle savedStateHandle) {
 
         this.savedStateHandle = savedStateHandle;
-        this.gameId = savedStateHandle.getLiveData(Constants.ATT_GAME_ID_LIVE_DATA, 0);
+        gameId = savedStateHandle.getLiveData(Constants.ATT_GAME_ID_LIVE_DATA, 0);
         game = new MutableLiveData<>();
         error = new MutableLiveData<>();
         imagesUrl = savedStateHandle.getLiveData(Constants.ATT_IMAGES_URL_LIVE_DATA, new ArrayList<>());
@@ -110,7 +110,7 @@ public class GameDetailViewModel extends ViewModel {
                     public void onError(Throwable e) {
 
                         setError(new ErrorResponse(
-                                "",
+                                Constants.EMPTY_VALUE,
                                 R.string.error_server,
                                 "Error in GameDetailViewModel getGame")
                         );
@@ -142,7 +142,7 @@ public class GameDetailViewModel extends ViewModel {
                     public void onError(Throwable e) {
 
                         setError(new ErrorResponse(
-                                "",
+                                Constants.EMPTY_VALUE,
                                 R.string.error_server,
                                 "Error in GameDetailViewModel getScreenshots")
                         );

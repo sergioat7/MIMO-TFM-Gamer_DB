@@ -99,7 +99,7 @@ public class GameDetailActivity extends BaseActivity {
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
-        setTitle("");
+        setTitle(Constants.EMPTY_VALUE);
 
         int gameId = getIntent().getIntExtra(Constants.GAME_ID, 0);
         this.initializeUI(gameId);
@@ -179,7 +179,7 @@ public class GameDetailActivity extends BaseActivity {
                 platformsText.append(Constants.NEXT_VALUE_SEPARATOR);
             }
         }
-        platformsText = new StringBuilder((platformsText.length() == 0) ? Constants.EMPTY_VALUE : platformsText.substring(0, platformsText.length() - 2));
+        platformsText = new StringBuilder((platformsText.length() == 0) ? Constants.NO_VALUE : platformsText.substring(0, platformsText.length() - 2));
         tvPlatforms.setText(platformsText.toString());
 
         String releasedDate;
@@ -189,7 +189,7 @@ public class GameDetailActivity extends BaseActivity {
             assert releasedDate != null;
             releasedDate = releasedDate.substring(0,1).toUpperCase() + releasedDate.substring(1);
         } catch (Exception ignored) {
-            releasedDate = Constants.EMPTY_VALUE;
+            releasedDate = Constants.NO_VALUE;
         }
         tvReleaseDate.setText(releasedDate);
 
@@ -202,10 +202,10 @@ public class GameDetailActivity extends BaseActivity {
                 genresText.append(Constants.NEXT_VALUE_SEPARATOR);
             }
         }
-        genresText = new StringBuilder((genresText.length() == 0) ? Constants.EMPTY_VALUE : genresText.substring(0, genresText.length() - 2));
+        genresText = new StringBuilder((genresText.length() == 0) ? Constants.NO_VALUE : genresText.substring(0, genresText.length() - 2));
         tvGenres.setText(genresText.toString());
 
-        String ageRating = Constants.EMPTY_VALUE;
+        String ageRating = Constants.NO_VALUE;
         if (game.getEsrbRating() != null) {
             ageRating = game.getEsrbRating().getName();
         }
@@ -220,7 +220,7 @@ public class GameDetailActivity extends BaseActivity {
                 developersText.append(Constants.NEXT_VALUE_SEPARATOR);
             }
         }
-        developersText = new StringBuilder((developersText.length() == 0) ? Constants.EMPTY_VALUE : developersText.substring(0, developersText.length() - 2));
+        developersText = new StringBuilder((developersText.length() == 0) ? Constants.NO_VALUE : developersText.substring(0, developersText.length() - 2));
         tvDeveloper.setText(developersText.toString());
 
         List<PublisherResponse> publishers = game.getPublishers();
@@ -232,10 +232,10 @@ public class GameDetailActivity extends BaseActivity {
                 publishersText.append(Constants.NEXT_VALUE_SEPARATOR);
             }
         }
-        publishersText = new StringBuilder((publishersText.length() == 0) ? Constants.EMPTY_VALUE : publishersText.substring(0, publishersText.length() - 2));
+        publishersText = new StringBuilder((publishersText.length() == 0) ? Constants.NO_VALUE : publishersText.substring(0, publishersText.length() - 2));
         tvPublisher.setText(publishersText.toString());
 
-        String website = Constants.EMPTY_VALUE;
+        String website = Constants.NO_VALUE;
         if (game.getWebsite() != null && !game.getWebsite().isEmpty()) {
             website = game.getWebsite();
         }
@@ -283,14 +283,14 @@ public class GameDetailActivity extends BaseActivity {
                 tagsText.append(tags.get(i).getName());
                 tagsText.append(Constants.NEXT_VALUE_SEPARATOR);
             }
-            tagsText = new StringBuilder((tagsText.length() == 0) ? Constants.EMPTY_VALUE : tagsText.substring(0, tagsText.length() - 2));
+            tagsText = new StringBuilder((tagsText.length() == 0) ? Constants.NO_VALUE : tagsText.substring(0, tagsText.length() - 2));
         }
         tvTags.setText(tagsText.toString());
     }
 
     private void watchVideo() {
 
-        String videoUrl = "";
+        String videoUrl = Constants.EMPTY_VALUE;
         GameResponse game = viewModel.getGame().getValue();
         if (game != null && game.getClip() != null) {
             videoUrl = game.getClip().getVideo();

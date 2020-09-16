@@ -41,7 +41,7 @@ public class GridImagesActivity extends BaseActivity {
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
-        setTitle("");
+        setTitle(Constants.EMPTY_VALUE);
 
         imagesUrl = getIntent().getStringArrayListExtra(Constants.IMAGES_URL);
 

@@ -281,7 +281,7 @@ public class MainViewModel extends ViewModel {
 
                         setRefreshing(false);
                         setError(new ErrorResponse(
-                                "",
+                                Constants.EMPTY_VALUE,
                                 R.string.error_server,
                                 "Error in MainViewModel getGames")
                         );
@@ -311,7 +311,7 @@ public class MainViewModel extends ViewModel {
 
                         setRefreshing(false);
                         setError(new ErrorResponse(
-                                "",
+                                Constants.EMPTY_VALUE,
                                 R.string.error_server,
                                 "Error in MainViewModel getPlatforms")
                         );
@@ -341,7 +341,7 @@ public class MainViewModel extends ViewModel {
 
                         setRefreshing(false);
                         setError(new ErrorResponse(
-                                "",
+                                Constants.EMPTY_VALUE,
                                 R.string.error_server,
                                 "Error in MainViewModel getGenres")
                         );
