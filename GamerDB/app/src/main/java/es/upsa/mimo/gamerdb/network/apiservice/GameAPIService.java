@@ -32,4 +32,8 @@ public interface GameAPIService {
     @Headers("User-Agent:GamerDB")
     @GET("games/{gameId}/game-series")
     Single<GameListResponse> getGameSeries(@Path(value = "gameId") int gameId, @QueryMap Map<String, String> queryParams);
+
+    @Headers("User-Agent:GamerDB")
+    @GET("games/{gameId}/suggested")
+    Single<GameListResponse> getGamesSuggested(@Path(value = "gameId") int gameId, @QueryMap Map<String, String> queryParams);
 }
