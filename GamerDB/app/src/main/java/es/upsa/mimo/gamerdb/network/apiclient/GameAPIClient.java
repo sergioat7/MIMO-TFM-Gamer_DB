@@ -50,4 +50,12 @@ public class GameAPIClient {
     public Single<ScreenshotListResponse> getScreenshots(int gameId) {
         return api.getScreenshots(gameId).subscribeOn(Constants.SUBSCRIBER_SCHEDULER).observeOn(Constants.OBSERVER_SCHEDULER);
     }
+
+    public Single<GameListResponse> getGameSeries(int gameId, int page, int pageSize) {
+
+        Map<String, String> params = new HashMap<>();
+        params.put(Constants.PAGE_PARAM, String.valueOf(page));
+        params.put(Constants.PAGE_SIZE_PARAM, String.valueOf(pageSize));
+        return api.getGameSeries(gameId, params).subscribeOn(Constants.SUBSCRIBER_SCHEDULER).observeOn(Constants.OBSERVER_SCHEDULER);
+    }
 }

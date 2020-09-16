@@ -28,4 +28,8 @@ public interface GameAPIService {
     @Headers("User-Agent:GamerDB")
     @GET("games/{gameId}/screenshots")
     Single<ScreenshotListResponse> getScreenshots(@Path(value = "gameId") int gameId);
+
+    @Headers("User-Agent:GamerDB")
+    @GET("games/{gameId}/game-series")
+    Single<GameListResponse> getGameSeries(@Path(value = "gameId") int gameId, @QueryMap Map<String, String> queryParams);
 }
