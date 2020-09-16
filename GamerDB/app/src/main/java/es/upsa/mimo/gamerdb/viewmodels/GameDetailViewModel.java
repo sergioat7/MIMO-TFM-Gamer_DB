@@ -43,6 +43,7 @@ public class GameDetailViewModel extends ViewModel {
         imagesUrl = savedStateHandle.getLiveData(Constants.ATT_IMAGES_URL_LIVE_DATA, new ArrayList<>());
         gameAPIClient = new GameAPIClient();
         loadGame();
+        loadScreenshots();
     }
 
     //MARK: - Public methods
@@ -77,8 +78,15 @@ public class GameDetailViewModel extends ViewModel {
         return imagesUrl;
     }
 
-    public void setImagesUrl(ArrayList<String> imagesUrl) {
-        this.savedStateHandle.set(Constants.ATT_IMAGES_URL_LIVE_DATA, imagesUrl);
+    public void addImagesUrl(List<String> imagesUrl) {
+
+        List<String> currentImagesUrl = this.imagesUrl.getValue();
+        if (currentImagesUrl == null) {
+            currentImagesUrl = new ArrayList<>();
+        }
+        currentImagesUrl.addAll(imagesUrl);
+        this.savedStateHandle.set(Constants.ATT_IMAGES_URL_LIVE_DATA, currentImagesUrl);
+    }
     }
 
     //MARK: - Private methods
@@ -106,6 +114,9 @@ public class GameDetailViewModel extends ViewModel {
                         );
                     }
                 });
+    }
+
+    private void loadScreenshots() {
 
         gameAPIClient
                 .getScreenshots(getGameId())
@@ -118,11 +129,11 @@ public class GameDetailViewModel extends ViewModel {
                     public void onSuccess(ScreenshotListResponse screenshotListResponse) {
 
                         List<ScreenshotResponse> screenshots = screenshotListResponse.getResults();
-                        ArrayList<String> imagesUrl = new ArrayList<>();
+                        List<String> imagesUrl = new ArrayList<>();
                         for (int i = 0; i < screenshots.size(); i++) {
                             imagesUrl.add(screenshots.get(i).getImage());
                         }
-                        setImagesUrl(imagesUrl);
+                        addImagesUrl(imagesUrl);
                     }
 
                     @Override
