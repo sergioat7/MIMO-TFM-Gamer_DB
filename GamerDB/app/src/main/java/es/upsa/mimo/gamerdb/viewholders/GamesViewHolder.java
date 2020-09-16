@@ -48,6 +48,11 @@ public class GamesViewHolder extends RecyclerView.ViewHolder {
                 images.add(screenshot.getImage());
             }
         }
+        if (images.isEmpty()) {
+            images.add(Constants.EMPTY_VALUE);
+        }
+
+        clIndicator.setVisibility(images.size() > 1 ? View.VISIBLE : View.GONE);
 
         ViewGroup.MarginLayoutParams lp = (ViewGroup.MarginLayoutParams) vpImages.getLayoutParams();
         lp.topMargin = position == 0 ? Constants.MARGIN_LIST : Constants.NO_MARGIN_LIST;

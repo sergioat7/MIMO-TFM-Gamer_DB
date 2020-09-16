@@ -60,24 +60,33 @@ public class ImageSliderAdapter extends PagerAdapter {
             onItemClickListener.onItemClick(gameId);
         });
 
-        loading.setVisibility(View.VISIBLE);
-        Picasso
-                .get()
-                .load(images.get(position))
-                .fit()
-                .centerCrop()
-                .error(R.drawable.error_image)
-                .into(imageView, new Callback() {
-                    @Override
-                    public void onSuccess() {
-                        loading.setVisibility(View.GONE);
-                    }
+        String imageUrl = images.get(position);
+        if (imageUrl.isEmpty()) {
 
-                    @Override
-                    public void onError(Exception e) {
-                        loading.setVisibility(View.GONE);
-                    }
-                });
+            loading.setVisibility(View.GONE);
+            imageView.setImageResource(R.drawable.no_image);
+        } else {
+
+            loading.setVisibility(View.VISIBLE);
+            Picasso
+                    .get()
+                    .load(imageUrl)
+                    .fit()
+                    .centerCrop()
+                    .error(R.drawable.error_image)
+                    .into(imageView, new Callback() {
+                        @Override
+                        public void onSuccess() {
+                            loading.setVisibility(View.GONE);
+                        }
+
+                        @Override
+                        public void onError(Exception e) {
+                            loading.setVisibility(View.GONE);
+                        }
+                    });
+        }
+
 
         return imageLayout;
     }

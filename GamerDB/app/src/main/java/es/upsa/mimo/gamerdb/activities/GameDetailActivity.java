@@ -127,10 +127,13 @@ public class GameDetailActivity extends BaseActivity {
                 .observe(this, this::manageError);
         viewModel
                 .getImagesUrl()
-                .observe(this, imagesUrl -> btViewImages.setVisibility(View.VISIBLE));
+                .observe(this, imagesUrl -> btViewImages.setVisibility(imagesUrl.isEmpty() ? View.GONE : View.VISIBLE));
+
+        imageLoading.setVisibility(View.VISIBLE);
 
         btWatchVideo.setOnClickListener(v -> watchVideo());
         btViewImages.setOnClickListener(v -> viewImages());
+        btViewImages.setVisibility(View.GONE);
 
         btShowMoreText.setOnClickListener(v -> {
 
@@ -138,29 +141,35 @@ public class GameDetailActivity extends BaseActivity {
             btShowMoreText.setVisibility(View.GONE);
         });
 
-        imageLoading.setVisibility(View.VISIBLE);
-        btViewImages.setVisibility(View.GONE);
     }
 
     private void fillData(GameResponse game) {
 
-        Picasso
-                .get()
-                .load(game.getBackgroundImage())
-                .fit()
-                .centerCrop()
-                .error(R.drawable.error_image_2)
-                .into(ivGame, new Callback() {
-                    @Override
-                    public void onSuccess() {
-                        imageLoading.setVisibility(View.GONE);
-                    }
+        String imageUrl = game.getBackgroundImage();
+        if (imageUrl != null) {
 
-                    @Override
-                    public void onError(Exception e) {
-                        imageLoading.setVisibility(View.GONE);
-                    }
-                });
+            Picasso
+                    .get()
+                    .load(game.getBackgroundImage())
+                    .fit()
+                    .centerCrop()
+                    .error(R.drawable.error_image_2)
+                    .into(ivGame, new Callback() {
+                        @Override
+                        public void onSuccess() {
+                            imageLoading.setVisibility(View.GONE);
+                        }
+
+                        @Override
+                        public void onError(Exception e) {
+                            imageLoading.setVisibility(View.GONE);
+                        }
+                    });
+        } else {
+
+            imageLoading.setVisibility(View.GONE);
+            ivGame.setImageResource(R.drawable.no_image);
+        }
 
         tvName.setText(game.getName());
         tvRating.setText(String.valueOf(game.getRating()));
