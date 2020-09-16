@@ -132,6 +132,7 @@ public class GameDetailActivity extends BaseActivity {
         imageLoading.setVisibility(View.VISIBLE);
 
         btWatchVideo.setOnClickListener(v -> watchVideo());
+        btWatchVideo.setVisibility(View.GONE);
         btViewImages.setOnClickListener(v -> viewImages());
         btViewImages.setVisibility(View.GONE);
 
@@ -173,6 +174,8 @@ public class GameDetailActivity extends BaseActivity {
 
         tvName.setText(game.getName());
         tvRating.setText(String.valueOf(game.getRating()));
+
+        btWatchVideo.setVisibility(game.getClip() != null ? View.VISIBLE : View.GONE);
 
         String description = game.getDescription();
         tvDescription.setText(description);
