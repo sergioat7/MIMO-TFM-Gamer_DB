@@ -34,6 +34,7 @@ public class GameDetailViewModel extends ViewModel {
     private MutableLiveData<List<GameResponse>> gameSeries;
     private GameAPIClient gameAPIClient;
     private int gameSeriesPage;
+    private int gamesSuggestedPage;
 
     //MARK: - Lifecycle methods
 
@@ -48,9 +49,11 @@ public class GameDetailViewModel extends ViewModel {
         gameSeries.setValue(new ArrayList<>());
         gameAPIClient = new GameAPIClient();
         gameSeriesPage = Constants.FIRST_PAGE;
+        gamesSuggestedPage = Constants.FIRST_PAGE;
         loadGame();
         loadScreenshots();
         loadGameSeries();
+        loadGamesSuggested();
     }
 
     //MARK: - Public methods
@@ -128,6 +131,32 @@ public class GameDetailViewModel extends ViewModel {
                                 R.string.error_server,
                                 "Error in GameDetailViewModel getGameSeries")
                         );
+                    }
+                });
+    }
+
+    public void loadGamesSuggested() {
+
+        gameAPIClient
+                .getGamesSuggested(getGameId(), gamesSuggestedPage, Constants.PAGE_SIZE)
+                .subscribe(new SingleObserver<GameListResponse>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {}
+
+                    @Override
+                    public void onSuccess(GameListResponse gameListResponse) {
+                        //TODO show games
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                        setError(new ErrorResponse(
+                                Constants.EMPTY_VALUE,
+                                R.string.error_server,
+                                "Error in GameDetailViewModel getGamesSuggested")
+                        );
+
                     }
                 });
     }
