@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import es.upsa.mimo.gamerdb.R;
 import es.upsa.mimo.gamerdb.models.ErrorResponse;
+import es.upsa.mimo.gamerdb.models.GameListResponse;
 import es.upsa.mimo.gamerdb.models.GameResponse;
 import es.upsa.mimo.gamerdb.models.ScreenshotListResponse;
 import es.upsa.mimo.gamerdb.models.ScreenshotResponse;
@@ -44,6 +45,7 @@ public class GameDetailViewModel extends ViewModel {
         gameAPIClient = new GameAPIClient();
         loadGame();
         loadScreenshots();
+        loadGameSeries();
     }
 
     //MARK: - Public methods
@@ -143,6 +145,33 @@ public class GameDetailViewModel extends ViewModel {
                                 "",
                                 R.string.error_server,
                                 "Error in GameDetailViewModel getScreenshots")
+                        );
+                    }
+                });
+    }
+
+    private void loadGameSeries() {
+
+        gameAPIClient
+                .getGameSeries(getGameId(), gameSeriesPage, Constants.PAGE_SIZE)
+                .subscribe(new SingleObserver<GameListResponse>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {}
+
+                    @Override
+                    public void onSuccess(GameListResponse gameListResponse) {
+
+                        gameSeriesPage++;
+                        //TODO add games
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                        setError(new ErrorResponse(
+                                "",
+                                R.string.error_server,
+                                "Error in GameDetailViewModel getGameSeries")
                         );
                     }
                 });
