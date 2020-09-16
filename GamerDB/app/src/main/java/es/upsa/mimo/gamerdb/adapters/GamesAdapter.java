@@ -84,7 +84,7 @@ public class GamesAdapter extends RecyclerView.Adapter<ViewHolder> {
         } else {
 
             LoadMoreItemsViewHolder loadMoreItemsViewHolder = (LoadMoreItemsViewHolder) holder;
-            loadMoreItemsViewHolder.setItem(onItemClickListener);
+            loadMoreItemsViewHolder.setItem(onItemClickListener, multiImage);
         }
     }
 
