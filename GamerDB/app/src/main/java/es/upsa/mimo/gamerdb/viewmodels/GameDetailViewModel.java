@@ -32,6 +32,7 @@ public class GameDetailViewModel extends ViewModel {
     private MutableLiveData<ErrorResponse> error;
     private LiveData<ArrayList<String>> imagesUrl;
     private MutableLiveData<List<GameResponse>> gameSeries;
+    private MutableLiveData<List<GameResponse>> gamesSuggested;
     private GameAPIClient gameAPIClient;
     private int gameSeriesPage;
     private int gamesSuggestedPage;
@@ -47,6 +48,8 @@ public class GameDetailViewModel extends ViewModel {
         imagesUrl = savedStateHandle.getLiveData(Constants.ATT_IMAGES_URL_LIVE_DATA, new ArrayList<>());
         gameSeries = new MutableLiveData<>();
         gameSeries.setValue(new ArrayList<>());
+        gamesSuggested = new MutableLiveData<>();
+        gamesSuggested.setValue(new ArrayList<>());
         gameAPIClient = new GameAPIClient();
         gameSeriesPage = Constants.FIRST_PAGE;
         gamesSuggestedPage = Constants.FIRST_PAGE;
@@ -104,6 +107,16 @@ public class GameDetailViewModel extends ViewModel {
         this.gameSeries.setValue(currentGames);
     }
 
+    public LiveData<List<GameResponse>> getGamesSuggested() {
+        return gamesSuggested;
+    }
+
+    public void addGamesSuggested(List<GameResponse> games) {
+
+        List<GameResponse> currentGames = Constants.addElementsToList(this.gamesSuggested.getValue(), games, true);
+        this.gamesSuggested.setValue(currentGames);
+    }
+
     public void loadGameSeries() {
 
         gameAPIClient
@@ -145,7 +158,13 @@ public class GameDetailViewModel extends ViewModel {
 
                     @Override
                     public void onSuccess(GameListResponse gameListResponse) {
-                        //TODO show games
+
+                        gamesSuggestedPage++;
+                        List<GameResponse> results = gameListResponse.getResults();
+                        if (gameListResponse.getNext() != null) {
+                            results.add(new GameResponse(0));
+                        }
+                        addGamesSuggested(results);
                     }
 
                     @Override

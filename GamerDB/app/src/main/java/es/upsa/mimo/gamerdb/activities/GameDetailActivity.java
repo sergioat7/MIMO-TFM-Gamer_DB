@@ -91,11 +91,16 @@ public class GameDetailActivity extends BaseActivity implements GamesAdapter.OnI
     TextView tvGameSeriesTitle;
     @BindView(R.id.recycler_view_game_series)
     RecyclerView rvGameSeries;
+    @BindView(R.id.text_view_games_suggested_title)
+    TextView tvGamesSuggestedTitle;
+    @BindView(R.id.recycler_view_games_suggested)
+    RecyclerView rvGamesSuggested;
 
     //MARK: - Private properties
 
     private GameDetailViewModel viewModel;
-    private GamesAdapter gamesAdapter;
+    private GamesAdapter gameSeriesAdapter;
+    private GamesAdapter gamesSuggestedAdapter;
 
     //MARK: - Lifecycle methods
 
@@ -156,14 +161,30 @@ public class GameDetailActivity extends BaseActivity implements GamesAdapter.OnI
                 .observe(this, gameResponses -> {
 
                     if (gameResponses.isEmpty()) {
-                        gamesAdapter.resetList();
+                        gameSeriesAdapter.resetList();
                     } else {
-                        gamesAdapter.setGames(gameResponses);
+                        gameSeriesAdapter.setGames(gameResponses);
                     }
                     tvGameSeriesTitle.setVisibility(gameResponses.isEmpty() ? View.GONE : View.VISIBLE);
                 });
-        gamesAdapter = new GamesAdapter(
+        viewModel
+                .getGamesSuggested()
+                .observe(this, gameResponses -> {
+
+                    if (gameResponses.isEmpty()) {
+                        gamesSuggestedAdapter.resetList();
+                    } else {
+                        gamesSuggestedAdapter.setGames(gameResponses);
+                    }
+                    tvGamesSuggestedTitle.setVisibility(gameResponses.isEmpty() ? View.GONE : View.VISIBLE);
+                });
+        gameSeriesAdapter = new GamesAdapter(
                 viewModel.getGameSeries().getValue(),
+                this,
+                false
+        );
+        gamesSuggestedAdapter = new GamesAdapter(
+                viewModel.getGamesSuggested().getValue(),
                 this,
                 false
         );
@@ -186,7 +207,14 @@ public class GameDetailActivity extends BaseActivity implements GamesAdapter.OnI
                 LinearLayoutManager.HORIZONTAL,
                 false)
         );
-        rvGameSeries.setAdapter(gamesAdapter);
+        rvGameSeries.setAdapter(gameSeriesAdapter);
+
+        rvGamesSuggested.setLayoutManager(new LinearLayoutManager(
+                this,
+                LinearLayoutManager.HORIZONTAL,
+                false)
+        );
+        rvGamesSuggested.setAdapter(gamesSuggestedAdapter);
     }
 
     private void fillData(GameResponse game) {

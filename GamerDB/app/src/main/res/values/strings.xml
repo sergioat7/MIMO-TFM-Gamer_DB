@@ -31,5 +31,6 @@
     <string name="where_to_buy_title">Where to buy</string>
     <string name="tags_title">Tags</string>
     <string name="game_series">Other game in the series</string>
+    <string name="games_suggested">Suggested games</string>
 
 </resources>
