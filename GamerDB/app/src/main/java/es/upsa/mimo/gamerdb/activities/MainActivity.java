@@ -207,7 +207,11 @@ public class MainActivity extends BaseActivity implements GamesAdapter.OnItemCli
         viewModel
                 .getRefreshing()
                 .observe(this, refreshing -> srlGames.setRefreshing(refreshing));
-        gamesAdapter = new GamesAdapter(viewModel.getGames().getValue(), this);
+        gamesAdapter = new GamesAdapter(
+                viewModel.getGames().getValue(),
+                this,
+                true
+        );
 
         srlGames.setColorSchemeResources(R.color.colorPrimary);
         srlGames.setProgressBackgroundColorSchemeResource(android.R.color.white);

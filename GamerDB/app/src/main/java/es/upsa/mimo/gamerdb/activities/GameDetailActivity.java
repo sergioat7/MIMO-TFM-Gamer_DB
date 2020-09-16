@@ -161,7 +161,8 @@ public class GameDetailActivity extends BaseActivity implements GamesAdapter.OnI
                 });
         gamesAdapter = new GamesAdapter(
                 viewModel.getGameSeries().getValue(),
-                this
+                this,
+                false
         );
 
         imageLoading.setVisibility(View.VISIBLE);

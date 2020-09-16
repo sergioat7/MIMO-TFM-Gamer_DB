@@ -26,15 +26,19 @@ public class GamesAdapter extends RecyclerView.Adapter<ViewHolder> {
 
     private List<GameResponse> games;
     private OnItemClickListener onItemClickListener;
+    private boolean multiImage;
     private Context context;
     private boolean showLoadMoreItems;
 
     //MARK: - Lifecycle methods
 
-    public GamesAdapter(List<GameResponse> games, OnItemClickListener onItemClickListener) {
+    public GamesAdapter(List<GameResponse> games,
+                        OnItemClickListener onItemClickListener,
+                        boolean multiImage) {
 
         this.games = games;
         this.onItemClickListener = onItemClickListener;
+        this.multiImage = multiImage;
         this.showLoadMoreItems = true;
     }
 
@@ -74,7 +78,8 @@ public class GamesAdapter extends RecyclerView.Adapter<ViewHolder> {
                     game,
                     position,
                     context,
-                    onItemClickListener
+                    onItemClickListener,
+                    multiImage
             );
         } else {
 
