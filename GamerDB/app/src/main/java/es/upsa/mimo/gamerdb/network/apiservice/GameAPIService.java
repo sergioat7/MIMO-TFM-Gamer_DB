@@ -6,6 +6,7 @@
 package es.upsa.mimo.gamerdb.network.apiservice;
 
 import java.util.Map;
+import es.upsa.mimo.gamerdb.models.DeveloperListResponse;
 import es.upsa.mimo.gamerdb.models.GameListResponse;
 import es.upsa.mimo.gamerdb.models.GameResponse;
 import es.upsa.mimo.gamerdb.models.ScreenshotListResponse;
@@ -40,4 +41,8 @@ public interface GameAPIService {
     @Headers("User-Agent:GamerDB")
     @GET("games/{gameId}/additions")
     Single<GameListResponse> getGameAdditions(@Path(value = "gameId") int gameId, @QueryMap Map<String, String> queryParams);
+
+    @Headers("User-Agent:GamerDB")
+    @GET("games/{gameId}/development-team")
+    Single<DeveloperListResponse> getDevelopers(@Path(value = "gameId") int gameId, @QueryMap Map<String, String> queryParams);
 }

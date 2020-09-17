@@ -6,6 +6,7 @@
 package es.upsa.mimo.gamerdb.models;
 
 import com.google.gson.annotations.SerializedName;
+import java.util.List;
 
 public class DeveloperResponse {
 
@@ -16,17 +17,20 @@ public class DeveloperResponse {
     private int gamesCount;
     @SerializedName("image_background")
     private String imageBackground;
+    private List<PositionResponse> positions;
 
     public DeveloperResponse(int id,
                              String name,
                              String slug,
                              int gamesCount,
-                             String imageBackground) {
+                             String imageBackground,
+                             List<PositionResponse> positions) {
         this.id = id;
         this.name = name;
         this.slug = slug;
         this.gamesCount = gamesCount;
         this.imageBackground = imageBackground;
+        this.positions = positions;
     }
 
     public int getId() {
@@ -67,5 +71,13 @@ public class DeveloperResponse {
 
     public void setImageBackground(String imageBackground) {
         this.imageBackground = imageBackground;
+    }
+
+    public List<PositionResponse> getPositions() {
+        return positions;
+    }
+
+    public void setPositions(List<PositionResponse> positions) {
+        this.positions = positions;
     }
 }
