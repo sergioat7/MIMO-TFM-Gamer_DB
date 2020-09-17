@@ -36,6 +36,7 @@ public class GameDetailViewModel extends ViewModel {
     private GameAPIClient gameAPIClient;
     private int gameSeriesPage;
     private int gamesSuggestedPage;
+    private int gameAdditionsPage;
 
     //MARK: - Lifecycle methods
 
@@ -51,10 +52,12 @@ public class GameDetailViewModel extends ViewModel {
         gameAPIClient = new GameAPIClient();
         gameSeriesPage = Constants.FIRST_PAGE;
         gamesSuggestedPage = Constants.FIRST_PAGE;
+        gameAdditionsPage = Constants.FIRST_PAGE;
         loadGame();
         loadScreenshots();
         loadGameSeries();
         loadGamesSuggested();
+        loadGameAdditions();
     }
 
     //MARK: - Public methods
@@ -172,6 +175,34 @@ public class GameDetailViewModel extends ViewModel {
                                 Constants.EMPTY_VALUE,
                                 R.string.error_server,
                                 "Error in GameDetailViewModel getGamesSuggested")
+                        );
+
+                    }
+                });
+    }
+
+    public void loadGameAdditions() {
+
+        gameAPIClient
+                .getGameAdditions(getGameId(), gameAdditionsPage, Constants.PAGE_SIZE)
+                .subscribe(new SingleObserver<GameListResponse>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {}
+
+                    @Override
+                    public void onSuccess(GameListResponse gameListResponse) {
+
+                        gameAdditionsPage++;
+                        //TODo add games
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                        setError(new ErrorResponse(
+                                Constants.EMPTY_VALUE,
+                                R.string.error_server,
+                                "Error in GameDetailViewModel getGameAdditions")
                         );
 
                     }
