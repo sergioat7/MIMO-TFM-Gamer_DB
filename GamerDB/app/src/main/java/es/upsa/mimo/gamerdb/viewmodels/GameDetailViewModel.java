@@ -33,6 +33,7 @@ public class GameDetailViewModel extends ViewModel {
     private LiveData<ArrayList<String>> imagesUrl;
     private MutableLiveData<List<GameResponse>> gameSeries;
     private MutableLiveData<List<GameResponse>> gamesSuggested;
+    private MutableLiveData<List<GameResponse>> gameAdditions;
     private GameAPIClient gameAPIClient;
     private int gameSeriesPage;
     private int gamesSuggestedPage;
@@ -49,6 +50,7 @@ public class GameDetailViewModel extends ViewModel {
         imagesUrl = savedStateHandle.getLiveData(Constants.ATT_IMAGES_URL_LIVE_DATA, new ArrayList<>());
         gameSeries = Constants.newMutableEmptyList();
         gamesSuggested = Constants.newMutableEmptyList();
+        gameAdditions = Constants.newMutableEmptyList();
         gameAPIClient = new GameAPIClient();
         gameSeriesPage = Constants.FIRST_PAGE;
         gamesSuggestedPage = Constants.FIRST_PAGE;
@@ -116,6 +118,16 @@ public class GameDetailViewModel extends ViewModel {
 
         List<GameResponse> currentGames = Constants.addElementsToList(this.gamesSuggested.getValue(), games, true);
         this.gamesSuggested.setValue(currentGames);
+    }
+
+    public LiveData<List<GameResponse>> getGameAdditions() {
+        return gameAdditions;
+    }
+
+    public void addGameAdditions(List<GameResponse> games) {
+
+        List<GameResponse> currentGames = Constants.addElementsToList(this.gameAdditions.getValue(), games, true);
+        this.gameAdditions.setValue(currentGames);
     }
 
     public void loadGameSeries() {
@@ -193,7 +205,11 @@ public class GameDetailViewModel extends ViewModel {
                     public void onSuccess(GameListResponse gameListResponse) {
 
                         gameAdditionsPage++;
-                        //TODo add games
+                        List<GameResponse> results = gameListResponse.getResults();
+                        if (gameListResponse.getNext() != null) {
+                            results.add(new GameResponse(0));
+                        }
+                        addGameAdditions(results);
                     }
 
                     @Override

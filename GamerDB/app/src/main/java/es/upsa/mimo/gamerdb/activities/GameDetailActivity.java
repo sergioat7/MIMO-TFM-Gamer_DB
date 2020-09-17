@@ -95,12 +95,17 @@ public class GameDetailActivity extends BaseActivity implements GamesAdapter.OnI
     TextView tvGamesSuggestedTitle;
     @BindView(R.id.recycler_view_games_suggested)
     RecyclerView rvGamesSuggested;
+    @BindView(R.id.text_view_game_additions_title)
+    TextView tvGameAdditionsTitle;
+    @BindView(R.id.recycler_view_game_additions)
+    RecyclerView rvGameAdditions;
 
     //MARK: - Private properties
 
     private GameDetailViewModel viewModel;
     private GamesAdapter gameSeriesAdapter;
     private GamesAdapter gamesSuggestedAdapter;
+    private GamesAdapter gameAdditionsAdapter;
 
     //MARK: - Lifecycle methods
 
@@ -135,6 +140,8 @@ public class GameDetailActivity extends BaseActivity implements GamesAdapter.OnI
             viewModel.loadGameSeries();
         } else if (v.getParent().getParent() == rvGamesSuggested) {
             viewModel.loadGamesSuggested();
+        } else if (v.getParent().getParent() == rvGameAdditions) {
+            viewModel.loadGameAdditions();
         }
     }
 
@@ -183,6 +190,18 @@ public class GameDetailActivity extends BaseActivity implements GamesAdapter.OnI
                     }
                     tvGamesSuggestedTitle.setVisibility(gameResponses.isEmpty() ? View.GONE : View.VISIBLE);
                 });
+        viewModel
+                .getGameAdditions()
+                .observe(this, gameResponses -> {
+
+                    if (gameResponses.isEmpty()) {
+                        gameAdditionsAdapter.resetList();
+                    } else {
+                        gameAdditionsAdapter.setGames(gameResponses);
+                    }
+                    tvGameAdditionsTitle.setVisibility(gameResponses.isEmpty() ? View.GONE : View.VISIBLE);
+                });
+
         gameSeriesAdapter = new GamesAdapter(
                 viewModel.getGameSeries().getValue(),
                 this,
@@ -190,6 +209,11 @@ public class GameDetailActivity extends BaseActivity implements GamesAdapter.OnI
         );
         gamesSuggestedAdapter = new GamesAdapter(
                 viewModel.getGamesSuggested().getValue(),
+                this,
+                false
+        );
+        gameAdditionsAdapter = new GamesAdapter(
+                viewModel.getGameAdditions().getValue(),
                 this,
                 false
         );
@@ -220,6 +244,13 @@ public class GameDetailActivity extends BaseActivity implements GamesAdapter.OnI
                 false)
         );
         rvGamesSuggested.setAdapter(gamesSuggestedAdapter);
+
+        rvGameAdditions.setLayoutManager(new LinearLayoutManager(
+                this,
+                LinearLayoutManager.HORIZONTAL,
+                false)
+        );
+        rvGameAdditions.setAdapter(gameAdditionsAdapter);
     }
 
     private void fillData(GameResponse game) {
