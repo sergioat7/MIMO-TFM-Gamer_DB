@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModel;
 import java.util.ArrayList;
 import java.util.List;
 import es.upsa.mimo.gamerdb.R;
+import es.upsa.mimo.gamerdb.models.DeveloperListResponse;
 import es.upsa.mimo.gamerdb.models.ErrorResponse;
 import es.upsa.mimo.gamerdb.models.GameListResponse;
 import es.upsa.mimo.gamerdb.models.GameResponse;
@@ -38,6 +39,7 @@ public class GameDetailViewModel extends ViewModel {
     private int gameSeriesPage;
     private int gamesSuggestedPage;
     private int gameAdditionsPage;
+    private int developersPage;
 
     //MARK: - Lifecycle methods
 
@@ -55,11 +57,13 @@ public class GameDetailViewModel extends ViewModel {
         gameSeriesPage = Constants.FIRST_PAGE;
         gamesSuggestedPage = Constants.FIRST_PAGE;
         gameAdditionsPage = Constants.FIRST_PAGE;
+        developersPage = Constants.FIRST_PAGE;
         loadGame();
         loadScreenshots();
         loadGameSeries();
         loadGamesSuggested();
         loadGameAdditions();
+        loadDevelopers();
     }
 
     //MARK: - Public methods
@@ -188,7 +192,6 @@ public class GameDetailViewModel extends ViewModel {
                                 R.string.error_server,
                                 "Error in GameDetailViewModel getGamesSuggested")
                         );
-
                     }
                 });
     }
@@ -220,7 +223,33 @@ public class GameDetailViewModel extends ViewModel {
                                 R.string.error_server,
                                 "Error in GameDetailViewModel getGameAdditions")
                         );
+                    }
+                });
+    }
 
+    public void loadDevelopers() {
+
+        gameAPIClient
+                .getDevelopers(getGameId(), developersPage, Constants.PAGE_SIZE)
+                .subscribe(new SingleObserver<DeveloperListResponse>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {}
+
+                    @Override
+                    public void onSuccess(DeveloperListResponse developerListResponse) {
+
+                        developersPage++;
+                        //TODO add developers
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                        setError(new ErrorResponse(
+                                Constants.EMPTY_VALUE,
+                                R.string.error_server,
+                                "Error in GameDetailViewModel getDevelopers")
+                        );
                     }
                 });
     }
