@@ -61,8 +61,7 @@ public class MainViewModel extends ViewModel {
 
         this.savedStateHandle = savedStateHandle;
         gamesCount = savedStateHandle.getLiveData(Constants.ATT_GAMES_COUNT_LIVE_DATA, 0);
-        games = new MutableLiveData<>();
-        resetGames();
+        games = Constants.newMutableEmptyList();
         platforms = new MutableLiveData<>();
         genres = new MutableLiveData<>();
         error = new MutableLiveData<>();

@@ -46,10 +46,8 @@ public class GameDetailViewModel extends ViewModel {
         game = new MutableLiveData<>();
         error = new MutableLiveData<>();
         imagesUrl = savedStateHandle.getLiveData(Constants.ATT_IMAGES_URL_LIVE_DATA, new ArrayList<>());
-        gameSeries = new MutableLiveData<>();
-        gameSeries.setValue(new ArrayList<>());
-        gamesSuggested = new MutableLiveData<>();
-        gamesSuggested.setValue(new ArrayList<>());
+        gameSeries = Constants.newMutableEmptyList();
+        gamesSuggested = Constants.newMutableEmptyList();
         gameAPIClient = new GameAPIClient();
         gameSeriesPage = Constants.FIRST_PAGE;
         gamesSuggestedPage = Constants.FIRST_PAGE;

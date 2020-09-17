@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 import androidx.appcompat.widget.Toolbar;
+import androidx.lifecycle.MutableLiveData;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -163,6 +164,13 @@ public class Constants {
             i++;
         }
         return i % values.length;
+    }
+
+    public static <T> MutableLiveData<List<T>> newMutableEmptyList() {
+
+        MutableLiveData<List<T>> list = new MutableLiveData<>();
+        list.setValue(new ArrayList<>());
+        return list;
     }
 
     public static <T> List<T> addElementsToList(List<T> list,
