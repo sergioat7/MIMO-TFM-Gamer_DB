@@ -9,6 +9,7 @@
 
     <!-- sizes of views -->
     <dimen name="size_huge">250dp</dimen>
+    <dimen name="size_semi_huge">100dp</dimen>
     <dimen name="size_large">30dp</dimen>
     <dimen name="size_normal">20dp</dimen>
     <dimen name="size_small">10dp</dimen>

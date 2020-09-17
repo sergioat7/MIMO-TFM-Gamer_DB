@@ -15,6 +15,7 @@ public class DeveloperResponse {
     private String slug;
     @SerializedName("games_count")
     private int gamesCount;
+    private String image;
     @SerializedName("image_background")
     private String imageBackground;
     private List<PositionResponse> positions;
@@ -57,6 +58,14 @@ public class DeveloperResponse {
 
     public String getImageBackground() {
         return imageBackground;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
     public void setImageBackground(String imageBackground) {

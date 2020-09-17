@@ -33,5 +33,8 @@
     <string name="game_series">Other game in the series</string>
     <string name="games_suggested">Suggested games</string>
     <string name="game_additions">DLC\'s and special editions</string>
+    <string name="developer_background_image">Background image for developer</string>
+    <string name="developer_image">Developer\'s image</string>
+    <string name="games_developed_title">Known for</string>
 
 </resources>

@@ -6,6 +6,9 @@
 package es.upsa.mimo.gamerdb.utils;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -13,6 +16,8 @@ import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.graphics.drawable.RoundedBitmapDrawable;
+import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory;
 import androidx.lifecycle.MutableLiveData;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -219,6 +224,19 @@ public class Constants {
             default:
                 return 0;
         }
+    }
+
+    public static RoundedBitmapDrawable getRoundImageView(Drawable image, Context context, float radius) {
+
+        Bitmap imageBitmap = ((BitmapDrawable) image).getBitmap();
+        RoundedBitmapDrawable imageDrawable = RoundedBitmapDrawableFactory.create(context.getResources(), imageBitmap);
+        imageDrawable.setCircular(true);
+        if (radius > 0) {
+            imageDrawable.setCornerRadius(radius);
+        } else {
+            imageDrawable.setCornerRadius(Math.max(imageBitmap.getWidth(), imageBitmap.getHeight()) / 2.0f);
+        }
+        return imageDrawable;
     }
 
     //MARK: - Image detail
