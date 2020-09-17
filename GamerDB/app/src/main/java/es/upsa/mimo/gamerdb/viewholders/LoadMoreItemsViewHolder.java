@@ -28,6 +28,6 @@ public class LoadMoreItemsViewHolder extends RecyclerView.ViewHolder {
         clLoadMoreItems.setLayoutParams(new ViewGroup.LayoutParams(width, height));
 
         Button btLoadMoreItems = itemView.findViewById(R.id.button_load_more_items);
-        btLoadMoreItems.setOnClickListener(v -> onItemClickListener.onLoadMoreItemsClick());
+        btLoadMoreItems.setOnClickListener(onItemClickListener::onLoadMoreItemsClick);
     }
 }

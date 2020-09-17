@@ -100,7 +100,7 @@ public class GamesAdapter extends RecyclerView.Adapter<ViewHolder> {
 
     public interface OnItemClickListener {
         void onItemClick(int gameId);
-        void onLoadMoreItemsClick();
+        void onLoadMoreItemsClick(View v);
     }
 
     //MARK: - Public methods

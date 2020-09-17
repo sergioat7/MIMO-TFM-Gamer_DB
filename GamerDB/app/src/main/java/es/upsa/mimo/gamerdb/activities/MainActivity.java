@@ -86,7 +86,7 @@ public class MainActivity extends BaseActivity implements GamesAdapter.OnItemCli
     }
 
     @Override
-    public void onLoadMoreItemsClick() {
+    public void onLoadMoreItemsClick(View v) {
         viewModel.loadGames();
     }
 

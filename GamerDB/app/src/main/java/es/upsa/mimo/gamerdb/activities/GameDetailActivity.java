@@ -129,8 +129,13 @@ public class GameDetailActivity extends BaseActivity implements GamesAdapter.OnI
     }
 
     @Override
-    public void onLoadMoreItemsClick() {
-        viewModel.loadGameSeries();
+    public void onLoadMoreItemsClick(View v) {
+
+        if (v.getParent().getParent() == rvGameSeries) {
+            viewModel.loadGameSeries();
+        } else if (v.getParent().getParent() == rvGamesSuggested) {
+            viewModel.loadGamesSuggested();
+        }
     }
 
     //MARK: - Private methods
