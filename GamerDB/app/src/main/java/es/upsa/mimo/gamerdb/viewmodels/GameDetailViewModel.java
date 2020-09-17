@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import es.upsa.mimo.gamerdb.R;
 import es.upsa.mimo.gamerdb.models.DeveloperListResponse;
+import es.upsa.mimo.gamerdb.models.DeveloperResponse;
 import es.upsa.mimo.gamerdb.models.ErrorResponse;
 import es.upsa.mimo.gamerdb.models.GameListResponse;
 import es.upsa.mimo.gamerdb.models.GameResponse;
@@ -35,6 +36,7 @@ public class GameDetailViewModel extends ViewModel {
     private MutableLiveData<List<GameResponse>> gameSeries;
     private MutableLiveData<List<GameResponse>> gamesSuggested;
     private MutableLiveData<List<GameResponse>> gameAdditions;
+    private MutableLiveData<List<DeveloperResponse>> developers;
     private GameAPIClient gameAPIClient;
     private int gameSeriesPage;
     private int gamesSuggestedPage;
@@ -53,6 +55,7 @@ public class GameDetailViewModel extends ViewModel {
         gameSeries = Constants.newMutableEmptyList();
         gamesSuggested = Constants.newMutableEmptyList();
         gameAdditions = Constants.newMutableEmptyList();
+        developers = Constants.newMutableEmptyList();
         gameAPIClient = new GameAPIClient();
         gameSeriesPage = Constants.FIRST_PAGE;
         gamesSuggestedPage = Constants.FIRST_PAGE;
@@ -132,6 +135,16 @@ public class GameDetailViewModel extends ViewModel {
 
         List<GameResponse> currentGames = Constants.addElementsToList(this.gameAdditions.getValue(), games, true);
         this.gameAdditions.setValue(currentGames);
+    }
+
+    public LiveData<List<DeveloperResponse>> getDevelopers() {
+        return developers;
+    }
+
+    public void addDevelopers(List<DeveloperResponse> developers) {
+
+        List<DeveloperResponse> currentDevelopers = Constants.addElementsToList(this.developers.getValue(), developers, true);
+        this.developers.setValue(currentDevelopers);
     }
 
     public void loadGameSeries() {
@@ -239,7 +252,11 @@ public class GameDetailViewModel extends ViewModel {
                     public void onSuccess(DeveloperListResponse developerListResponse) {
 
                         developersPage++;
-                        //TODO add developers
+                        List<DeveloperResponse> results = developerListResponse.getResults();
+                        if (developerListResponse.getNext() != null) {
+                            results.add(new DeveloperResponse(0));
+                        }
+                        addDevelopers(results);
                     }
 
                     @Override

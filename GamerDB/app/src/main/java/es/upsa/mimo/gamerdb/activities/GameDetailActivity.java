@@ -33,6 +33,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import es.upsa.mimo.gamerdb.R;
 import es.upsa.mimo.gamerdb.activities.base.BaseActivity;
+import es.upsa.mimo.gamerdb.adapters.DevelopersAdapter;
 import es.upsa.mimo.gamerdb.adapters.GamesAdapter;
 import es.upsa.mimo.gamerdb.adapters.OnItemClickListener;
 import es.upsa.mimo.gamerdb.customviews.ImageLoading;
@@ -101,6 +102,10 @@ public class GameDetailActivity extends BaseActivity implements OnItemClickListe
     TextView tvGameAdditionsTitle;
     @BindView(R.id.recycler_view_game_additions)
     RecyclerView rvGameAdditions;
+    @BindView(R.id.text_view_developers_title)
+    TextView tvDevelopersTitle;
+    @BindView(R.id.recycler_view_developers)
+    RecyclerView rvDevelopers;
 
     //MARK: - Private properties
 
@@ -108,6 +113,7 @@ public class GameDetailActivity extends BaseActivity implements OnItemClickListe
     private GamesAdapter gameSeriesAdapter;
     private GamesAdapter gamesSuggestedAdapter;
     private GamesAdapter gameAdditionsAdapter;
+    private DevelopersAdapter developersAdapter;
 
     //MARK: - Lifecycle methods
 
@@ -153,6 +159,8 @@ public class GameDetailActivity extends BaseActivity implements OnItemClickListe
             viewModel.loadGamesSuggested();
         } else if (rvGameAdditions.equals(parent)) {
             viewModel.loadGameAdditions();
+        } else if (rvDevelopers.equals(parent)) {
+            viewModel.loadDevelopers();
         }
     }
 
@@ -212,6 +220,17 @@ public class GameDetailActivity extends BaseActivity implements OnItemClickListe
                     }
                     tvGameAdditionsTitle.setVisibility(gameResponses.isEmpty() ? View.GONE : View.VISIBLE);
                 });
+        viewModel
+                .getDevelopers()
+                .observe(this, developerResponses -> {
+
+                    if (developerResponses.isEmpty()) {
+                        developersAdapter.resetList();
+                    } else {
+                        developersAdapter.setDevelopers(developerResponses);
+                    }
+                    tvDevelopersTitle.setVisibility(developerResponses.isEmpty() ? View.GONE : View.VISIBLE);
+                });
 
         gameSeriesAdapter = new GamesAdapter(
                 viewModel.getGameSeries().getValue(),
@@ -227,6 +246,10 @@ public class GameDetailActivity extends BaseActivity implements OnItemClickListe
                 viewModel.getGameAdditions().getValue(),
                 this,
                 false
+        );
+        developersAdapter = new DevelopersAdapter(
+                viewModel.getDevelopers().getValue(),
+                this
         );
 
         imageLoading.setVisibility(View.VISIBLE);
@@ -262,6 +285,13 @@ public class GameDetailActivity extends BaseActivity implements OnItemClickListe
                 false)
         );
         rvGameAdditions.setAdapter(gameAdditionsAdapter);
+
+        rvDevelopers.setLayoutManager(new LinearLayoutManager(
+                this,
+                LinearLayoutManager.HORIZONTAL,
+                false)
+        );
+        rvDevelopers.setAdapter(developersAdapter);
     }
 
     private void fillData(GameResponse game) {
