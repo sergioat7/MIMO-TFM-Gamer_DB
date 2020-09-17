@@ -66,4 +66,12 @@ public class GameAPIClient {
         params.put(Constants.PAGE_SIZE_PARAM, String.valueOf(pageSize));
         return api.getGamesSuggested(gameId, params).subscribeOn(Constants.SUBSCRIBER_SCHEDULER).observeOn(Constants.OBSERVER_SCHEDULER);
     }
+
+    public Single<GameListResponse> getGameAdditions(int gameId, int page, int pageSize) {
+
+        Map<String, String> params = new HashMap<>();
+        params.put(Constants.PAGE_PARAM, String.valueOf(page));
+        params.put(Constants.PAGE_SIZE_PARAM, String.valueOf(pageSize));
+        return api.getGameAdditions(gameId, params).subscribeOn(Constants.SUBSCRIBER_SCHEDULER).observeOn(Constants.OBSERVER_SCHEDULER);
+    }
 }
