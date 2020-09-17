@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 import es.upsa.mimo.gamerdb.R;
 import es.upsa.mimo.gamerdb.models.GameResponse;
-import es.upsa.mimo.gamerdb.utils.Constants;
 import es.upsa.mimo.gamerdb.viewholders.GamesViewHolder;
 import es.upsa.mimo.gamerdb.viewholders.LoadMoreItemsViewHolder;
 
@@ -94,13 +93,6 @@ public class GamesAdapter extends RecyclerView.Adapter<ViewHolder> {
         } else {
             return games.size();
         }
-    }
-
-    //MARK: - Interface methods
-
-    public interface OnItemClickListener {
-        void onItemClick(int gameId);
-        void onLoadMoreItemsClick(View v);
     }
 
     //MARK: - Public methods

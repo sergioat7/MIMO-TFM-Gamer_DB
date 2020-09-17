@@ -33,12 +33,13 @@ import butterknife.ButterKnife;
 import es.upsa.mimo.gamerdb.R;
 import es.upsa.mimo.gamerdb.activities.base.BaseActivity;
 import es.upsa.mimo.gamerdb.adapters.GamesAdapter;
+import es.upsa.mimo.gamerdb.adapters.OnItemClickListener;
 import es.upsa.mimo.gamerdb.models.GenreResponse;
 import es.upsa.mimo.gamerdb.models.PlatformObjectResponse;
 import es.upsa.mimo.gamerdb.utils.Constants;
 import es.upsa.mimo.gamerdb.viewmodels.MainViewModel;
 
-public class MainActivity extends BaseActivity implements GamesAdapter.OnItemClickListener {
+public class MainActivity extends BaseActivity implements OnItemClickListener {
 
     //MARK: - Public properties
 
@@ -78,7 +79,7 @@ public class MainActivity extends BaseActivity implements GamesAdapter.OnItemCli
     //MARK: - Interface methods
 
     @Override
-    public void onItemClick(int gameId) {
+    public void onItemClick(View v, int gameId) {
 
         Intent intent = new Intent(this, GameDetailActivity.class);
         intent.putExtra(Constants.GAME_ID, gameId);

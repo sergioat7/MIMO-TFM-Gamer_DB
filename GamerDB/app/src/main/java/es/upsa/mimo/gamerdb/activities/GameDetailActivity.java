@@ -17,6 +17,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -33,6 +34,7 @@ import butterknife.ButterKnife;
 import es.upsa.mimo.gamerdb.R;
 import es.upsa.mimo.gamerdb.activities.base.BaseActivity;
 import es.upsa.mimo.gamerdb.adapters.GamesAdapter;
+import es.upsa.mimo.gamerdb.adapters.OnItemClickListener;
 import es.upsa.mimo.gamerdb.customviews.ImageLoading;
 import es.upsa.mimo.gamerdb.fragments.popups.PopupVideoDialogFragment;
 import es.upsa.mimo.gamerdb.models.DeveloperResponse;
@@ -45,7 +47,7 @@ import es.upsa.mimo.gamerdb.models.TagResponse;
 import es.upsa.mimo.gamerdb.utils.Constants;
 import es.upsa.mimo.gamerdb.viewmodels.GameDetailViewModel;
 
-public class GameDetailActivity extends BaseActivity implements GamesAdapter.OnItemClickListener {
+public class GameDetailActivity extends BaseActivity implements OnItemClickListener {
 
     //MARK: - Public properties
 
@@ -126,21 +128,30 @@ public class GameDetailActivity extends BaseActivity implements GamesAdapter.OnI
     //MARK: - Interface methods
 
     @Override
-    public void onItemClick(int gameId) {
+    public void onItemClick(View v, int gameId) {
 
-        Intent intent = new Intent(this, GameDetailActivity.class);
-        intent.putExtra(Constants.GAME_ID, gameId);
-        startActivity(intent);
+        ViewParent parent = v.getParent().getParent().getParent().getParent();
+        if (
+                rvGameSeries.equals(parent) ||
+                rvGamesSuggested.equals(parent) ||
+                rvGameAdditions.equals(parent)
+        ) {
+
+            Intent intent = new Intent(this, GameDetailActivity.class);
+            intent.putExtra(Constants.GAME_ID, gameId);
+            startActivity(intent);
+        }
     }
 
     @Override
     public void onLoadMoreItemsClick(View v) {
 
-        if (v.getParent().getParent() == rvGameSeries) {
+        ViewParent parent = v.getParent().getParent();
+        if (rvGameSeries.equals(parent)) {
             viewModel.loadGameSeries();
-        } else if (v.getParent().getParent() == rvGamesSuggested) {
+        } else if (rvGamesSuggested.equals(parent)) {
             viewModel.loadGamesSuggested();
-        } else if (v.getParent().getParent() == rvGameAdditions) {
+        } else if (rvGameAdditions.equals(parent)) {
             viewModel.loadGameAdditions();
         }
     }

@@ -19,18 +19,8 @@ public class DeveloperResponse {
     private String imageBackground;
     private List<PositionResponse> positions;
 
-    public DeveloperResponse(int id,
-                             String name,
-                             String slug,
-                             int gamesCount,
-                             String imageBackground,
-                             List<PositionResponse> positions) {
+    public DeveloperResponse(int id) {
         this.id = id;
-        this.name = name;
-        this.slug = slug;
-        this.gamesCount = gamesCount;
-        this.imageBackground = imageBackground;
-        this.positions = positions;
     }
 
     public int getId() {

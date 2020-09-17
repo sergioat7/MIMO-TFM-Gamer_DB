@@ -11,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.viewpager.widget.PagerAdapter;
@@ -25,10 +24,10 @@ public class ImageSliderAdapter extends PagerAdapter {
 
     private int gameId;
     private List<String> images;
-    private GamesAdapter.OnItemClickListener onItemClickListener;
+    private OnItemClickListener onItemClickListener;
     private LayoutInflater inflater;
 
-    public ImageSliderAdapter(int gameId, List<String> images, Context context, GamesAdapter.OnItemClickListener onItemClickListener) {
+    public ImageSliderAdapter(int gameId, List<String> images, Context context, OnItemClickListener onItemClickListener) {
 
         this.gameId = gameId;
         this.images = images;
@@ -56,9 +55,7 @@ public class ImageSliderAdapter extends PagerAdapter {
         ImageLoading loading = imageLayout.findViewById(R.id.image_loading);
 
         container.addView(imageLayout, 0);
-        imageView.setOnClickListener(v -> {
-            onItemClickListener.onItemClick(gameId);
-        });
+        imageView.setOnClickListener(v -> onItemClickListener.onItemClick(v, gameId));
 
         String imageUrl = images.get(position);
         if (imageUrl.isEmpty()) {

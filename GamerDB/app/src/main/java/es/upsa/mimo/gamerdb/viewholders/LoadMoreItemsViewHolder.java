@@ -12,7 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 import es.upsa.mimo.gamerdb.R;
-import es.upsa.mimo.gamerdb.adapters.GamesAdapter.OnItemClickListener;
+import es.upsa.mimo.gamerdb.adapters.OnItemClickListener;
 
 public class LoadMoreItemsViewHolder extends RecyclerView.ViewHolder {
 
