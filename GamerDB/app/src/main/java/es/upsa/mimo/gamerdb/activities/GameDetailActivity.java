@@ -10,11 +10,14 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.SavedStateViewModelFactory;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -30,6 +33,10 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import es.upsa.mimo.gamerdb.R;
 import es.upsa.mimo.gamerdb.activities.base.BaseActivity;
+import es.upsa.mimo.gamerdb.adapters.AchievementsAdapter;
+import es.upsa.mimo.gamerdb.adapters.DevelopersAdapter;
+import es.upsa.mimo.gamerdb.adapters.GamesAdapter;
+import es.upsa.mimo.gamerdb.adapters.OnItemClickListener;
 import es.upsa.mimo.gamerdb.customviews.ImageLoading;
 import es.upsa.mimo.gamerdb.fragments.popups.PopupVideoDialogFragment;
 import es.upsa.mimo.gamerdb.models.DeveloperResponse;
@@ -42,7 +49,7 @@ import es.upsa.mimo.gamerdb.models.TagResponse;
 import es.upsa.mimo.gamerdb.utils.Constants;
 import es.upsa.mimo.gamerdb.viewmodels.GameDetailViewModel;
 
-public class GameDetailActivity extends BaseActivity {
+public class GameDetailActivity extends BaseActivity implements OnItemClickListener {
 
     //MARK: - Public properties
 
@@ -84,10 +91,35 @@ public class GameDetailActivity extends BaseActivity {
     LinearLayout llStores;
     @BindView(R.id.text_view_tags)
     TextView tvTags;
+    @BindView(R.id.text_view_game_series_title)
+    TextView tvGameSeriesTitle;
+    @BindView(R.id.recycler_view_game_series)
+    RecyclerView rvGameSeries;
+    @BindView(R.id.text_view_games_suggested_title)
+    TextView tvGamesSuggestedTitle;
+    @BindView(R.id.recycler_view_games_suggested)
+    RecyclerView rvGamesSuggested;
+    @BindView(R.id.text_view_game_additions_title)
+    TextView tvGameAdditionsTitle;
+    @BindView(R.id.recycler_view_game_additions)
+    RecyclerView rvGameAdditions;
+    @BindView(R.id.text_view_developers_title)
+    TextView tvDevelopersTitle;
+    @BindView(R.id.recycler_view_developers)
+    RecyclerView rvDevelopers;
+    @BindView(R.id.text_view_achievements_title)
+    TextView tvAchievementsTitle;
+    @BindView(R.id.recycler_view_achievements)
+    RecyclerView rvAchievements;
 
     //MARK: - Private properties
 
     private GameDetailViewModel viewModel;
+    private GamesAdapter gameSeriesAdapter;
+    private GamesAdapter gamesSuggestedAdapter;
+    private GamesAdapter gameAdditionsAdapter;
+    private DevelopersAdapter developersAdapter;
+    private AchievementsAdapter achievementsAdapter;
 
     //MARK: - Lifecycle methods
 
@@ -99,10 +131,45 @@ public class GameDetailActivity extends BaseActivity {
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
-        setTitle("");
+        setTitle(Constants.EMPTY_VALUE);
 
         int gameId = getIntent().getIntExtra(Constants.GAME_ID, 0);
         this.initializeUI(gameId);
+    }
+
+    //MARK: - Interface methods
+
+    @Override
+    public void onItemClick(View v, int gameId) {
+
+        ViewParent parent = v.getParent().getParent().getParent().getParent();
+        if (
+                rvGameSeries.equals(parent) ||
+                rvGamesSuggested.equals(parent) ||
+                rvGameAdditions.equals(parent)
+        ) {
+
+            Intent intent = new Intent(this, GameDetailActivity.class);
+            intent.putExtra(Constants.GAME_ID, gameId);
+            startActivity(intent);
+        }
+    }
+
+    @Override
+    public void onLoadMoreItemsClick(View v) {
+
+        ViewParent parent = v.getParent().getParent();
+        if (rvGameSeries.equals(parent)) {
+            viewModel.loadGameSeries();
+        } else if (rvGamesSuggested.equals(parent)) {
+            viewModel.loadGamesSuggested();
+        } else if (rvGameAdditions.equals(parent)) {
+            viewModel.loadGameAdditions();
+        } else if (rvDevelopers.equals(parent)) {
+            viewModel.loadDevelopers();
+        } else if (rvAchievements.equals(parent)) {
+            viewModel.loadAchievements();
+        }
     }
 
     //MARK: - Private methods
@@ -127,10 +194,93 @@ public class GameDetailActivity extends BaseActivity {
                 .observe(this, this::manageError);
         viewModel
                 .getImagesUrl()
-                .observe(this, imagesUrl -> btViewImages.setVisibility(View.VISIBLE));
+                .observe(this, imagesUrl -> btViewImages.setVisibility(imagesUrl.isEmpty() ? View.GONE : View.VISIBLE));
+        viewModel
+                .getGameSeries()
+                .observe(this, gameResponses -> {
+
+                    if (gameResponses.isEmpty()) {
+                        gameSeriesAdapter.resetList();
+                    } else {
+                        gameSeriesAdapter.setGames(gameResponses);
+                    }
+                    tvGameSeriesTitle.setVisibility(gameResponses.isEmpty() ? View.GONE : View.VISIBLE);
+                });
+        viewModel
+                .getGamesSuggested()
+                .observe(this, gameResponses -> {
+
+                    if (gameResponses.isEmpty()) {
+                        gamesSuggestedAdapter.resetList();
+                    } else {
+                        gamesSuggestedAdapter.setGames(gameResponses);
+                    }
+                    tvGamesSuggestedTitle.setVisibility(gameResponses.isEmpty() ? View.GONE : View.VISIBLE);
+                });
+        viewModel
+                .getGameAdditions()
+                .observe(this, gameResponses -> {
+
+                    if (gameResponses.isEmpty()) {
+                        gameAdditionsAdapter.resetList();
+                    } else {
+                        gameAdditionsAdapter.setGames(gameResponses);
+                    }
+                    tvGameAdditionsTitle.setVisibility(gameResponses.isEmpty() ? View.GONE : View.VISIBLE);
+                });
+        viewModel
+                .getDevelopers()
+                .observe(this, developerResponses -> {
+
+                    if (developerResponses.isEmpty()) {
+                        developersAdapter.resetList();
+                    } else {
+                        developersAdapter.setDevelopers(developerResponses);
+                    }
+                    tvDevelopersTitle.setVisibility(developerResponses.isEmpty() ? View.GONE : View.VISIBLE);
+                });
+        viewModel
+                .getAchievements()
+                .observe(this, achievementResponses -> {
+
+                    if (achievementResponses.isEmpty()) {
+                        achievementsAdapter.resetList();
+                    } else {
+                        achievementsAdapter.setAchievements(achievementResponses);
+                    }
+                    tvAchievementsTitle.setVisibility(achievementResponses.isEmpty() ? View.GONE : View.VISIBLE);
+                });
+
+        gameSeriesAdapter = new GamesAdapter(
+                viewModel.getGameSeries().getValue(),
+                this,
+                false
+        );
+        gamesSuggestedAdapter = new GamesAdapter(
+                viewModel.getGamesSuggested().getValue(),
+                this,
+                false
+        );
+        gameAdditionsAdapter = new GamesAdapter(
+                viewModel.getGameAdditions().getValue(),
+                this,
+                false
+        );
+        developersAdapter = new DevelopersAdapter(
+                viewModel.getDevelopers().getValue(),
+                this
+        );
+        achievementsAdapter = new AchievementsAdapter(
+                viewModel.getAchievements().getValue(),
+                this
+        );
+
+        imageLoading.setVisibility(View.VISIBLE);
 
         btWatchVideo.setOnClickListener(v -> watchVideo());
+        btWatchVideo.setVisibility(View.GONE);
         btViewImages.setOnClickListener(v -> viewImages());
+        btViewImages.setVisibility(View.GONE);
 
         btShowMoreText.setOnClickListener(v -> {
 
@@ -138,32 +288,74 @@ public class GameDetailActivity extends BaseActivity {
             btShowMoreText.setVisibility(View.GONE);
         });
 
-        imageLoading.setVisibility(View.VISIBLE);
-        btViewImages.setVisibility(View.GONE);
+        rvGameSeries.setLayoutManager(new LinearLayoutManager(
+                this,
+                LinearLayoutManager.HORIZONTAL,
+                false)
+        );
+        rvGameSeries.setAdapter(gameSeriesAdapter);
+
+        rvGamesSuggested.setLayoutManager(new LinearLayoutManager(
+                this,
+                LinearLayoutManager.HORIZONTAL,
+                false)
+        );
+        rvGamesSuggested.setAdapter(gamesSuggestedAdapter);
+
+        rvGameAdditions.setLayoutManager(new LinearLayoutManager(
+                this,
+                LinearLayoutManager.HORIZONTAL,
+                false)
+        );
+        rvGameAdditions.setAdapter(gameAdditionsAdapter);
+
+        rvDevelopers.setLayoutManager(new LinearLayoutManager(
+                this,
+                LinearLayoutManager.HORIZONTAL,
+                false)
+        );
+        rvDevelopers.setAdapter(developersAdapter);
+
+        rvAchievements.setLayoutManager(new LinearLayoutManager(
+                this,
+                LinearLayoutManager.HORIZONTAL,
+                false)
+        );
+        rvAchievements.setAdapter(achievementsAdapter);
     }
 
     private void fillData(GameResponse game) {
 
-        Picasso
-                .get()
-                .load(game.getBackgroundImage())
-                .fit()
-                .centerCrop()
-                .error(R.drawable.error_image_2)
-                .into(ivGame, new Callback() {
-                    @Override
-                    public void onSuccess() {
-                        imageLoading.setVisibility(View.GONE);
-                    }
+        String imageUrl = game.getBackgroundImage();
+        if (imageUrl != null) {
 
-                    @Override
-                    public void onError(Exception e) {
-                        imageLoading.setVisibility(View.GONE);
-                    }
-                });
+            Picasso
+                    .get()
+                    .load(game.getBackgroundImage())
+                    .fit()
+                    .centerCrop()
+                    .error(R.drawable.error_image_2)
+                    .into(ivGame, new Callback() {
+                        @Override
+                        public void onSuccess() {
+                            imageLoading.setVisibility(View.GONE);
+                        }
+
+                        @Override
+                        public void onError(Exception e) {
+                            imageLoading.setVisibility(View.GONE);
+                        }
+                    });
+        } else {
+
+            imageLoading.setVisibility(View.GONE);
+            ivGame.setImageResource(R.drawable.no_image);
+        }
 
         tvName.setText(game.getName());
         tvRating.setText(String.valueOf(game.getRating()));
+
+        btWatchVideo.setVisibility(game.getClip() != null ? View.VISIBLE : View.GONE);
 
         String description = game.getDescription();
         tvDescription.setText(description);
@@ -179,7 +371,7 @@ public class GameDetailActivity extends BaseActivity {
                 platformsText.append(Constants.NEXT_VALUE_SEPARATOR);
             }
         }
-        platformsText = new StringBuilder((platformsText.length() == 0) ? Constants.EMPTY_VALUE : platformsText.substring(0, platformsText.length() - 2));
+        platformsText = new StringBuilder((platformsText.length() == 0) ? Constants.NO_VALUE : platformsText.substring(0, platformsText.length() - 2));
         tvPlatforms.setText(platformsText.toString());
 
         String releasedDate;
@@ -189,7 +381,7 @@ public class GameDetailActivity extends BaseActivity {
             assert releasedDate != null;
             releasedDate = releasedDate.substring(0,1).toUpperCase() + releasedDate.substring(1);
         } catch (Exception ignored) {
-            releasedDate = Constants.EMPTY_VALUE;
+            releasedDate = Constants.NO_VALUE;
         }
         tvReleaseDate.setText(releasedDate);
 
@@ -202,10 +394,10 @@ public class GameDetailActivity extends BaseActivity {
                 genresText.append(Constants.NEXT_VALUE_SEPARATOR);
             }
         }
-        genresText = new StringBuilder((genresText.length() == 0) ? Constants.EMPTY_VALUE : genresText.substring(0, genresText.length() - 2));
+        genresText = new StringBuilder((genresText.length() == 0) ? Constants.NO_VALUE : genresText.substring(0, genresText.length() - 2));
         tvGenres.setText(genresText.toString());
 
-        String ageRating = Constants.EMPTY_VALUE;
+        String ageRating = Constants.NO_VALUE;
         if (game.getEsrbRating() != null) {
             ageRating = game.getEsrbRating().getName();
         }
@@ -220,7 +412,7 @@ public class GameDetailActivity extends BaseActivity {
                 developersText.append(Constants.NEXT_VALUE_SEPARATOR);
             }
         }
-        developersText = new StringBuilder((developersText.length() == 0) ? Constants.EMPTY_VALUE : developersText.substring(0, developersText.length() - 2));
+        developersText = new StringBuilder((developersText.length() == 0) ? Constants.NO_VALUE : developersText.substring(0, developersText.length() - 2));
         tvDeveloper.setText(developersText.toString());
 
         List<PublisherResponse> publishers = game.getPublishers();
@@ -232,10 +424,10 @@ public class GameDetailActivity extends BaseActivity {
                 publishersText.append(Constants.NEXT_VALUE_SEPARATOR);
             }
         }
-        publishersText = new StringBuilder((publishersText.length() == 0) ? Constants.EMPTY_VALUE : publishersText.substring(0, publishersText.length() - 2));
+        publishersText = new StringBuilder((publishersText.length() == 0) ? Constants.NO_VALUE : publishersText.substring(0, publishersText.length() - 2));
         tvPublisher.setText(publishersText.toString());
 
-        String website = Constants.EMPTY_VALUE;
+        String website = Constants.NO_VALUE;
         if (game.getWebsite() != null && !game.getWebsite().isEmpty()) {
             website = game.getWebsite();
         }
@@ -283,14 +475,14 @@ public class GameDetailActivity extends BaseActivity {
                 tagsText.append(tags.get(i).getName());
                 tagsText.append(Constants.NEXT_VALUE_SEPARATOR);
             }
-            tagsText = new StringBuilder((tagsText.length() == 0) ? Constants.EMPTY_VALUE : tagsText.substring(0, tagsText.length() - 2));
+            tagsText = new StringBuilder((tagsText.length() == 0) ? Constants.NO_VALUE : tagsText.substring(0, tagsText.length() - 2));
         }
         tvTags.setText(tagsText.toString());
     }
 
     private void watchVideo() {
 
-        String videoUrl = "";
+        String videoUrl = Constants.EMPTY_VALUE;
         GameResponse game = viewModel.getGame().getValue();
         if (game != null && game.getClip() != null) {
             videoUrl = game.getClip().getVideo();

@@ -61,8 +61,7 @@ public class MainViewModel extends ViewModel {
 
         this.savedStateHandle = savedStateHandle;
         gamesCount = savedStateHandle.getLiveData(Constants.ATT_GAMES_COUNT_LIVE_DATA, 0);
-        games = new MutableLiveData<>();
-        resetGames();
+        games = Constants.newMutableEmptyList();
         platforms = new MutableLiveData<>();
         genres = new MutableLiveData<>();
         error = new MutableLiveData<>();
@@ -81,12 +80,17 @@ public class MainViewModel extends ViewModel {
         genrePage = Constants.FIRST_PAGE;
         loadPlatforms();
         loadGenres();
+        loadGames();
     }
 
     //MARK: - Public methods
 
     public LiveData<Integer> getGamesCount() {
         return gamesCount;
+    }
+
+    public int getGamesCountValue() {
+        return (gamesCount != null && gamesCount.getValue() != null) ? gamesCount.getValue() : 0;
     }
 
     public void setGamesCount(int gamesCount) {
@@ -99,11 +103,7 @@ public class MainViewModel extends ViewModel {
 
     public void addGames(List<GameResponse> games) {
 
-        List<GameResponse> currentGames = this.games.getValue();
-        if (currentGames == null) {
-            currentGames = new ArrayList<>();
-        }
-        currentGames.addAll(games);
+        List<GameResponse> currentGames = Constants.addElementsToList(this.games.getValue(), games, true);
         this.games.setValue(currentGames);
     }
 
@@ -260,7 +260,11 @@ public class MainViewModel extends ViewModel {
                     @Override
                     public void onSuccess(GameListResponse gameListResponse) {
 
-                        addGames(gameListResponse.getResults());
+                        List<GameResponse> results = gameListResponse.getResults();
+                        if (gameListResponse.getNext() != null) {
+                            results.add(new GameResponse(0));
+                        }
+                        addGames(results);
                         int page = getPage();
                         if (page == 1) {
 
@@ -276,7 +280,7 @@ public class MainViewModel extends ViewModel {
 
                         setRefreshing(false);
                         setError(new ErrorResponse(
-                                "",
+                                Constants.EMPTY_VALUE,
                                 R.string.error_server,
                                 "Error in MainViewModel getGames")
                         );
@@ -306,7 +310,7 @@ public class MainViewModel extends ViewModel {
 
                         setRefreshing(false);
                         setError(new ErrorResponse(
-                                "",
+                                Constants.EMPTY_VALUE,
                                 R.string.error_server,
                                 "Error in MainViewModel getPlatforms")
                         );
@@ -336,7 +340,7 @@ public class MainViewModel extends ViewModel {
 
                         setRefreshing(false);
                         setError(new ErrorResponse(
-                                "",
+                                Constants.EMPTY_VALUE,
                                 R.string.error_server,
                                 "Error in MainViewModel getGenres")
                         );

@@ -17,7 +17,6 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -34,12 +33,13 @@ import butterknife.ButterKnife;
 import es.upsa.mimo.gamerdb.R;
 import es.upsa.mimo.gamerdb.activities.base.BaseActivity;
 import es.upsa.mimo.gamerdb.adapters.GamesAdapter;
+import es.upsa.mimo.gamerdb.adapters.OnItemClickListener;
 import es.upsa.mimo.gamerdb.models.GenreResponse;
 import es.upsa.mimo.gamerdb.models.PlatformObjectResponse;
 import es.upsa.mimo.gamerdb.utils.Constants;
 import es.upsa.mimo.gamerdb.viewmodels.MainViewModel;
 
-public class MainActivity extends BaseActivity implements GamesAdapter.OnItemClickListener {
+public class MainActivity extends BaseActivity implements OnItemClickListener {
 
     //MARK: - Public properties
 
@@ -72,7 +72,6 @@ public class MainActivity extends BaseActivity implements GamesAdapter.OnItemCli
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setHomeAsUpIndicator(R.drawable.ic_home_white_24dp);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        setTitle("");
 
         this.initializeUI();
     }
@@ -80,7 +79,7 @@ public class MainActivity extends BaseActivity implements GamesAdapter.OnItemCli
     //MARK: - Interface methods
 
     @Override
-    public void onItemClick(int gameId) {
+    public void onItemClick(View v, int gameId) {
 
         Intent intent = new Intent(this, GameDetailActivity.class);
         intent.putExtra(Constants.GAME_ID, gameId);
@@ -88,7 +87,7 @@ public class MainActivity extends BaseActivity implements GamesAdapter.OnItemCli
     }
 
     @Override
-    public void onLoadMoreItemsClick() {
+    public void onLoadMoreItemsClick(View v) {
         viewModel.loadGames();
     }
 
@@ -144,13 +143,15 @@ public class MainActivity extends BaseActivity implements GamesAdapter.OnItemCli
 
     private void initializeUI() {
 
+        Constants.setToolbarTitleStyle(this, toolbar);
+
         viewModel = new ViewModelProvider(
                 this,
                 new SavedStateViewModelFactory(this.getApplication(), this)
         ).get(MainViewModel.class);
         viewModel
                 .getGamesCount()
-                .observe(this, this::setGamesCount);
+                .observe(this, integer -> setGamesCountTitle());
         viewModel
                 .getGames()
                 .observe(this, gameResponses -> {
@@ -192,9 +193,6 @@ public class MainActivity extends BaseActivity implements GamesAdapter.OnItemCli
                     if (selectedPlatforms == null || selectedPlatforms.isEmpty()) {
                         resetButtons(llPlatforms);
                     }
-                    if (selectedPlatforms != null) {
-                        reloadGames();
-                    }
                 });
         viewModel
                 .getSelectedGenres()
@@ -203,9 +201,6 @@ public class MainActivity extends BaseActivity implements GamesAdapter.OnItemCli
                     if (selectedGenres == null || selectedGenres.isEmpty()) {
                         resetButtons(llGenres);
                     }
-                    if (selectedGenres != null) {
-                        reloadGames();
-                    }
                 });
         viewModel
                 .getPosition()
@@ -213,7 +208,11 @@ public class MainActivity extends BaseActivity implements GamesAdapter.OnItemCli
         viewModel
                 .getRefreshing()
                 .observe(this, refreshing -> srlGames.setRefreshing(refreshing));
-        gamesAdapter = new GamesAdapter(viewModel.getGames().getValue(), this);
+        gamesAdapter = new GamesAdapter(
+                viewModel.getGames().getValue(),
+                this,
+                true
+        );
 
         srlGames.setColorSchemeResources(R.color.colorPrimary);
         srlGames.setProgressBackgroundColorSchemeResource(android.R.color.white);
@@ -287,6 +286,7 @@ public class MainActivity extends BaseActivity implements GamesAdapter.OnItemCli
 
                         v.setSelected(!v.isSelected());
                         viewModel.selectPlatform(v.getTag().toString());
+                        reloadGames();
                     });
                     llPlatforms.addView(button);
                 }
@@ -313,6 +313,7 @@ public class MainActivity extends BaseActivity implements GamesAdapter.OnItemCli
 
                         v.setSelected(!v.isSelected());
                         viewModel.selectGenre(v.getTag().toString());
+                        reloadGames();
                     });
                     llGenres.addView(button);
                 }
@@ -343,21 +344,11 @@ public class MainActivity extends BaseActivity implements GamesAdapter.OnItemCli
         }
     }
 
-    private void setGamesCount(int gamesCount) {
+    private void setGamesCountTitle() {
 
+        int gamesCount = viewModel.getGamesCountValue();
         String title = getResources().getString(R.string.games_title, gamesCount);
-        for(int i = 0; i < toolbar.getChildCount(); i++) {
-
-            View view = toolbar.getChildAt(i);
-            if (view instanceof TextView) {
-
-                TextView textView = (TextView) view;
-                textView.setGravity(Gravity.CENTER);
-                textView.setTextSize(getResources().getDimension(R.dimen.font_tiny));
-                textView.setPadding(0, 0, 0, Constants.TOOLBAR_TITLE_PADDING_BOTTOM);
-            }
-            toolbar.setTitle(title);
-        }
+        setTitle(title);
     }
 
     private void reloadGames() {

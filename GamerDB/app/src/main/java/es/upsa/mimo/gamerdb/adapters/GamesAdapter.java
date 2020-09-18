@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 import es.upsa.mimo.gamerdb.R;
 import es.upsa.mimo.gamerdb.models.GameResponse;
-import es.upsa.mimo.gamerdb.utils.Constants;
 import es.upsa.mimo.gamerdb.viewholders.GamesViewHolder;
 import es.upsa.mimo.gamerdb.viewholders.LoadMoreItemsViewHolder;
 
@@ -26,22 +25,24 @@ public class GamesAdapter extends RecyclerView.Adapter<ViewHolder> {
 
     private List<GameResponse> games;
     private OnItemClickListener onItemClickListener;
+    private boolean multiImage;
     private Context context;
-    private boolean showLoadMoreItems;
 
     //MARK: - Lifecycle methods
 
-    public GamesAdapter(List<GameResponse> games, OnItemClickListener onItemClickListener) {
+    public GamesAdapter(List<GameResponse> games,
+                        OnItemClickListener onItemClickListener,
+                        boolean multiImage) {
 
         this.games = games;
         this.onItemClickListener = onItemClickListener;
-        this.showLoadMoreItems = true;
+        this.multiImage = multiImage;
     }
 
     @Override
     public int getItemViewType(int position) {
 
-        if (position < games.size()) {
+        if (games.get(position).getId() > 0) {
             return R.layout.game_item;
         } else {
             return R.layout.load_more_items_item;
@@ -68,30 +69,30 @@ public class GamesAdapter extends RecyclerView.Adapter<ViewHolder> {
 
         if (holder instanceof GamesViewHolder) {
 
+            GamesViewHolder gamesViewHolder = (GamesViewHolder) holder;
             GameResponse game = games.get(position);
-            ((GamesViewHolder) holder).fillData(game, position, context, onItemClickListener);
+            gamesViewHolder.fillData(
+                    game,
+                    position,
+                    context,
+                    onItemClickListener,
+                    multiImage
+            );
         } else {
-            ((LoadMoreItemsViewHolder) holder).setItem(onItemClickListener);
+
+            LoadMoreItemsViewHolder loadMoreItemsViewHolder = (LoadMoreItemsViewHolder) holder;
+            loadMoreItemsViewHolder.setItem(onItemClickListener, multiImage);
         }
     }
 
     @Override
     public int getItemCount() {
 
-        if (games.size() == 0) {
+        if (games == null) {
             return 0;
-        } else if (showLoadMoreItems) {
-            return games.size() + 1;
         } else {
             return games.size();
         }
-    }
-
-    //MARK: - Interface methods
-
-    public interface OnItemClickListener {
-        void onItemClick(int gameId);
-        void onLoadMoreItemsClick();
     }
 
     //MARK: - Public methods
@@ -100,14 +101,12 @@ public class GamesAdapter extends RecyclerView.Adapter<ViewHolder> {
 
         int position = this.games.size();
         this.games = newGames;
-        showLoadMoreItems = (newGames.size() % Constants.PAGE_SIZE) == 0;
         notifyItemInserted(position);
     }
 
     public void resetList() {
 
         this.games = new ArrayList<>();
-        this.showLoadMoreItems = true;
         notifyDataSetChanged();
     }
 }

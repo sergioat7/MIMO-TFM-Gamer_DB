@@ -7,6 +7,8 @@ package es.upsa.mimo.gamerdb.network.apiclient;
 
 import java.util.HashMap;
 import java.util.Map;
+import es.upsa.mimo.gamerdb.models.AchievementListResponse;
+import es.upsa.mimo.gamerdb.models.DeveloperListResponse;
 import es.upsa.mimo.gamerdb.models.GameListResponse;
 import es.upsa.mimo.gamerdb.models.GameResponse;
 import es.upsa.mimo.gamerdb.models.ScreenshotListResponse;
@@ -49,5 +51,45 @@ public class GameAPIClient {
 
     public Single<ScreenshotListResponse> getScreenshots(int gameId) {
         return api.getScreenshots(gameId).subscribeOn(Constants.SUBSCRIBER_SCHEDULER).observeOn(Constants.OBSERVER_SCHEDULER);
+    }
+
+    public Single<GameListResponse> getGameSeries(int gameId, int page, int pageSize) {
+
+        Map<String, String> params = new HashMap<>();
+        params.put(Constants.PAGE_PARAM, String.valueOf(page));
+        params.put(Constants.PAGE_SIZE_PARAM, String.valueOf(pageSize));
+        return api.getGameSeries(gameId, params).subscribeOn(Constants.SUBSCRIBER_SCHEDULER).observeOn(Constants.OBSERVER_SCHEDULER);
+    }
+
+    public Single<GameListResponse> getGamesSuggested(int gameId, int page, int pageSize) {
+
+        Map<String, String> params = new HashMap<>();
+        params.put(Constants.PAGE_PARAM, String.valueOf(page));
+        params.put(Constants.PAGE_SIZE_PARAM, String.valueOf(pageSize));
+        return api.getGamesSuggested(gameId, params).subscribeOn(Constants.SUBSCRIBER_SCHEDULER).observeOn(Constants.OBSERVER_SCHEDULER);
+    }
+
+    public Single<GameListResponse> getGameAdditions(int gameId, int page, int pageSize) {
+
+        Map<String, String> params = new HashMap<>();
+        params.put(Constants.PAGE_PARAM, String.valueOf(page));
+        params.put(Constants.PAGE_SIZE_PARAM, String.valueOf(pageSize));
+        return api.getGameAdditions(gameId, params).subscribeOn(Constants.SUBSCRIBER_SCHEDULER).observeOn(Constants.OBSERVER_SCHEDULER);
+    }
+
+    public Single<DeveloperListResponse> getDevelopers(int gameId, int page, int pageSize) {
+
+        Map<String, String> params = new HashMap<>();
+        params.put(Constants.PAGE_PARAM, String.valueOf(page));
+        params.put(Constants.PAGE_SIZE_PARAM, String.valueOf(pageSize));
+        return api.getDevelopers(gameId, params).subscribeOn(Constants.SUBSCRIBER_SCHEDULER).observeOn(Constants.OBSERVER_SCHEDULER);
+    }
+
+    public Single<AchievementListResponse> getAchievements(int gameId, int page, int pageSize) {
+
+        Map<String, String> params = new HashMap<>();
+        params.put(Constants.PAGE_PARAM, String.valueOf(page));
+        params.put(Constants.PAGE_SIZE_PARAM, String.valueOf(pageSize));
+        return api.getAchievements(gameId, params).subscribeOn(Constants.SUBSCRIBER_SCHEDULER).observeOn(Constants.OBSERVER_SCHEDULER);
     }
 }

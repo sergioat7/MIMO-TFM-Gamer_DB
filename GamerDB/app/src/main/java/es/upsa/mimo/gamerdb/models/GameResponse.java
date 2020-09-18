@@ -38,46 +38,8 @@ public class GameResponse {
     private List<ScreenshotResponse> shortScreenshots;
     private ClipResponse clip;
 
-    public GameResponse(int id,
-                        String name,
-                        String description,
-                        String released,
-                        String backgroundImage,
-                        String backgroundImageAdditional,
-                        String website,
-                        double rating,
-                        double ratingTop,
-                        List<RatingResponse> ratings,
-                        int screenshotsCount,
-                        List<PlatformResponse> platforms,
-                        List<StoreResponse> stores,
-                        List<DeveloperResponse> developers,
-                        List<GenreResponse> genres,
-                        List<TagResponse> tags,
-                        List<PublisherResponse> publishers,
-                        EsrbResponse esrbRating,
-                        List<ScreenshotResponse> shortScreenshots,
-                        ClipResponse clip) {
+    public GameResponse(int id) {
         this.id = id;
-        this.name = name;
-        this.description = description;
-        this.released = released;
-        this.backgroundImage = backgroundImage;
-        this.backgroundImageAdditional = backgroundImageAdditional;
-        this.website = website;
-        this.rating = rating;
-        this.ratingTop = ratingTop;
-        this.ratings = ratings;
-        this.screenshotsCount = screenshotsCount;
-        this.platforms = platforms;
-        this.stores = stores;
-        this.developers = developers;
-        this.genres = genres;
-        this.tags = tags;
-        this.publishers = publishers;
-        this.esrbRating = esrbRating;
-        this.shortScreenshots = shortScreenshots;
-        this.clip = clip;
     }
 
     public int getId() {

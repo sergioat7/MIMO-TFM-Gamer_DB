@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -26,7 +27,8 @@
         android:id="@+id/view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_margin="@dimen/spacing_small"
         android:layout_gravity="center"
-        android:background="@drawable/bordered_image_view"
+        android:background="@color/colorPrimaryTransparent25"
         />
 </FrameLayout>

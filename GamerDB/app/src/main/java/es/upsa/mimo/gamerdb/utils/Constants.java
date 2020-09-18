@@ -6,10 +6,21 @@
 package es.upsa.mimo.gamerdb.utils;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
+import android.widget.TextView;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.graphics.drawable.RoundedBitmapDrawable;
+import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory;
+import androidx.lifecycle.MutableLiveData;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -97,6 +108,22 @@ public class Constants {
     public static int INITIAL_POSITION_LIST = 0;
     public static int MARGIN_LIST = 50;
     public static int NO_MARGIN_LIST = 0;
+    public static int IMAGE_CORNER = 40;
+
+    public static void setToolbarTitleStyle(Context context, Toolbar toolbar) {
+
+        for(int i = 0; i < toolbar.getChildCount(); i++) {
+
+            View view = toolbar.getChildAt(i);
+            if (view instanceof TextView) {
+
+                TextView textView = (TextView) view;
+                textView.setGravity(Gravity.CENTER);
+                textView.setTextSize(context.getResources().getDimension(R.dimen.font_tiny));
+                textView.setPadding(0, 0, 0, Constants.TOOLBAR_TITLE_PADDING_BOTTOM);
+            }
+        }
+    }
 
     public static String listToString(List<String> list, String separator) {
 
@@ -145,12 +172,33 @@ public class Constants {
         return i % values.length;
     }
 
+    public static <T> MutableLiveData<List<T>> newMutableEmptyList() {
+
+        MutableLiveData<List<T>> list = new MutableLiveData<>();
+        list.setValue(new ArrayList<>());
+        return list;
+    }
+
+    public static <T> List<T> addElementsToList(List<T> list,
+                                                List<T> elementsToAdd,
+                                                boolean removeLast) {
+
+        if (list == null) {
+            list = new ArrayList<>();
+        } else if (list.size() > 0 && removeLast) {
+            list.remove(list.size() - 1);
+        }
+        list.addAll(elementsToAdd);
+        return list;
+    }
+
     //MARK: - Game detail
 
     public static int MAX_LINES = Integer.MAX_VALUE;
     public static int STORE_BUTTON_SEPARATOR_WIDTH = 40;
     public static int STORE_BUTTON_HEIGHT = 50;
-    public static String EMPTY_VALUE = "-";
+    public static String EMPTY_VALUE = "";
+    public static String NO_VALUE = "-";
     public static String NEXT_VALUE_SEPARATOR = ", ";
 
     public static int getStoreImageId(String storeId) {
@@ -177,6 +225,19 @@ public class Constants {
             default:
                 return 0;
         }
+    }
+
+    public static RoundedBitmapDrawable getRoundImageView(Drawable image, Context context, float radius) {
+
+        Bitmap imageBitmap = ((BitmapDrawable) image).getBitmap();
+        RoundedBitmapDrawable imageDrawable = RoundedBitmapDrawableFactory.create(context.getResources(), imageBitmap);
+        imageDrawable.setCircular(true);
+        if (radius > 0) {
+            imageDrawable.setCornerRadius(radius);
+        } else {
+            imageDrawable.setCornerRadius(Math.max(imageBitmap.getWidth(), imageBitmap.getHeight()) / 2.0f);
+        }
+        return imageDrawable;
     }
 
     //MARK: - Image detail

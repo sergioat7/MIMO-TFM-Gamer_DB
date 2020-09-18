@@ -11,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.viewpager.widget.PagerAdapter;
@@ -20,20 +19,26 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 import es.upsa.mimo.gamerdb.R;
 import es.upsa.mimo.gamerdb.customviews.ImageLoading;
+import es.upsa.mimo.gamerdb.utils.Constants;
 
 public class ImageSliderAdapter extends PagerAdapter {
 
     private int gameId;
     private List<String> images;
-    private GamesAdapter.OnItemClickListener onItemClickListener;
+    private OnItemClickListener onItemClickListener;
     private LayoutInflater inflater;
+    private Context context;
 
-    public ImageSliderAdapter(int gameId, List<String> images, Context context, GamesAdapter.OnItemClickListener onItemClickListener) {
+    public ImageSliderAdapter(int gameId,
+                              List<String> images,
+                              Context context,
+                              OnItemClickListener onItemClickListener) {
 
         this.gameId = gameId;
         this.images = images;
         this.onItemClickListener = onItemClickListener;
         this.inflater = LayoutInflater.from(context);
+        this.context = context;
     }
 
     @Override
@@ -56,29 +61,39 @@ public class ImageSliderAdapter extends PagerAdapter {
         ImageLoading loading = imageLayout.findViewById(R.id.image_loading);
 
         container.addView(imageLayout, 0);
-        imageView.setOnClickListener(v -> {
-            onItemClickListener.onItemClick(gameId);
-        });
+        imageView.setOnClickListener(v -> onItemClickListener.onItemClick(v, gameId));
 
-        loading.setVisibility(View.VISIBLE);
-        Picasso
-                .get()
-                .load(images.get(position))
-                .fit()
-                .centerCrop()
-                .error(R.drawable.error_image)
-                .into(imageView, new Callback() {
-                    @Override
-                    public void onSuccess() {
-                        loading.setVisibility(View.GONE);
-                    }
+        String imageUrl = images.get(position);
+        if (imageUrl.isEmpty()) {
 
-                    @Override
-                    public void onError(Exception e) {
-                        loading.setVisibility(View.GONE);
-                    }
-                });
+            loading.setVisibility(View.GONE);
+            imageView.setImageResource(R.drawable.no_image);
+        } else {
 
+            loading.setVisibility(View.VISIBLE);
+            Picasso
+                    .get()
+                    .load(imageUrl)
+                    .fit()
+                    .centerCrop()
+                    .error(R.drawable.error_image)
+                    .into(imageView, new Callback() {
+                        @Override
+                        public void onSuccess() {
+
+                            imageView.setImageDrawable(Constants.getRoundImageView(
+                                    imageView.getDrawable(),
+                                    context,
+                                    Constants.IMAGE_CORNER));
+                            loading.setVisibility(View.GONE);
+                        }
+
+                        @Override
+                        public void onError(Exception e) {
+                            loading.setVisibility(View.GONE);
+                        }
+                    });
+        }
         return imageLayout;
     }
 

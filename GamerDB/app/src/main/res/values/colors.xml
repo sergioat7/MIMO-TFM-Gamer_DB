@@ -1,7 +1,8 @@
 <resources>
 
     <color name="colorPrimary">#101216</color>
-    <color name="colorPrimarySemiTransparent">#4D101216</color>
+    <color name="colorPrimaryTransparent25">#40101216</color>
+    <color name="colorPrimaryTransparent75">#BF101216</color>
     <color name="colorSecondary">#ffffff</color>
 
     <color name="buttonPrimary">#0078f1</color>

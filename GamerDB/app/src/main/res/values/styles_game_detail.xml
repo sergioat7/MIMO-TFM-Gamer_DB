@@ -103,6 +103,59 @@
         <item name="android:maxLines">1</item>
     </style>
 
+    <style name="DeveloperCellName">
+        <item name="android:layout_marginTop">@dimen/spacing_small</item>
+        <item name="android:textColor">@color/textPrimary</item>
+        <item name="android:textSize">@dimen/font_larger</item>
+        <item name="android:fontFamily">@font/roboto_bold</item>
+    </style>
+
+    <style name="DeveloperCellPositions">
+        <item name="android:layout_marginTop">@dimen/spacing_tiny</item>
+        <item name="android:textColor">@color/textPrimary</item>
+        <item name="android:textSize">@dimen/font_small</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
+    </style>
+
+    <style name="DeveloperCellGamesCountTitle">
+        <item name="android:layout_margin">@dimen/spacing_large</item>
+        <item name="android:textColor">@color/textPrimary</item>
+        <item name="android:textSize">@dimen/font_normal</item>
+        <item name="android:fontFamily">@font/roboto_bold</item>
+    </style>
+
+    <style name="DeveloperCellGamesCount">
+        <item name="android:layout_marginEnd">@dimen/spacing_large</item>
+        <item name="android:textColor">@color/textTertiary</item>
+        <item name="android:textSize">@dimen/font_small</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
+    </style>
+
+    <style name="AchievementCellPercent">
+        <item name="android:layout_marginBottom">@dimen/spacing_tiny</item>
+        <item name="android:textColor">@color/textPrimary</item>
+        <item name="android:textSize">@dimen/font_small</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
+        <item name="android:maxLines">1</item>
+    </style>
+
+    <style name="AchievementCellName">
+        <item name="android:layout_marginBottom">@dimen/spacing_tiny</item>
+        <item name="android:textColor">@color/textPrimary</item>
+        <item name="android:textSize">@dimen/font_normal</item>
+        <item name="android:fontFamily">@font/roboto_bold</item>
+        <item name="android:maxLines">2</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
+    <style name="AchievementCellDescription">
+        <item name="android:textColor">@color/textTertiary</item>
+        <item name="android:textSize">@dimen/font_small</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
+        <item name="android:maxLines">3</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
     <style name="GridImages">
         <item name="android:numColumns">2</item>
         <item name="android:horizontalSpacing">@dimen/size_small</item>

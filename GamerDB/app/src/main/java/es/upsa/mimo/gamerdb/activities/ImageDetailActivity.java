@@ -53,7 +53,7 @@ public class ImageDetailActivity extends BaseActivity {
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
-        setTitle("");
+        setTitle(Constants.EMPTY_VALUE);
 
         imageUrl = getIntent().getStringExtra(Constants.IMAGE_URL);
 

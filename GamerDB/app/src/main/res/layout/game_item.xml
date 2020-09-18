@@ -61,6 +61,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraint_layout_indicator"
         android:layout_width="0dp"
         android:layout_height="@dimen/size_large"
         app:layout_constraintBottom_toBottomOf="parent"
