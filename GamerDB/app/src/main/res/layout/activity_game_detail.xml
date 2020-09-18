@@ -35,7 +35,7 @@
     <View
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@color/colorPrimarySemiTransparent"
+        android:background="@color/colorPrimaryTransparent25"
         app:layout_constraintBottom_toBottomOf="@id/image_view_game"
         app:layout_constraintEnd_toEndOf="@id/image_view_game"
         app:layout_constraintStart_toStartOf="@id/image_view_game"

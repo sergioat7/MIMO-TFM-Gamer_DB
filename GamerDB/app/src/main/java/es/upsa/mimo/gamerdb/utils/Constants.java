@@ -108,6 +108,7 @@ public class Constants {
     public static int INITIAL_POSITION_LIST = 0;
     public static int MARGIN_LIST = 50;
     public static int NO_MARGIN_LIST = 0;
+    public static int IMAGE_CORNER = 40;
 
     public static void setToolbarTitleStyle(Context context, Toolbar toolbar) {
 

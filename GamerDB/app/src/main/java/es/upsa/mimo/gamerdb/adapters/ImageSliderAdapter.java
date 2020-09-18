@@ -19,6 +19,7 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 import es.upsa.mimo.gamerdb.R;
 import es.upsa.mimo.gamerdb.customviews.ImageLoading;
+import es.upsa.mimo.gamerdb.utils.Constants;
 
 public class ImageSliderAdapter extends PagerAdapter {
 
@@ -26,13 +27,18 @@ public class ImageSliderAdapter extends PagerAdapter {
     private List<String> images;
     private OnItemClickListener onItemClickListener;
     private LayoutInflater inflater;
+    private Context context;
 
-    public ImageSliderAdapter(int gameId, List<String> images, Context context, OnItemClickListener onItemClickListener) {
+    public ImageSliderAdapter(int gameId,
+                              List<String> images,
+                              Context context,
+                              OnItemClickListener onItemClickListener) {
 
         this.gameId = gameId;
         this.images = images;
         this.onItemClickListener = onItemClickListener;
         this.inflater = LayoutInflater.from(context);
+        this.context = context;
     }
 
     @Override
@@ -74,6 +80,11 @@ public class ImageSliderAdapter extends PagerAdapter {
                     .into(imageView, new Callback() {
                         @Override
                         public void onSuccess() {
+
+                            imageView.setImageDrawable(Constants.getRoundImageView(
+                                    imageView.getDrawable(),
+                                    context,
+                                    Constants.IMAGE_CORNER));
                             loading.setVisibility(View.GONE);
                         }
 
@@ -83,8 +94,6 @@ public class ImageSliderAdapter extends PagerAdapter {
                         }
                     });
         }
-
-
         return imageLayout;
     }
 

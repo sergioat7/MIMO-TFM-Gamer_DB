@@ -6,16 +6,12 @@
 package es.upsa.mimo.gamerdb.viewholders;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.text.SpannableString;
 import android.text.style.UnderlineSpan;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
-import androidx.core.graphics.drawable.RoundedBitmapDrawable;
-import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory;
 import androidx.recyclerview.widget.RecyclerView;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
@@ -49,7 +45,19 @@ public class DevelopersViewHolder extends RecyclerView.ViewHolder {
                 .load(developer.getImageBackground())
                 .fit()
                 .centerCrop()
-                .into(ivBackground);
+                .into(ivBackground, new Callback() {
+                    @Override
+                    public void onSuccess() {
+                        ivBackground.setImageDrawable(Constants.getRoundImageView(
+                                ivBackground.getDrawable(),
+                                context,
+                                Constants.IMAGE_CORNER)
+                        );
+                    }
+
+                    @Override
+                    public void onError(Exception e) {}
+                });
 
         String developerImage = developer.getImage();
         if (developerImage == null) {
@@ -66,7 +74,11 @@ public class DevelopersViewHolder extends RecyclerView.ViewHolder {
                     .into(ivDeveloper, new Callback() {
                         @Override
                         public void onSuccess() {
-                            ivDeveloper.setImageDrawable(Constants.getRoundImageView(ivDeveloper.getDrawable(), context, size));
+                            ivDeveloper.setImageDrawable(Constants.getRoundImageView(
+                                    ivDeveloper.getDrawable(),
+                                    context,
+                                    size)
+                            );
                         }
 
                         @Override
