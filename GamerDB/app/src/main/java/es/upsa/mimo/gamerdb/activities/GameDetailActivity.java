@@ -33,6 +33,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import es.upsa.mimo.gamerdb.R;
 import es.upsa.mimo.gamerdb.activities.base.BaseActivity;
+import es.upsa.mimo.gamerdb.adapters.AchievementsAdapter;
 import es.upsa.mimo.gamerdb.adapters.DevelopersAdapter;
 import es.upsa.mimo.gamerdb.adapters.GamesAdapter;
 import es.upsa.mimo.gamerdb.adapters.OnItemClickListener;
@@ -106,6 +107,10 @@ public class GameDetailActivity extends BaseActivity implements OnItemClickListe
     TextView tvDevelopersTitle;
     @BindView(R.id.recycler_view_developers)
     RecyclerView rvDevelopers;
+    @BindView(R.id.text_view_achievements_title)
+    TextView tvAchievementsTitle;
+    @BindView(R.id.recycler_view_achievements)
+    RecyclerView rvAchievements;
 
     //MARK: - Private properties
 
@@ -114,6 +119,7 @@ public class GameDetailActivity extends BaseActivity implements OnItemClickListe
     private GamesAdapter gamesSuggestedAdapter;
     private GamesAdapter gameAdditionsAdapter;
     private DevelopersAdapter developersAdapter;
+    private AchievementsAdapter achievementsAdapter;
 
     //MARK: - Lifecycle methods
 
@@ -161,6 +167,8 @@ public class GameDetailActivity extends BaseActivity implements OnItemClickListe
             viewModel.loadGameAdditions();
         } else if (rvDevelopers.equals(parent)) {
             viewModel.loadDevelopers();
+        } else if (rvAchievements.equals(parent)) {
+            viewModel.loadAchievements();
         }
     }
 
@@ -231,6 +239,17 @@ public class GameDetailActivity extends BaseActivity implements OnItemClickListe
                     }
                     tvDevelopersTitle.setVisibility(developerResponses.isEmpty() ? View.GONE : View.VISIBLE);
                 });
+        viewModel
+                .getAchievements()
+                .observe(this, achievementResponses -> {
+
+                    if (achievementResponses.isEmpty()) {
+                        achievementsAdapter.resetList();
+                    } else {
+                        achievementsAdapter.setAchievements(achievementResponses);
+                    }
+                    tvAchievementsTitle.setVisibility(achievementResponses.isEmpty() ? View.GONE : View.VISIBLE);
+                });
 
         gameSeriesAdapter = new GamesAdapter(
                 viewModel.getGameSeries().getValue(),
@@ -249,6 +268,10 @@ public class GameDetailActivity extends BaseActivity implements OnItemClickListe
         );
         developersAdapter = new DevelopersAdapter(
                 viewModel.getDevelopers().getValue(),
+                this
+        );
+        achievementsAdapter = new AchievementsAdapter(
+                viewModel.getAchievements().getValue(),
                 this
         );
 
@@ -292,6 +315,13 @@ public class GameDetailActivity extends BaseActivity implements OnItemClickListe
                 false)
         );
         rvDevelopers.setAdapter(developersAdapter);
+
+        rvAchievements.setLayoutManager(new LinearLayoutManager(
+                this,
+                LinearLayoutManager.HORIZONTAL,
+                false)
+        );
+        rvAchievements.setAdapter(achievementsAdapter);
     }
 
     private void fillData(GameResponse game) {

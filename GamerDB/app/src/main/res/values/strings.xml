@@ -37,6 +37,7 @@
     <string name="developer_background_image">Background image for developer</string>
     <string name="developer_image">Developer\'s image</string>
     <string name="games_developed_title">Known for</string>
+    <string name="achievements">Achievements</string>
     <string name="achievement_percent">%s%%</string>
     <string name="achievement_image">Achievement\'s image</string>
 

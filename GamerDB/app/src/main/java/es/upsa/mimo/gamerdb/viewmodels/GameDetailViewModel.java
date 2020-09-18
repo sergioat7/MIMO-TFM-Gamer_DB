@@ -39,6 +39,7 @@ public class GameDetailViewModel extends ViewModel {
     private MutableLiveData<List<GameResponse>> gamesSuggested;
     private MutableLiveData<List<GameResponse>> gameAdditions;
     private MutableLiveData<List<DeveloperResponse>> developers;
+    private MutableLiveData<List<AchievementResponse>> achievements;
     private GameAPIClient gameAPIClient;
     private int gameSeriesPage;
     private int gamesSuggestedPage;
@@ -59,6 +60,7 @@ public class GameDetailViewModel extends ViewModel {
         gamesSuggested = Constants.newMutableEmptyList();
         gameAdditions = Constants.newMutableEmptyList();
         developers = Constants.newMutableEmptyList();
+        achievements = Constants.newMutableEmptyList();
         gameAPIClient = new GameAPIClient();
         gameSeriesPage = Constants.FIRST_PAGE;
         gamesSuggestedPage = Constants.FIRST_PAGE;
@@ -162,6 +164,19 @@ public class GameDetailViewModel extends ViewModel {
                 developers,
                 true);
         this.developers.setValue(currentDevelopers);
+    }
+
+    public LiveData<List<AchievementResponse>> getAchievements() {
+        return achievements;
+    }
+
+    public void addAchievements(List<AchievementResponse> achievements) {
+
+        List<AchievementResponse> currentAchievements = Constants.addElementsToList(
+                this.achievements.getValue(),
+                achievements,
+                true);
+        this.achievements.setValue(currentAchievements);
     }
 
     public void loadGameSeries() {
@@ -304,7 +319,7 @@ public class GameDetailViewModel extends ViewModel {
                         if (achievementListResponse.getNext() != null) {
                             results.add(new AchievementResponse(0));
                         }
-                        //TODO add achievements
+                        addAchievements(results);
                     }
 
                     @Override
