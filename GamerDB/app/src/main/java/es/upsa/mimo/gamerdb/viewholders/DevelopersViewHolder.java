@@ -69,11 +69,10 @@ public class DevelopersViewHolder extends RecyclerView.ViewHolder {
             ivDeveloper.setImageResource(R.drawable.error_image_developer);
         } else {
 
-            float size = context.getResources().getDimension(R.dimen.size_semi_huge);
             Picasso
                     .get()
                     .load(developerImage)
-                    .resize((int) size, (int) size)
+                    .fit()
                     .centerCrop()
                     .error(R.drawable.error_image)
                     .into(ivDeveloper, new Callback() {
@@ -83,7 +82,7 @@ public class DevelopersViewHolder extends RecyclerView.ViewHolder {
                             ivDeveloper.setImageDrawable(Constants.getRoundImageView(
                                     ivDeveloper.getDrawable(),
                                     context,
-                                    size)
+                                    context.getResources().getDimension(R.dimen.size_semi_huge))
                             );
                             loading.setVisibility(View.GONE);
                         }
