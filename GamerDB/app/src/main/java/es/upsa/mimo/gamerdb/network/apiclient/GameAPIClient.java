@@ -7,6 +7,7 @@ package es.upsa.mimo.gamerdb.network.apiclient;
 
 import java.util.HashMap;
 import java.util.Map;
+import es.upsa.mimo.gamerdb.models.AchievementListResponse;
 import es.upsa.mimo.gamerdb.models.DeveloperListResponse;
 import es.upsa.mimo.gamerdb.models.GameListResponse;
 import es.upsa.mimo.gamerdb.models.GameResponse;
@@ -82,5 +83,13 @@ public class GameAPIClient {
         params.put(Constants.PAGE_PARAM, String.valueOf(page));
         params.put(Constants.PAGE_SIZE_PARAM, String.valueOf(pageSize));
         return api.getDevelopers(gameId, params).subscribeOn(Constants.SUBSCRIBER_SCHEDULER).observeOn(Constants.OBSERVER_SCHEDULER);
+    }
+
+    public Single<AchievementListResponse> getAchievements(int gameId, int page, int pageSize) {
+
+        Map<String, String> params = new HashMap<>();
+        params.put(Constants.PAGE_PARAM, String.valueOf(page));
+        params.put(Constants.PAGE_SIZE_PARAM, String.valueOf(pageSize));
+        return api.getAchievements(gameId, params).subscribeOn(Constants.SUBSCRIBER_SCHEDULER).observeOn(Constants.OBSERVER_SCHEDULER);
     }
 }
