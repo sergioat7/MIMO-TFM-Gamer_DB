@@ -18,6 +18,7 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 import es.upsa.mimo.gamerdb.R;
+import es.upsa.mimo.gamerdb.customviews.ImageLoading;
 import es.upsa.mimo.gamerdb.models.DeveloperResponse;
 import es.upsa.mimo.gamerdb.models.PositionResponse;
 import es.upsa.mimo.gamerdb.utils.Constants;
@@ -36,6 +37,7 @@ public class DevelopersViewHolder extends RecyclerView.ViewHolder {
 
         ImageView ivBackground = itemView.findViewById(R.id.image_view_background);
         ImageView ivDeveloper = itemView.findViewById(R.id.image_view_developer);
+        ImageLoading loading = itemView.findViewById(R.id.image_loading_developer);
         TextView tvName = itemView.findViewById(R.id.text_view_name);
         TextView tvPositions = itemView.findViewById(R.id.text_view_positions);
         TextView tvGamesDeveloped = itemView.findViewById(R.id.text_view_games_developed);
@@ -59,9 +61,12 @@ public class DevelopersViewHolder extends RecyclerView.ViewHolder {
                     public void onError(Exception e) {}
                 });
 
+        loading.setVisibility(View.VISIBLE);
         String developerImage = developer.getImage();
         if (developerImage == null) {
-            ivDeveloper.setImageResource(R.drawable.error_image_2);//TODO change
+
+            loading.setVisibility(View.GONE);
+            ivDeveloper.setImageResource(R.drawable.error_image_developer);
         } else {
 
             float size = context.getResources().getDimension(R.dimen.size_semi_huge);
@@ -74,16 +79,20 @@ public class DevelopersViewHolder extends RecyclerView.ViewHolder {
                     .into(ivDeveloper, new Callback() {
                         @Override
                         public void onSuccess() {
+
                             ivDeveloper.setImageDrawable(Constants.getRoundImageView(
                                     ivDeveloper.getDrawable(),
                                     context,
                                     size)
                             );
+                            loading.setVisibility(View.GONE);
                         }
 
                         @Override
                         public void onError(Exception e) {
-                            ivDeveloper.setImageResource(R.drawable.error_image_2);//TODO change
+
+                            ivDeveloper.setImageResource(R.drawable.error_image_developer);
+                            loading.setVisibility(View.GONE);
                         }
                     });
         }
