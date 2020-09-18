@@ -12,6 +12,8 @@ import androidx.lifecycle.ViewModel;
 import java.util.ArrayList;
 import java.util.List;
 import es.upsa.mimo.gamerdb.R;
+import es.upsa.mimo.gamerdb.models.AchievementListResponse;
+import es.upsa.mimo.gamerdb.models.AchievementResponse;
 import es.upsa.mimo.gamerdb.models.DeveloperListResponse;
 import es.upsa.mimo.gamerdb.models.DeveloperResponse;
 import es.upsa.mimo.gamerdb.models.ErrorResponse;
@@ -42,6 +44,7 @@ public class GameDetailViewModel extends ViewModel {
     private int gamesSuggestedPage;
     private int gameAdditionsPage;
     private int developersPage;
+    private int achievementsPage;
 
     //MARK: - Lifecycle methods
 
@@ -61,12 +64,14 @@ public class GameDetailViewModel extends ViewModel {
         gamesSuggestedPage = Constants.FIRST_PAGE;
         gameAdditionsPage = Constants.FIRST_PAGE;
         developersPage = Constants.FIRST_PAGE;
+        achievementsPage = Constants.FIRST_PAGE;
         loadGame();
         loadScreenshots();
         loadGameSeries();
         loadGamesSuggested();
         loadGameAdditions();
         loadDevelopers();
+        loadAchievements();
     }
 
     //MARK: - Public methods
@@ -113,7 +118,10 @@ public class GameDetailViewModel extends ViewModel {
 
     public void addGameSeries(List<GameResponse> games) {
 
-        List<GameResponse> currentGames = Constants.addElementsToList(this.gameSeries.getValue(), games, true);
+        List<GameResponse> currentGames = Constants.addElementsToList(
+                this.gameSeries.getValue(),
+                games,
+                true);
         this.gameSeries.setValue(currentGames);
     }
 
@@ -123,7 +131,10 @@ public class GameDetailViewModel extends ViewModel {
 
     public void addGamesSuggested(List<GameResponse> games) {
 
-        List<GameResponse> currentGames = Constants.addElementsToList(this.gamesSuggested.getValue(), games, true);
+        List<GameResponse> currentGames = Constants.addElementsToList(
+                this.gamesSuggested.getValue(),
+                games,
+                true);
         this.gamesSuggested.setValue(currentGames);
     }
 
@@ -133,7 +144,10 @@ public class GameDetailViewModel extends ViewModel {
 
     public void addGameAdditions(List<GameResponse> games) {
 
-        List<GameResponse> currentGames = Constants.addElementsToList(this.gameAdditions.getValue(), games, true);
+        List<GameResponse> currentGames = Constants.addElementsToList(
+                this.gameAdditions.getValue(),
+                games,
+                true);
         this.gameAdditions.setValue(currentGames);
     }
 
@@ -143,7 +157,10 @@ public class GameDetailViewModel extends ViewModel {
 
     public void addDevelopers(List<DeveloperResponse> developers) {
 
-        List<DeveloperResponse> currentDevelopers = Constants.addElementsToList(this.developers.getValue(), developers, true);
+        List<DeveloperResponse> currentDevelopers = Constants.addElementsToList(
+                this.developers.getValue(),
+                developers,
+                true);
         this.developers.setValue(currentDevelopers);
     }
 
@@ -266,6 +283,37 @@ public class GameDetailViewModel extends ViewModel {
                                 Constants.EMPTY_VALUE,
                                 R.string.error_server,
                                 "Error in GameDetailViewModel getDevelopers")
+                        );
+                    }
+                });
+    }
+
+    public void loadAchievements() {
+
+        gameAPIClient
+                .getAchievements(getGameId(), achievementsPage, Constants.PAGE_SIZE)
+                .subscribe(new SingleObserver<AchievementListResponse>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {}
+
+                    @Override
+                    public void onSuccess(AchievementListResponse achievementListResponse) {
+
+                        achievementsPage++;
+                        List<AchievementResponse> results = achievementListResponse.getResults();
+                        if (achievementListResponse.getNext() != null) {
+                            results.add(new AchievementResponse(0));
+                        }
+                        //TODO add achievements
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                        setError(new ErrorResponse(
+                                Constants.EMPTY_VALUE,
+                                R.string.error_server,
+                                "Error in GameDetailViewModel getAchievements")
                         );
                     }
                 });
