@@ -2,6 +2,17 @@ apply plugin: 'com.android.application'
 
 android {
 
+    signingConfigs {
+        release {
+            if (project.hasProperty('GAMER_DB_STORE_FILE')) {
+                storeFile file(GAMER_DB_STORE_FILE)
+                storePassword GAMER_DB_STORE_PASSWORD
+                keyAlias GAMER_DB_KEY_ALIAS
+                keyPassword GAMER_DB_KEY_PASSWORD
+            }
+        }
+    }
+
     compileSdkVersion 29
     buildToolsVersion "30.0.0"
 
@@ -10,7 +21,7 @@ android {
         minSdkVersion 23
         targetSdkVersion 29
         versionCode 1
-        versionName "1.0"
+        versionName "1.0.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -19,6 +30,7 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
         debug {
             applicationIdSuffix ".debug"
