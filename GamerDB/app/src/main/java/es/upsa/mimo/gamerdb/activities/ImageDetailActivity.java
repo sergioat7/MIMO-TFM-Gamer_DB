@@ -5,8 +5,10 @@
 
 package es.upsa.mimo.gamerdb.activities;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
@@ -61,6 +63,13 @@ public class ImageDetailActivity extends BaseActivity {
     }
 
     //MARK: - Public methods
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        finish();
+        return super.onOptionsItemSelected(item);
+    }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {

@@ -5,9 +5,11 @@
 
 package es.upsa.mimo.gamerdb.activities;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.widget.GridView;
 import java.util.List;
 import java.util.Objects;
@@ -46,6 +48,15 @@ public class GridImagesActivity extends BaseActivity {
         imagesUrl = getIntent().getStringArrayListExtra(Constants.IMAGES_URL);
 
         this.initializeUI();
+    }
+
+    //MARK: - Public methods
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+       finish();
+        return super.onOptionsItemSelected(item);
     }
 
     //MARK: - Private methods
