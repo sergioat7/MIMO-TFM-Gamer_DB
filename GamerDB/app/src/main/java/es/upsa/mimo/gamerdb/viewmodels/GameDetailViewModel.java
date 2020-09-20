@@ -202,8 +202,7 @@ public class GameDetailViewModel extends ViewModel {
                     public void onError(Throwable e) {
 
                         setError(new ErrorResponse(
-                                Constants.EMPTY_VALUE,
-                                R.string.error_server,
+                                R.string.error_loading_game_series,
                                 "Error in GameDetailViewModel getGameSeries")
                         );
                     }
@@ -233,8 +232,7 @@ public class GameDetailViewModel extends ViewModel {
                     public void onError(Throwable e) {
 
                         setError(new ErrorResponse(
-                                Constants.EMPTY_VALUE,
-                                R.string.error_server,
+                                R.string.error_loading_games_suggested,
                                 "Error in GameDetailViewModel getGamesSuggested")
                         );
                     }
@@ -264,8 +262,7 @@ public class GameDetailViewModel extends ViewModel {
                     public void onError(Throwable e) {
 
                         setError(new ErrorResponse(
-                                Constants.EMPTY_VALUE,
-                                R.string.error_server,
+                                R.string.error_loading_game_additions,
                                 "Error in GameDetailViewModel getGameAdditions")
                         );
                     }
@@ -295,8 +292,7 @@ public class GameDetailViewModel extends ViewModel {
                     public void onError(Throwable e) {
 
                         setError(new ErrorResponse(
-                                Constants.EMPTY_VALUE,
-                                R.string.error_server,
+                                R.string.error_loading_developers,
                                 "Error in GameDetailViewModel getDevelopers")
                         );
                     }
@@ -326,8 +322,7 @@ public class GameDetailViewModel extends ViewModel {
                     public void onError(Throwable e) {
 
                         setError(new ErrorResponse(
-                                Constants.EMPTY_VALUE,
-                                R.string.error_server,
+                                R.string.error_loading_game_achievements,
                                 "Error in GameDetailViewModel getAchievements")
                         );
                     }
@@ -353,8 +348,7 @@ public class GameDetailViewModel extends ViewModel {
                     public void onError(Throwable e) {
 
                         setError(new ErrorResponse(
-                                Constants.EMPTY_VALUE,
-                                R.string.error_server,
+                                R.string.error_loading_game,
                                 "Error in GameDetailViewModel getGame")
                         );
                     }
@@ -385,8 +379,7 @@ public class GameDetailViewModel extends ViewModel {
                     public void onError(Throwable e) {
 
                         setError(new ErrorResponse(
-                                Constants.EMPTY_VALUE,
-                                R.string.error_server,
+                                R.string.error_loading_game_screenshots,
                                 "Error in GameDetailViewModel getScreenshots")
                         );
                     }

@@ -5,6 +5,7 @@
 
 package es.upsa.mimo.gamerdb.activities;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
@@ -15,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
@@ -170,6 +172,15 @@ public class GameDetailActivity extends BaseActivity implements OnItemClickListe
         } else if (rvAchievements.equals(parent)) {
             viewModel.loadAchievements();
         }
+    }
+
+    //MARK: - Public methods
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        finish();
+        return super.onOptionsItemSelected(item);
     }
 
     //MARK: - Private methods

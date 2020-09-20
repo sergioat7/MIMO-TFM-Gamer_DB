@@ -1,7 +1,6 @@
 <resources>
 
     <string name="app_name" translatable="false">Gamer DB</string>
-    <string name="error_server">There was an error on getting data. Please, try again</string>
     <string name="toolbar_search_title">Search</string>
     <string name="loading_image">Loading image…</string>
     <string name="game_image">Image of the game</string>
@@ -40,5 +39,15 @@
     <string name="achievements">Achievements</string>
     <string name="achievement_percent">%s%%</string>
     <string name="achievement_image">Achievement\'s image</string>
+    <string name="error_loading_games">There was an error on getting games. Please, try again</string>
+    <string name="error_loading_platforms">There was an error on getting platforms. Please, try again</string>
+    <string name="error_loading_genres">There was an error on getting genres. Please, try again</string>
+    <string name="error_loading_game">There was an error on getting game data. Please, try again</string>
+    <string name="error_loading_game_screenshots">There was an error on getting game screenshots. Please, try again</string>
+    <string name="error_loading_game_series">There was an error on getting game series. Please, try again</string>
+    <string name="error_loading_games_suggested">There was an error on getting games suggested. Please, try again</string>
+    <string name="error_loading_game_additions">There was an error on getting game additions. Please, try again</string>
+    <string name="error_loading_developers">There was an error on getting game developers. Please, try again</string>
+    <string name="error_loading_game_achievements">There was an error on getting game achievements. Please, try again</string>
 
 </resources>

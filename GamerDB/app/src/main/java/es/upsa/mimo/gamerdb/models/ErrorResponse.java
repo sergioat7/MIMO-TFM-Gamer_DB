@@ -7,24 +7,13 @@ package es.upsa.mimo.gamerdb.models;
 
 public class ErrorResponse {
 
-    private String error;
     private int errorKey;
     private String internalMessage;
 
-    public ErrorResponse(String error,
-                         int errorKey,
+    public ErrorResponse(int errorKey,
                          String internalMessage) {
-        this.error = error;
         this.errorKey = errorKey;
         this.internalMessage = internalMessage;
-    }
-
-    public String getError() {
-        return error;
-    }
-
-    public void setError(String error) {
-        this.error = error;
     }
 
     public int getErrorKey() {
