@@ -1,66 +1,46 @@
+/*
+ * Copyright (c) 2020 Sergio Aragonés. All rights reserved.
+ * Created by Sergio Aragonés on 6/8/2020
+ */
+
 package es.upsa.mimo.gamerdb.network.apiclient;
 
 import com.google.gson.*;
-import java.lang.reflect.Type;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 import es.upsa.mimo.gamerdb.utils.Constants;
 import okhttp3.OkHttpClient;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class APIClient {
 
     private static Gson getGson() {
-
         return new GsonBuilder()
-                .registerTypeAdapter(Date.class, new JsonDeserializer<Date>() {
-                    @Override
-                    public Date deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-                        return Constants.stringToDate(json.toString());
-                    }
-                })
-                .setDateFormat(Constants.dateFormat)
+                .registerTypeAdapter(
+                        Date.class,
+                        (JsonDeserializer<Date>) (json, typeOfT, context) -> Constants.stringToDate(json.toString(), Constants.DATE_FORMAT)
+                )
+                .setDateFormat(Constants.DATE_FORMAT)
                 .serializeNulls()
                 .create();
     }
 
     private static OkHttpClient getOkHttpClient() {
         return new OkHttpClient.Builder()
-                .connectTimeout(1, TimeUnit.MINUTES)
-                .readTimeout(30, TimeUnit.SECONDS)
-                .writeTimeout(15, TimeUnit.SECONDS)
+                .connectTimeout(Constants.CONNECT_TIMEOUT, TimeUnit.SECONDS)
+                .readTimeout(Constants.READ_TIMEOUT, TimeUnit.SECONDS)
+                .writeTimeout(Constants.WRITE_TIMEOUT, TimeUnit.SECONDS)
                 .build();
     }
 
     public static Retrofit getRetrofit() {
         return new Retrofit.Builder()
-                .baseUrl(Constants.baseEndpoint)
+                .baseUrl(Constants.BASE_ENDPOINT)
                 .client(getOkHttpClient())
                 .addConverterFactory(GsonConverterFactory.create(getGson()))
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build();
-    }
-
-    public static <T, U> void sendServer(Call<T> request, final CompletionHandler<T, U> completion) {
-
-        request.enqueue(new Callback<T>() {
-            @Override
-            public void onResponse(Call<T> call, Response<T> response) {
-
-                if (response.isSuccessful() && response.body() != null) {
-                    completion.success(response.body());
-                } else {
-                    completion.failure(null);//TODO
-                }
-            }
-
-            @Override
-            public void onFailure(Call<T> call, Throwable t) {
-                completion.failure(null);//TODO
-            }
-        });
     }
 }

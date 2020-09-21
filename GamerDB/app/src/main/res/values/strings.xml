@@ -1,12 +1,53 @@
 <resources>
-    <string name="app_name">Gamer DB</string>
-    <string name="action_settings">Settings</string>
-    <!-- Strings used for fragments for navigation -->
-    <string name="first_fragment_label">First Fragment</string>
-    <string name="second_fragment_label">Second Fragment</string>
-    <string name="next">Next</string>
-    <string name="previous">Previous</string>
 
-    <string name="hello_first_fragment">Hello first fragment</string>
-    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="app_name" translatable="false">Gamer DB</string>
+    <string name="toolbar_search_title">Search</string>
+    <string name="loading_image">Loading image…</string>
+    <string name="game_image">Image of the game</string>
+    <string name="rating_image">Star image to represent rating</string>
+    <string name="accept">Accept</string>
+    <string name="cancel">Cancel</string>
+    <string name="load_more">Load more</string>
+    <string name="games_title">%d games</string>
+    <string name="order_by">Order by</string>
+    <string name="name_sorting_key">Name</string>
+    <string name="released_sorting_key">Release date</string>
+    <string name="added_sorting_key">Date added</string>
+    <string name="created_sorting_key">Date created</string>
+    <string name="rating_sorting_key">Average rating</string>
+    <string name="ascending">Ascending</string>
+    <string name="descending">Descending</string>
+    <string name="watch_video_title">Watch video</string>
+    <string name="view_images_button">View images</string>
+    <string name="read_more_button">Read more</string>
+    <string name="platforms_title">Platforms</string>
+    <string name="released_date_title">Released date</string>
+    <string name="genres_title">Genres</string>
+    <string name="age_rating_title">Age rating</string>
+    <string name="developer_title">Developer</string>
+    <string name="publisher_title">Publisher</string>
+    <string name="website_title">Website</string>
+    <string name="where_to_buy_title">Where to buy</string>
+    <string name="tags_title">Tags</string>
+    <string name="game_series">Other game in the series</string>
+    <string name="games_suggested">Suggested games</string>
+    <string name="game_additions">DLC\'s and special editions</string>
+    <string name="developer_tem">Developer team</string>
+    <string name="developer_background_image">Background image for developer</string>
+    <string name="developer_image">Developer\'s image</string>
+    <string name="games_developed_title">Known for</string>
+    <string name="achievements">Achievements</string>
+    <string name="achievement_percent">%s%%</string>
+    <string name="achievement_image">Achievement\'s image</string>
+    <string name="error_loading_games">There was an error on getting games. Please, try again</string>
+    <string name="error_loading_platforms">There was an error on getting platforms. Please, try again</string>
+    <string name="error_loading_genres">There was an error on getting genres. Please, try again</string>
+    <string name="error_loading_game">There was an error on getting game data. Please, try again</string>
+    <string name="error_loading_game_screenshots">There was an error on getting game screenshots. Please, try again</string>
+    <string name="error_loading_game_series">There was an error on getting game series. Please, try again</string>
+    <string name="error_loading_games_suggested">There was an error on getting games suggested. Please, try again</string>
+    <string name="error_loading_game_additions">There was an error on getting game additions. Please, try again</string>
+    <string name="error_loading_developers">There was an error on getting game developers. Please, try again</string>
+    <string name="error_loading_game_achievements">There was an error on getting game achievements. Please, try again</string>
+
 </resources>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="sorting_keys">
+        <item>@string/name_sorting_key</item>
+        <item>@string/released_sorting_key</item>
+        <item>@string/added_sorting_key</item>
+        <item>@string/created_sorting_key</item>
+        <item>@string/rating_sorting_key</item>
+    </string-array>
+
+    <string-array name="sorting_keys_ids">
+        <item>name</item>
+        <item>released</item>
+        <item>added</item>
+        <item>created</item>
+        <item>rating</item>
+    </string-array>
+
+</resources>

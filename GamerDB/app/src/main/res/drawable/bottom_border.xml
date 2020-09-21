@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:top="@dimen/size_tiny_negative"
+        android:left="@dimen/size_tiny_negative"
+        android:right="@dimen/size_tiny_negative"
+        >
+        <shape
+            android:shape="rectangle"
+            >
+            <stroke
+                android:width="@dimen/size_mini"
+                android:color="@color/buttonPrimary"
+                />
+            <solid
+                android:color="@color/buttonSecondary"
+                />
+        </shape>
+    </item>
+</layer-list>

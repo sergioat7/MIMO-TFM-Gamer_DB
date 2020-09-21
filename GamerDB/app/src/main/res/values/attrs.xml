@@ -1,0 +1,8 @@
+<resources>
+
+    <declare-styleable name="ImageLoading">
+        <attr name="loading_color" format="reference"/>
+        <attr name="text_color" format="reference" />
+    </declare-styleable>
+
+</resources>

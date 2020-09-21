@@ -1,10 +1,15 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <color name="colorPrimary">#101216</color>
-    <color name="colorSecondary">#e1af1f</color>
+    <color name="colorPrimaryTransparent25">#40101216</color>
+    <color name="colorPrimaryTransparent75">#BF101216</color>
+    <color name="colorSecondary">#ffffff</color>
+
     <color name="buttonPrimary">#0078f1</color>
     <color name="buttonSecondary">#343947</color>
+
     <color name="textPrimary">#eaeaee</color>
-    <color name="textSecondary">#69696e</color>
+    <color name="textSecondary">#e1af1f</color>
     <color name="textTertiary">#acaeb2</color>
+
 </resources>
