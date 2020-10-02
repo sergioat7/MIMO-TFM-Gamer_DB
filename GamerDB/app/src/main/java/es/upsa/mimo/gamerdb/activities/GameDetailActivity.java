@@ -499,20 +499,15 @@ public class GameDetailActivity extends BaseActivity implements OnItemClickListe
             videoUrl = game.getClip().getVideo();
         }
 
-        //TODO choose option
-        //OPCION 1
-//        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(videoUrl)));
-
-        //OPCION 2
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        Fragment prev = getSupportFragmentManager().findFragmentByTag("videoPopup");//TODO move to Constants
+        Fragment prev = getSupportFragmentManager().findFragmentByTag(Constants.VIDEO_POPUP_ID);
         if (prev != null) {
             transaction.remove(prev);
         }
         transaction.addToBackStack(null);
         PopupVideoDialogFragment dialogFragment = new PopupVideoDialogFragment(videoUrl);
         dialogFragment.setCancelable(true);
-        dialogFragment.show(transaction, "videoPopup");//TODO move to Constants
+        dialogFragment.show(transaction, Constants.VIDEO_POPUP_ID);
     }
 
     private void viewImages() {

@@ -100,6 +100,7 @@ public class Constants {
     public static String IMAGES_URL = "imagesUrl";
     public static String IMAGE_URL = "imageUrl";
     public static String ERROR_POPUP_ID = "errorPopup";
+    public static String VIDEO_POPUP_ID = "videoPopup";
 
     //MARK: - Game list
 
@@ -239,6 +240,12 @@ public class Constants {
         }
         return imageDrawable;
     }
+
+    //MARK: - Video
+
+    public static String FRAME_VIDEO = "<html><body><br><iframe width=\"320\" height=\"200\" src=\"%s\" frameborder=\"0\" allowfullscreen></iframe></body></html>";
+    public static String FRAME_VIDEO_MIME_TYPE = "text/html";
+    public static String FRAME_VIDEO_ENCODING = "utf-8";
 
     //MARK: - Image detail
 
