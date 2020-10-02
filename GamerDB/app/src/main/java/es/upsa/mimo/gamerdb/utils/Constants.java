@@ -246,9 +246,4 @@ public class Constants {
     public static String FRAME_VIDEO = "<html><body><br><iframe width=\"320\" height=\"200\" src=\"%s\" frameborder=\"0\" allowfullscreen></iframe></body></html>";
     public static String FRAME_VIDEO_MIME_TYPE = "text/html";
     public static String FRAME_VIDEO_ENCODING = "utf-8";
-
-    //MARK: - Image detail
-
-    public static float INITIAL_ZOOM = 1.0f;
-    public static float MAX_ZOOM = 10.0f;
 }
