@@ -5,6 +5,7 @@
 
 package es.upsa.mimo.gamerdb.fragments.popups;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import androidx.fragment.app.DialogFragment;
 import android.view.LayoutInflater;
@@ -17,6 +18,7 @@ import android.webkit.WebViewClient;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import es.upsa.mimo.gamerdb.R;
+import es.upsa.mimo.gamerdb.utils.Constants;
 
 public class PopupVideoDialogFragment extends DialogFragment {
 
@@ -47,10 +49,10 @@ public class PopupVideoDialogFragment extends DialogFragment {
 
     //MARK: - Private functions
 
+    //@SuppressLint("SetJavaScriptEnabled") because XSS vulnerabilities can be introduced
+    @SuppressLint("SetJavaScriptEnabled")
     private void initializeUI() {
 
-        //TODO move to Constants
-        String frameVideo = "<html><body><br><iframe width=\"320\" height=\"200\" src=\"" + url + "\" frameborder=\"0\" allowfullscreen></iframe></body></html>";
         web.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
@@ -59,6 +61,7 @@ public class PopupVideoDialogFragment extends DialogFragment {
         });
         WebSettings webSettings = web.getSettings();
         webSettings.setJavaScriptEnabled(true);
-        web.loadData(frameVideo, "text/html", "utf-8");
+        String frameVideo = String.format(Constants.FRAME_VIDEO, url);
+        web.loadData(frameVideo, Constants.FRAME_VIDEO_MIME_TYPE, Constants.FRAME_VIDEO_ENCODING);
     }
 }

@@ -29,6 +29,7 @@ import es.upsa.mimo.gamerdb.network.apiclient.GenreAPIClient;
 import es.upsa.mimo.gamerdb.network.apiclient.PlatformAPIClient;
 import es.upsa.mimo.gamerdb.utils.Constants;
 import io.reactivex.SingleObserver;
+import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 
 public class MainViewModel extends ViewModel {
@@ -54,6 +55,7 @@ public class MainViewModel extends ViewModel {
     private GenreAPIClient genreAPIClient;
     private int platformPage;
     private int genrePage;
+    private CompositeDisposable disposables;
 
     //MARK: - Lifecycle methods
 
@@ -78,9 +80,14 @@ public class MainViewModel extends ViewModel {
         genreAPIClient = new GenreAPIClient();
         platformPage = Constants.FIRST_PAGE;
         genrePage = Constants.FIRST_PAGE;
+        disposables = new CompositeDisposable();
         loadPlatforms();
         loadGenres();
         loadGames();
+    }
+
+    public void onDestroy() {
+        disposables.clear();
     }
 
     //MARK: - Public methods
@@ -255,7 +262,9 @@ public class MainViewModel extends ViewModel {
                 )
                 .subscribe(new SingleObserver<GameListResponse>() {
                     @Override
-                    public void onSubscribe(Disposable d) {}
+                    public void onSubscribe(Disposable d) {
+                        disposables.add(d);
+                    }
 
                     @Override
                     public void onSuccess(GameListResponse gameListResponse) {
@@ -294,7 +303,9 @@ public class MainViewModel extends ViewModel {
                 .getPlatformsObserver(platformPage, Constants.PAGE_SIZE)
                 .subscribe(new SingleObserver<PlatformListResponse>() {
                     @Override
-                    public void onSubscribe(Disposable d) {}
+                    public void onSubscribe(Disposable d) {
+                        disposables.add(d);
+                    }
 
                     @Override
                     public void onSuccess(PlatformListResponse platformListResponse) {
@@ -323,7 +334,9 @@ public class MainViewModel extends ViewModel {
                 .getGenresObserver(genrePage, Constants.PAGE_SIZE)
                 .subscribe(new SingleObserver<GenreListResponse>() {
                     @Override
-                    public void onSubscribe(Disposable d) {}
+                    public void onSubscribe(Disposable d) {
+                        disposables.add(d);
+                    }
 
                     @Override
                     public void onSuccess(GenreListResponse genreListResponse) {

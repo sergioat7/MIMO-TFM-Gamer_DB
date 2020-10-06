@@ -71,7 +71,7 @@ public class GameDetailActivity extends BaseActivity implements OnItemClickListe
     Button btWatchVideo;
     @BindView(R.id.button_view_images)
     Button btViewImages;
-    @BindView(R.id.text_view_description)
+    @BindView(R.id.text_view_game_description)
     TextView tvDescription;
     @BindView(R.id.button_show_more_text)
     Button btShowMoreText;
@@ -137,6 +137,12 @@ public class GameDetailActivity extends BaseActivity implements OnItemClickListe
 
         int gameId = getIntent().getIntExtra(Constants.GAME_ID, 0);
         this.initializeUI(gameId);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        viewModel.onDestroy();
     }
 
     //MARK: - Interface methods
@@ -499,20 +505,15 @@ public class GameDetailActivity extends BaseActivity implements OnItemClickListe
             videoUrl = game.getClip().getVideo();
         }
 
-        //TODO choose option
-        //OPCION 1
-//        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(videoUrl)));
-
-        //OPCION 2
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        Fragment prev = getSupportFragmentManager().findFragmentByTag("videoPopup");//TODO move to Constants
+        Fragment prev = getSupportFragmentManager().findFragmentByTag(Constants.VIDEO_POPUP_ID);
         if (prev != null) {
             transaction.remove(prev);
         }
         transaction.addToBackStack(null);
         PopupVideoDialogFragment dialogFragment = new PopupVideoDialogFragment(videoUrl);
         dialogFragment.setCancelable(true);
-        dialogFragment.show(transaction, "videoPopup");//TODO move to Constants
+        dialogFragment.show(transaction, Constants.VIDEO_POPUP_ID);
     }
 
     private void viewImages() {
