@@ -76,6 +76,12 @@ public class MainActivity extends BaseActivity implements OnItemClickListener {
         this.initializeUI();
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        viewModel.onDestroy();
+    }
+
     //MARK: - Interface methods
 
     @Override

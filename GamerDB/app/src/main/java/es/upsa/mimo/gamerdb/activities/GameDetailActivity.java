@@ -139,6 +139,12 @@ public class GameDetailActivity extends BaseActivity implements OnItemClickListe
         this.initializeUI(gameId);
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        viewModel.onDestroy();
+    }
+
     //MARK: - Interface methods
 
     @Override
