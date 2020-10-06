@@ -24,6 +24,7 @@ import es.upsa.mimo.gamerdb.models.ScreenshotResponse;
 import es.upsa.mimo.gamerdb.network.apiclient.GameAPIClient;
 import es.upsa.mimo.gamerdb.utils.Constants;
 import io.reactivex.SingleObserver;
+import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 
 public class GameDetailViewModel extends ViewModel {
@@ -46,6 +47,7 @@ public class GameDetailViewModel extends ViewModel {
     private int gameAdditionsPage;
     private int developersPage;
     private int achievementsPage;
+    private CompositeDisposable disposables;
 
     //MARK: - Lifecycle methods
 
@@ -67,6 +69,7 @@ public class GameDetailViewModel extends ViewModel {
         gameAdditionsPage = Constants.FIRST_PAGE;
         developersPage = Constants.FIRST_PAGE;
         achievementsPage = Constants.FIRST_PAGE;
+        disposables = new CompositeDisposable();
         loadGame();
         loadScreenshots();
         loadGameSeries();
@@ -74,6 +77,10 @@ public class GameDetailViewModel extends ViewModel {
         loadGameAdditions();
         loadDevelopers();
         loadAchievements();
+    }
+
+    public void onDestroy() {
+        disposables.clear();
     }
 
     //MARK: - Public methods
@@ -185,7 +192,9 @@ public class GameDetailViewModel extends ViewModel {
                 .getGameSeries(getGameId(), gameSeriesPage, Constants.PAGE_SIZE)
                 .subscribe(new SingleObserver<GameListResponse>() {
                     @Override
-                    public void onSubscribe(Disposable d) {}
+                    public void onSubscribe(Disposable d) {
+                        disposables.add(d);
+                    }
 
                     @Override
                     public void onSuccess(GameListResponse gameListResponse) {
@@ -215,7 +224,9 @@ public class GameDetailViewModel extends ViewModel {
                 .getGamesSuggested(getGameId(), gamesSuggestedPage, Constants.PAGE_SIZE)
                 .subscribe(new SingleObserver<GameListResponse>() {
                     @Override
-                    public void onSubscribe(Disposable d) {}
+                    public void onSubscribe(Disposable d) {
+                        disposables.add(d);
+                    }
 
                     @Override
                     public void onSuccess(GameListResponse gameListResponse) {
@@ -245,7 +256,9 @@ public class GameDetailViewModel extends ViewModel {
                 .getGameAdditions(getGameId(), gameAdditionsPage, Constants.PAGE_SIZE)
                 .subscribe(new SingleObserver<GameListResponse>() {
                     @Override
-                    public void onSubscribe(Disposable d) {}
+                    public void onSubscribe(Disposable d) {
+                        disposables.add(d);
+                    }
 
                     @Override
                     public void onSuccess(GameListResponse gameListResponse) {
@@ -275,7 +288,9 @@ public class GameDetailViewModel extends ViewModel {
                 .getDevelopers(getGameId(), developersPage, Constants.PAGE_SIZE)
                 .subscribe(new SingleObserver<DeveloperListResponse>() {
                     @Override
-                    public void onSubscribe(Disposable d) {}
+                    public void onSubscribe(Disposable d) {
+                        disposables.add(d);
+                    }
 
                     @Override
                     public void onSuccess(DeveloperListResponse developerListResponse) {
@@ -305,7 +320,9 @@ public class GameDetailViewModel extends ViewModel {
                 .getAchievements(getGameId(), achievementsPage, Constants.PAGE_SIZE)
                 .subscribe(new SingleObserver<AchievementListResponse>() {
                     @Override
-                    public void onSubscribe(Disposable d) {}
+                    public void onSubscribe(Disposable d) {
+                        disposables.add(d);
+                    }
 
                     @Override
                     public void onSuccess(AchievementListResponse achievementListResponse) {
@@ -337,7 +354,9 @@ public class GameDetailViewModel extends ViewModel {
                 .getGame(getGameId())
                 .subscribe(new SingleObserver<GameResponse>() {
                     @Override
-                    public void onSubscribe(Disposable d) {}
+                    public void onSubscribe(Disposable d) {
+                        disposables.add(d);
+                    }
 
                     @Override
                     public void onSuccess(GameResponse gameResponse) {
@@ -362,6 +381,7 @@ public class GameDetailViewModel extends ViewModel {
                 .subscribe(new SingleObserver<ScreenshotListResponse>() {
                     @Override
                     public void onSubscribe(Disposable d) {
+                        disposables.add(d);
                     }
 
                     @Override

@@ -71,7 +71,7 @@ public class GameDetailActivity extends BaseActivity implements OnItemClickListe
     Button btWatchVideo;
     @BindView(R.id.button_view_images)
     Button btViewImages;
-    @BindView(R.id.text_view_description)
+    @BindView(R.id.text_view_game_description)
     TextView tvDescription;
     @BindView(R.id.button_show_more_text)
     Button btShowMoreText;
@@ -137,6 +137,12 @@ public class GameDetailActivity extends BaseActivity implements OnItemClickListe
 
         int gameId = getIntent().getIntExtra(Constants.GAME_ID, 0);
         this.initializeUI(gameId);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        viewModel.onDestroy();
     }
 
     //MARK: - Interface methods

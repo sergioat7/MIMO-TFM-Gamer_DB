@@ -32,9 +32,9 @@ public class AchievementsViewHolder extends RecyclerView.ViewHolder {
 
         ImageView ivAchievement = itemView.findViewById(R.id.image_view_achievement);
         ImageLoading loading = itemView.findViewById(R.id.image_loading_achievement);
-        TextView tvPercent = itemView.findViewById(R.id.text_view_percent);
-        TextView tvName = itemView.findViewById(R.id.text_view_name);
-        TextView tvDescription = itemView.findViewById(R.id.text_view_description);
+        TextView tvPercent = itemView.findViewById(R.id.text_view_achievement_percent);
+        TextView tvName = itemView.findViewById(R.id.text_view_achievement_name);
+        TextView tvDescription = itemView.findViewById(R.id.text_view_achievement_description);
 
         loading.setVisibility(View.VISIBLE);
         String achievementImage = achievement.getImage();
