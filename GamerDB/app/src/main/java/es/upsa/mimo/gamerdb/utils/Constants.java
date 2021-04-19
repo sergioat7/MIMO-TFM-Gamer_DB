@@ -40,6 +40,8 @@ public class Constants {
     public static int CONNECT_TIMEOUT = 60;
     public static int READ_TIMEOUT = 30;
     public static int WRITE_TIMEOUT = 15;
+    public static String USER_AGENT_PARAM = "User-Agent";
+    public static String USER_AGENT_VALUE = "GamerDB";
     public static String PAGE_PARAM = "page";
     public static String PAGE_SIZE_PARAM = "page_size";
     public static String SEARCH_PARAM = "search";

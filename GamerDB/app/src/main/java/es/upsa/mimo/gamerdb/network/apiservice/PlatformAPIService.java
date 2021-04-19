@@ -10,12 +10,10 @@ import java.util.Map;
 import es.upsa.mimo.gamerdb.models.PlatformListResponse;
 import io.reactivex.Single;
 import retrofit2.http.GET;
-import retrofit2.http.Headers;
 import retrofit2.http.QueryMap;
 
 public interface PlatformAPIService {
 
-    @Headers("User-Agent:GamerDB")
     @GET("platforms")
     Single<PlatformListResponse> getPlatforms(@QueryMap Map<String, String> queryParams);
 }
