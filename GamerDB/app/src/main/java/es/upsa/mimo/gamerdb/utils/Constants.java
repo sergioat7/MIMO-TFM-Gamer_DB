@@ -42,6 +42,8 @@ public class Constants {
     public static int WRITE_TIMEOUT = 15;
     public static String USER_AGENT_PARAM = "User-Agent";
     public static String USER_AGENT_VALUE = "GamerDB";
+    public static String KEY_PARAM = "key";
+    public static String KEY_VALUE = "747a7639039d4134a4370852b0f6b282";
     public static String PAGE_PARAM = "page";
     public static String PAGE_SIZE_PARAM = "page_size";
     public static String SEARCH_PARAM = "search";

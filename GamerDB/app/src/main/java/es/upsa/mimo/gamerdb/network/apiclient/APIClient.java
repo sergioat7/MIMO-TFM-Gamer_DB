@@ -13,6 +13,7 @@ import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 import es.upsa.mimo.gamerdb.utils.Constants;
+import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import retrofit2.Retrofit;
@@ -39,7 +40,13 @@ public class APIClient {
                 .writeTimeout(Constants.WRITE_TIMEOUT, TimeUnit.SECONDS)
                 .addInterceptor(chain -> {
                     Request original = chain.request();
+                    HttpUrl url = original
+                            .url()
+                            .newBuilder()
+                            .addQueryParameter(Constants.KEY_PARAM, Constants.KEY_VALUE)
+                            .build();
                     Request request = original.newBuilder()
+                            .url(url)
                             .addHeader(Constants.USER_AGENT_PARAM, Constants.USER_AGENT_VALUE)
                             .method(original.method(), original.body())
                             .build();
