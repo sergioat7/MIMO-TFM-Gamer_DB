@@ -15,15 +15,18 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.TextView;
+
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.graphics.drawable.RoundedBitmapDrawable;
 import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory;
 import androidx.lifecycle.MutableLiveData;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+
 import es.upsa.mimo.gamerdb.R;
 import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -113,7 +116,7 @@ public class Constants {
 
     public static void setToolbarTitleStyle(Context context, Toolbar toolbar) {
 
-        for(int i = 0; i < toolbar.getChildCount(); i++) {
+        for (int i = 0; i < toolbar.getChildCount(); i++) {
 
             View view = toolbar.getChildAt(i);
             if (view instanceof TextView) {
@@ -209,7 +212,8 @@ public class Constants {
                 return R.drawable.steam;
             case "playstation-store":
                 return R.drawable.playstation_store;
-            case "xbox-store": case "xbox360":
+            case "xbox-store":
+            case "xbox360":
                 return R.drawable.xbox_store;
             case "apple-appstore":
                 return R.drawable.apple_store;

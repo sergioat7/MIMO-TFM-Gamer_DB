@@ -7,6 +7,7 @@ package es.upsa.mimo.gamerdb.network.apiclient;
 
 import java.util.HashMap;
 import java.util.Map;
+
 import es.upsa.mimo.gamerdb.models.PlatformListResponse;
 import es.upsa.mimo.gamerdb.network.apiservice.PlatformAPIService;
 import es.upsa.mimo.gamerdb.utils.Constants;
@@ -14,7 +15,7 @@ import io.reactivex.Single;
 
 public class PlatformAPIClient {
 
-    private PlatformAPIService api = APIClient.getRetrofit().create(PlatformAPIService.class);
+    private final PlatformAPIService api = APIClient.getRetrofit().create(PlatformAPIService.class);
 
     public Single<PlatformListResponse> getPlatformsObserver(int page, int pageSize) {
 

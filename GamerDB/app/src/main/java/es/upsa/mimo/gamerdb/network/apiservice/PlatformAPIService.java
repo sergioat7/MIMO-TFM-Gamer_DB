@@ -6,6 +6,7 @@
 package es.upsa.mimo.gamerdb.network.apiservice;
 
 import java.util.Map;
+
 import es.upsa.mimo.gamerdb.models.PlatformListResponse;
 import io.reactivex.Single;
 import retrofit2.http.GET;

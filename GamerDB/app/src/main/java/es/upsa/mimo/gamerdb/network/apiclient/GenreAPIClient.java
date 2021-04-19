@@ -7,6 +7,7 @@ package es.upsa.mimo.gamerdb.network.apiclient;
 
 import java.util.HashMap;
 import java.util.Map;
+
 import es.upsa.mimo.gamerdb.models.GenreListResponse;
 import es.upsa.mimo.gamerdb.network.apiservice.GenreAPIService;
 import es.upsa.mimo.gamerdb.utils.Constants;
@@ -14,7 +15,7 @@ import io.reactivex.Single;
 
 public class GenreAPIClient {
 
-    private GenreAPIService api = APIClient.getRetrofit().create(GenreAPIService.class);
+    private final GenreAPIService api = APIClient.getRetrofit().create(GenreAPIService.class);
 
     public Single<GenreListResponse> getGenresObserver(int page, int pageSize) {
 
