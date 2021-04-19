@@ -10,12 +10,15 @@ import android.content.Context;
 import android.view.Gravity;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.SavedStateHandle;
 import androidx.lifecycle.ViewModel;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import es.upsa.mimo.gamerdb.R;
 import es.upsa.mimo.gamerdb.models.ErrorResponse;
 import es.upsa.mimo.gamerdb.models.GameListResponse;
