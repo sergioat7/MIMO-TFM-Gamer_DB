@@ -15,15 +15,18 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.TextView;
+
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.graphics.drawable.RoundedBitmapDrawable;
 import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory;
 import androidx.lifecycle.MutableLiveData;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+
 import es.upsa.mimo.gamerdb.R;
 import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -37,6 +40,10 @@ public class Constants {
     public static int CONNECT_TIMEOUT = 60;
     public static int READ_TIMEOUT = 30;
     public static int WRITE_TIMEOUT = 15;
+    public static String USER_AGENT_PARAM = "User-Agent";
+    public static String USER_AGENT_VALUE = "GamerDB";
+    public static String KEY_PARAM = "key";
+    public static String KEY_VALUE = "747a7639039d4134a4370852b0f6b282";
     public static String PAGE_PARAM = "page";
     public static String PAGE_SIZE_PARAM = "page_size";
     public static String SEARCH_PARAM = "search";
@@ -113,7 +120,7 @@ public class Constants {
 
     public static void setToolbarTitleStyle(Context context, Toolbar toolbar) {
 
-        for(int i = 0; i < toolbar.getChildCount(); i++) {
+        for (int i = 0; i < toolbar.getChildCount(); i++) {
 
             View view = toolbar.getChildAt(i);
             if (view instanceof TextView) {
@@ -209,7 +216,8 @@ public class Constants {
                 return R.drawable.steam;
             case "playstation-store":
                 return R.drawable.playstation_store;
-            case "xbox-store": case "xbox360":
+            case "xbox-store":
+            case "xbox360":
                 return R.drawable.xbox_store;
             case "apple-appstore":
                 return R.drawable.apple_store;
