@@ -7,6 +7,7 @@ package es.upsa.mimo.gamerdb.network.apiclient;
 
 import java.util.HashMap;
 import java.util.Map;
+
 import es.upsa.mimo.gamerdb.models.AchievementListResponse;
 import es.upsa.mimo.gamerdb.models.DeveloperListResponse;
 import es.upsa.mimo.gamerdb.models.GameListResponse;
@@ -18,7 +19,7 @@ import io.reactivex.Single;
 
 public class GameAPIClient {
 
-    private GameAPIService api = APIClient.getRetrofit().create(GameAPIService.class);
+    private final GameAPIService api = APIClient.getRetrofit().create(GameAPIService.class);
 
     public Single<GameListResponse> getGamesObserver(int page,
                                                      int pageSize,
